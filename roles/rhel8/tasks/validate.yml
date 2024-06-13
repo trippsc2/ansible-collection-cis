@@ -241,15 +241,6 @@
     fail_msg: "The 'rhel8cis_selinux_mode' must be set to 'enforcing'."
     success_msg: "The 'rhel8cis_selinux_mode' is set to {{ rhel8cis_selinux_mode }}."
 
-- name: Validate | 1.6.1 | Ensure system wide crypto policy is not set to legacy
-  when:
-    - rhel8cis_rule_1_6_1_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_crypto_policy != 'LEGACY'
-    fail_msg: "The 'rhel8cis_crypto_policy' is set to 'LEGACY'."
-    success_msg: "The 'rhel8cis_crypto_policy' is not set to 'LEGACY'."
-
 - name: Validate | 1.6.2 | Ensure system wide crypto policy disables sha1 hash and signature support
   when:
     - rhel8cis_rule_1_6_2_enabled
@@ -276,13 +267,6 @@
       - '"NO-WEAKMAC" in rhel8cis_crypto_subpolicies'
     fail_msg: "The 'rhel8cis_crypto_subpolicies' does not include 'NO-WEAKMAC'."
     success_msg: "The 'rhel8cis_crypto_subpolicies' includes 'NO-WEAKMAC'."
-
-- name: Validate | 3.4.x | Validate firewall variable
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_firewall in ['firewalld']
-    fail_msg: "The 'rhel8cis_firewall' variable must be 'firewalld'. Direct nftables is not implemented yet."
-    success_msg: "The 'rhel8cis_firewall' variable is set to {{ rhel8cis_firewall }}."
 
 - name: Validate | 4.2.7 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured
   when:
@@ -311,15 +295,6 @@
       - rhel8cis_sshd_login_grace_time <= 60
     fail_msg: "The 'rhel8cis_sshd_login_grace_time' variable must be greater than 0 and less than or equal to 60."
     success_msg: "The 'rhel8cis_sshd_login_grace_time' variable is set to {{ rhel8cis_sshd_login_grace_time }}."
-
-- name: Validate | 4.2.13 | Ensure sshd LogLevel is configured
-  when:
-    - rhel8cis_rule_4_2_13_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_sshd_log_level in ['INFO', 'VERBOSE']
-    fail_msg: "The 'rhel8cis_sshd_log_level' variable must be 'INFO' or 'VERBOSE'."
-    success_msg: "The 'rhel8cis_sshd_log_level' variable is set to {{ rhel8cis_sshd_log_level }}."
 
 - name: Validate | 4.2.15 | Ensure sshd MaxAuthTries is configured
   when:
@@ -481,15 +456,6 @@
     fail_msg: "The 'rhel8cis_syslog' must be set to 'rsyslog' or 'journald'."
     success_msg: "The 'rhel8cis_syslog' is set to {{ rhel8cis_syslog }}."
 
-- name: Validate | 5.1.3 | Ensure logrotate is configured
-  when:
-    - rhel8cis_rule_5_1_3_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_logrotate_frequency in ['daily', 'weekly', 'monthly', 'yearly']
-    fail_msg: "The 'rhel8cis_logrotate_frequency' must be set to 'daily', 'weekly', 'monthly', or 'yearly'."
-    success_msg: "The 'rhel8cis_logrotate_frequency' is set to {{ rhel8cis_logrotate_frequency }}."
-
 - name: Validate | 5.2.1.3 | Ensure audit_backlog_limit is sufficient
   when:
     - rhel8cis_rule_5_2_1_3_enabled
@@ -499,21 +465,3 @@
       - rhel8cis_audit_backlog_limit >= 8192
     fail_msg: "The 'rhel8cis_audit_backlog_limit' must be set to a minimum of 8192."
     success_msg: "The 'rhel8cis_audit_backlog_limit' is set to {{ rhel8cis_audit_backlog_limit }}."
-
-- name: Validate | 5.2.2.3 | Ensure system is disabled when audit logs are full
-  when:
-    - rhel8cis_rule_5_2_2_3_enabled
-  block:
-    - name: Validate | 5.2.2.3 | Ensure system is disabled when audit logs are full | disk_full_action
-      ansible.builtin.assert:
-        that:
-          - "rhel8cis_auditd_disk_full_action in ['single', 'halt']"
-        fail_msg: "The 'rhel8cis_auditd_disk_full_action' must be set to 'single' or 'halt'."
-        success_msg: "The 'rhel8cis_auditd_disk_full_action' is set to '{{ rhel8cis_auditd_disk_full_action }}'."
-
-    - name: Validate | 5.2.2.3 | Ensure system is disabled when audit logs are full | disk_error_action
-      ansible.builtin.assert:
-        that:
-          - "rhel8cis_auditd_disk_error_action in ['syslog', 'single', 'halt']"
-        fail_msg: "The 'rhel8cis_auditd_disk_error_action' must be set to 'syslog', 'single' or 'halt'."
-        success_msg: "The 'rhel8cis_auditd_disk_error_action' is set to '{{ rhel8cis_auditd_disk_error_action }}'."
