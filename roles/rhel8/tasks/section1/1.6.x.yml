@@ -1,0 +1,66 @@
+---
+- name: |
+    1.6.1 | Ensure system wide crypto policy is not set to legacy
+    1.6.2 | Ensure system wide crypto policy disables sha1 hash and signature support
+    1.6.3 | Ensure system wide crypto policy disables cbc for ssh
+    1.6.4 | Ensure system wide crypto policy disables macs less than 128 bits
+  when:
+    - rhel8cis_rule_1_6_1_enabled or
+      rhel8cis_rule_1_6_2_enabled or
+      rhel8cis_rule_1_6_3_enabled or
+      rhel8cis_rule_1_6_4_enabled
+  block:    
+    - name: 1.6.2 | Ensure system wide crypto policy disables sha1 hash and signature support
+      when:
+        - rhel8cis_rule_1_6_2_enabled
+      become: true
+      ansible.builtin.copy:
+        content: |
+          hash = -SHA1
+          sign = -*-SHA1
+          sha1_in_certs = 0
+        dest: /etc/crypto-policies/policies/modules/NO-SHA1.pmod
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: 1.6.3 | Ensure system wide crypto policy disables cbc for ssh
+      when:
+        - rhel8cis_rule_1_6_3_enabled
+      become: true
+      ansible.builtin.copy:
+        content: cipher@SSH = -*-CBC
+        dest: /etc/crypto-policies/policies/modules/NO-SSHCBC.pmod
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: 1.6.4 | Ensure system wide crypto policy disables macs less than 128 bits
+      when:
+        - rhel8cis_rule_1_6_4_enabled
+      become: true
+      ansible.builtin.copy:
+        content: mac = -*-64*
+        dest: /etc/crypto-policies/policies/modules/NO-WEAKMAC.pmod
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: 1.6.x | Get system wide crypto policy
+      become: true
+      ansible.builtin.command: update-crypto-policies --show
+      changed_when: false
+      register: _rhel8cis_crypto_policy
+
+    - name: |
+        1.6.1 | Ensure system wide crypto policy is not set to legacy
+        1.6.2 | Ensure system wide crypto policy disables sha1 hash and signature support
+        1.6.3 | Ensure system wide crypto policy disables cbc for ssh
+        1.6.4 | Ensure system wide crypto policy disables macs less than 128 bits
+      when:
+        - _rhel8cis_expected_crypto_policy != _rhel8cis_crypto_policy.stdout
+      become: true
+      ansible.builtin.command: "update-crypto-policies --set {{ _rhel8cis_expected_crypto_policy }}"
+      changed_when: true
+      notify:
+        - _rhel8cis_reboot

@@ -1,0 +1,59 @@
+---
+- name: "18.3.1 | L1 | Ensure LAPS AdmPwd GPO Extension / CSE is installed (MS only)"
+  when:
+    - w2022cis_rule_18_3_1_enabled
+    - _w2022cis_member_server
+  chocolatey.chocolatey.win_chocolatey:
+    name:
+      - laps
+    state: present
+
+- name: "18.3.2 | L1 | Ensure 'Do not allow password expiration time longer than required by policy' is set to 'Enabled' (MS only)"
+  when:
+    - w2022cis_rule_18_3_2_enabled
+    - _w2022cis_member_server
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+    name: PwdExpirationProtectionEnabled
+    data: 1
+    type: dword
+
+- name: "18.3.3 | L1 | Ensure 'Enable Local Admin Password Management' is set to 'Enabled' (MS only)"
+  when:
+    - w2022cis_rule_18_3_3_enabled
+    - _w2022cis_member_server
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+    name: AdmPwdEnabled
+    data: 1
+    type: dword
+
+- name: "18.3.4 | L1 | Ensure 'Password Settings: Password Complexity' is set to 'Enabled: Large letters + small letters + numbers + special characters' (MS only)"
+  when:
+    - w2022cis_rule_18_3_4_enabled
+    - _w2022cis_member_server
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+    name: PasswordComplexity
+    data: 4
+    type: dword
+
+- name: "18.3.5 | L1 | Ensure 'Password Settings: Password Length' is set to 'Enabled: 15 or more' (MS only)"
+  when:
+    - w2022cis_rule_18_3_5_enabled
+    - _w2022cis_member_server
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+    name: PasswordLength
+    data: "{{ w2022cis_laps_password_length }}"
+    type: dword
+
+- name: "18.3.6 | L1 | Ensure 'Password Settings: Password Age (Days)' is set to 'Enabled: 30 or fewer' (MS only)"
+  when:
+    - w2022cis_rule_18_3_6_enabled
+    - _w2022cis_member_server
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd
+    name: PasswordAgeDays
+    data: "{{ w2022cis_laps_password_age_in_days }}"
+    type: dword

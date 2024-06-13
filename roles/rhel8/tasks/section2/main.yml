@@ -1,0 +1,9 @@
+---
+- name: Execute the 2.1.x tasks
+  ansible.builtin.import_tasks: 2.1.x.yml
+
+- name: Execute the 2.2.x tasks
+  ansible.builtin.import_tasks: 2.2.x.yml
+
+- name: Execute the 2.3.x tasks
+  ansible.builtin.import_tasks: 2.3.x.yml

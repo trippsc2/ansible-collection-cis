@@ -1,0 +1,520 @@
+---
+- name: 2.2.1 | Ensure autofs services are not in use
+  when:
+    - rhel8cis_rule_2_2_1_enabled
+    - _rhel8cis_workstation_level2 or _rhel8cis_server or rhel8cis_rule_2_2_1_force
+  become: true
+  block:
+    - name: 2.2.1 | Ensure autofs services are not in use | autofs package
+      ansible.builtin.dnf:
+        name:
+          - autofs
+        state: "{{ _rhel8cis_autofs_state }}"
+
+    - name: 2.2.1 | Ensure autofs services are not in use | autofs.service
+      when:
+        - rhel8cis_autofs_needed
+      ansible.builtin.systemd_service:
+        name: autofs.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.2 | Ensure avahi daemon services are not in use
+  when:
+    - rhel8cis_rule_2_2_2_enabled
+    - _rhel8cis_workstation_level2 or _rhel8cis_server or rhel8cis_rule_2_2_2_force
+  become: true
+  block:
+    - name: 2.2.2 | Ensure avahi daemon services are not in use | avahi package
+      ansible.builtin.dnf:
+        name:
+          - avahi
+        state: "{{ _rhel8cis_avahi_state }}"
+
+    - name: 2.2.2 | Ensure avahi daemon services are not in use | Services
+      when:
+        - rhel8cis_avahi_needed
+      block:
+        - name: 2.2.2 | Ensure avahi daemon services are not in use | avahi-daemon.service
+          ansible.builtin.systemd_service:
+            name: avahi-daemon.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.2 | Ensure avahi daemon services are not in use | avahi-daemon.socket
+          when:
+            - rhel8cis_avahi_needed
+          ansible.builtin.systemd_service:
+            name: avahi-daemon.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.3 | Ensure dhcp server services are not in use
+  when:
+    - rhel8cis_rule_2_2_3_enabled
+  become: true
+  block:
+    - name: 2.2.3 | Ensure dhcp server services are not in use | dhcp-server package
+      ansible.builtin.dnf:
+        name:
+          - dhcp-server
+        state: "{{ _rhel8cis_dhcp_server_state }}"
+
+    - name: 2.2.3 | Ensure dhcp server services are not in use | Services
+      when:
+        - rhel8cis_dhcp_server_needed
+      block:
+        - name: 2.2.3 | Ensure dhcp server services are not in use | dhcpd.service
+          ansible.builtin.systemd_service:
+            name: dhcpd.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.3 | Ensure dhcp server services are not in use | dhcp6.service
+          ansible.builtin.systemd_service:
+            name: dhcp6.service
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.4 | Ensure dns server services are not in use
+  when:
+    - rhel8cis_rule_2_2_4_enabled
+  become: true
+  block:
+    - name: 2.2.4 | Ensure dns server services are not in use | bind package
+      ansible.builtin.dnf:
+        name:
+          - bind
+        state: "{{ _rhel8cis_bind_state }}"
+
+    - name: 2.2.4 | Ensure dns server services are not in use | named.service
+      when:
+        - rhel8cis_bind_needed
+      ansible.builtin.systemd_service:
+        name: named.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.5 | Ensure dnsmasq services are not in use
+  when:
+    - rhel8cis_rule_2_2_5_enabled
+  become: true
+  block:
+    - name: 2.2.5 | Ensure dnsmasq services are not in use | dnsmasq package
+      ansible.builtin.dnf:
+        name:
+          - dnsmasq
+        state: "{{ _rhel8cis_dnsmasq_state }}"
+
+    - name: 2.2.5 | Ensure dnsmasq services are not in use | dnsmasq.service
+      when:
+        - rhel8cis_dnsmasq_needed
+      ansible.builtin.systemd_service:
+        name: dnsmasq.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.6 | Ensure samba file server services are not in use
+  when:
+    - rhel8cis_rule_2_2_6_enabled
+  become: true
+  block:
+    - name: 2.2.6 | Ensure samba file server services are not in use | samba package
+      ansible.builtin.dnf:
+        name:
+          - samba
+        state: "{{ _rhel8cis_samba_state }}"
+
+    - name: 2.2.6 | Ensure samba file server services are not in use | smb.service
+      when:
+        - rhel8cis_samba_needed
+      ansible.builtin.systemd_service:
+        name: smb.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.7 | Ensure ftp server services are not in use
+  when:
+    - rhel8cis_rule_2_2_7_enabled
+  become: true
+  block:
+    - name: 2.2.7 | Ensure ftp server services are not in use | vsftpd package
+      ansible.builtin.dnf:
+        name:
+          - vsftpd
+        state: "{{ _rhel8cis_vsftpd_state }}"
+
+    - name: 2.2.7 | Ensure ftp server services are not in use | vsftpd.service
+      when:
+        - rhel8cis_vsftpd_needed
+      ansible.builtin.systemd_service:
+        name: vsftpd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.8 | Ensure message access server services are not in use
+  when:
+    - rhel8cis_rule_2_2_8_enabled
+  become: true
+  block:
+    - name: 2.2.8 | Ensure message access server services are not in use | dovecot package
+      ansible.builtin.dnf:
+        name:
+          - dovecot
+        state: "{{ _rhel8cis_dovecot_state }}"
+
+    - name: 2.2.8 | Ensure message access server services are not in use | cyrus-imapd package
+      ansible.builtin.dnf:
+        name:
+          - cyrus-imapd
+        state: "{{ _rhel8cis_cyrus_imapd_state }}"
+
+    - name: 2.2.8 | Ensure message access server services are not in use | Dovecot Services
+      when:
+        - rhel8cis_dovecot_needed
+      block:
+        - name: 2.2.8 | Ensure message access server services are not in use | dovecot.service
+          ansible.builtin.systemd_service:
+            name: dovecot.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.8 | Ensure message access server services are not in use | dovecot.socket
+          ansible.builtin.systemd_service:
+            name: dovecot.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+    - name: 2.2.8 | Ensure message access server services are not in use | cyrus-imapd.service
+      when:
+        - rhel8cis_cyrus_imapd_needed
+      ansible.builtin.systemd_service:
+        name: cyrus-imapd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.9 | Ensure network file system services are not in use
+  when:
+    - rhel8cis_rule_2_2_9_enabled
+  become: true
+  block:
+    - name: 2.2.9 | Ensure network file system services are not in use | nfs-utils package
+      ansible.builtin.dnf:
+        name:
+          - nfs-utils
+        state: "{{ _rhel8cis_nfs_utils_state }}"
+
+    - name: 2.2.9 | Ensure network file system services are not in use | nfs-server.service
+      when:
+        - rhel8cis_nfs_utils_needed
+      ansible.builtin.systemd_service:
+        name: nfs-server.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.10 | Ensure nis server services are not in use
+  when:
+    - rhel8cis_rule_2_2_10_enabled
+  become: true
+  block:
+    - name: 2.2.10 | Ensure nis server services are not in use | ypserv package
+      ansible.builtin.dnf:
+        name:
+          - ypserv
+        state: "{{ _rhel8cis_ypserv_state }}"
+
+    - name: 2.2.10 | Ensure nis server services are not in use | ypserv.service
+      when:
+        - rhel8cis_ypserv_needed
+      ansible.builtin.systemd_service:
+        name: ypserv.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.11 | Ensure print server services are not in use
+  when:
+    - rhel8cis_rule_2_2_11_enabled
+    - _rhel8cis_server
+  become: true
+  block:
+    - name: 2.2.11 | Ensure print server services are not in use | cups package
+      ansible.builtin.dnf:
+        name:
+          - cups
+        state: "{{ _rhel8cis_cups_state }}"
+
+    - name: 2.2.11 | Ensure print server services are not in use | Services
+      when:
+        - rhel8cis_cups_needed
+      block:
+        - name: 2.2.11 | Ensure print server services are not in use | cups.service
+          ansible.builtin.systemd_service:
+            name: cups.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.11 | Ensure print server services are not in use | cups.socket
+          ansible.builtin.systemd_service:
+            name: cups.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.12 | Ensure rpcbind services are not in use
+  when:
+    - rhel8cis_rule_2_2_12_enabled
+  become: true
+  block:
+    - name: 2.2.12 | Ensure rpcbind services are not in use | rpcbind package
+      ansible.builtin.dnf:
+        name:
+          - rpcbind
+        state: "{{ _rhel8cis_rpcbind_state }}"
+
+    - name: 2.2.12 | Ensure rpcbind services are not in use | rpcbind.service
+      when:
+        - rhel8cis_rpcbind_needed
+      ansible.builtin.systemd_service:
+        name: rpcbind.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.13 | Ensure rsync services are not in use
+  when:
+    - rhel8cis_rule_2_2_13_enabled
+  become: true
+  block:
+    - name: 2.2.13 | Ensure rsync services are not in use | rsync-daemon package
+      ansible.builtin.dnf:
+        name:
+          - rsync-daemon
+        state: "{{ _rhel8cis_rsync_daemon_state }}"
+
+    - name: 2.2.13 | Ensure rsync services are not in use | rsyncd.service
+      when:
+        - rhel8cis_rsync_daemon_needed
+      ansible.builtin.systemd_service:
+        name: rsyncd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.14 | Ensure snmp services are not in use
+  when:
+    - rhel8cis_rule_2_2_14_enabled
+  become: true
+  block:
+    - name: 2.2.14 | Ensure snmp services are not in use | net-snmp package
+      ansible.builtin.dnf:
+        name:
+          - net-snmp
+        state: "{{ _rhel8cis_net_snmp_state }}"
+
+    - name: 2.2.14 | Ensure snmp services are not in use | snmpd.service
+      when:
+        - rhel8cis_net_snmp_needed
+      ansible.builtin.systemd_service:
+        name: snmpd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.15 | Ensure telnet server services are not in use
+  when:
+    - rhel8cis_rule_2_2_15_enabled
+  become: true
+  block:
+    - name: 2.2.15 | Ensure telnet server services are not in use | telnet-server package
+      ansible.builtin.dnf:
+        name:
+          - telnet-server
+        state: "{{ _rhel8cis_telnet_server_state }}"
+
+    - name: 2.2.15 | Ensure telnet server services are not in use | telnet.socket
+      when:
+        - rhel8cis_telnet_server_needed
+      ansible.builtin.systemd_service:
+        name: telnet.socket
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.16 | Ensure tftp server services are not in use
+  when:
+    - rhel8cis_rule_2_2_16_enabled
+  become: true
+  block:
+    - name: 2.2.16 | Ensure tftp server services are not in use | tftp-server package
+      ansible.builtin.dnf:
+        name:
+          - tftp-server
+        state: "{{ _rhel8cis_tftp_server_state }}"
+
+    - name: 2.2.16 | Ensure tftp server services are not in use | Services
+      when:
+        - rhel8cis_tftp_server_needed
+      block:
+        - name: 2.2.16 | Ensure tftp server services are not in use | tftp.service
+          ansible.builtin.systemd_service:
+            name: tftp.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.16 | Ensure tftp server services are not in use | tftp.socket
+          ansible.builtin.systemd_service:
+            name: tftp.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.17 | Ensure web proxy server services are not in use
+  when:
+    - rhel8cis_rule_2_2_17_enabled
+  become: true
+  block:
+    - name: 2.2.17 | Ensure web proxy server services are not in use | squid package
+      ansible.builtin.dnf:
+        name:
+          - squid
+        state: "{{ _rhel8cis_squid_state }}"
+
+    - name: 2.2.17 | Ensure web proxy server services are not in use | squid.service
+      when:
+        - rhel8cis_squid_needed
+      ansible.builtin.systemd_service:
+        name: squid.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.18 | Ensure web server services are not in use
+  when:
+    - rhel8cis_rule_2_2_18_enabled
+  become: true
+  block:
+    - name: 2.2.18 | Ensure web server services are not in use | httpd package
+      ansible.builtin.dnf:
+        name:
+          - httpd
+        state: "{{ _rhel8cis_httpd_state }}"
+
+    - name: 2.2.18 | Ensure web server services are not in use | nginx package
+      ansible.builtin.dnf:
+        name:
+          - nginx
+        state: "{{ _rhel8cis_nginx_state }}"
+
+    - name: 2.2.18 | Ensure web server services are not in use | HTTPD Services
+      when:
+        - rhel8cis_httpd_needed
+      block:
+        - name: 2.2.18 | Ensure web server services are not in use | httpd.service
+          ansible.builtin.systemd_service:
+            name: httpd.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.18 | Ensure web server services are not in use | httpd.socket
+          ansible.builtin.systemd_service:
+            name: httpd.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+    - name: 2.2.18 | Ensure web server services are not in use | nginx.service
+      when:
+        - rhel8cis_nginx_needed
+      ansible.builtin.systemd_service:
+        name: nginx.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.19 | Ensure xinetd services are not in use
+  when:
+    - rhel8cis_rule_2_2_19_enabled
+  become: true
+  block:
+    - name: 2.2.19 | Ensure xinetd services are not in use | xinetd package
+      ansible.builtin.dnf:
+        name:
+          - xinetd
+        state: "{{ _rhel8cis_xinetd_state }}"
+
+    - name: 2.2.19 | Ensure xinetd services are not in use | xinetd.service
+      when:
+        - rhel8cis_xinetd_needed
+      ansible.builtin.systemd_service:
+        name: xinetd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.20 | Ensure X window server services are not in use
+  when:
+    - rhel8cis_rule_2_2_20_enabled
+    - _rhel8cis_server
+    - _rhel8cis_server_level2 or rhel8cis_rule_2_2_20_force
+    - not rhel8cis_xorg_needed
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - xorg-x11-server-Xorg
+    state: absent
+
+- name: 2.2.21 | Ensure mail transfer agents are configured for local-only mode
+  when:
+    - rhel8cis_rule_2_2_21_enabled
+  become: true
+  block:
+    - name: 2.2.21 | Ensure mail transfer agents are configured for local-only mode | postfix package
+      ansible.builtin.dnf:
+        name:
+          - postfix
+        state: "{{ _rhel8cis_postfix_state }}"
+
+    - name: 2.2.21 | Ensure mail transfer agents are configured for local-only mode | Configuration
+      when:
+        - rhel8cis_postfix_needed
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: '^inet_interfaces ='
+        line: inet_interfaces = loopback-only
+      notify:
+        - _rhel8cis_restart_postfix
+
+- name: 2.2.22 | Ensure only approved services are listening on a network interface
+  when:
+    - rhel8cis_rule_2_2_22_enabled
+  block:
+    - name: 2.2.22 | Ensure only approved services are listening on a network interface | ss
+      ansible.builtin.command: ss -plntu
+      changed_when: false
+      register: _rhel8cis_listening_services
+
+    - name: 2.2.22 | Ensure only approved services are listening on a network interface | Add warning
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '2.2.22'
+        _rhel8cis_warning_description: 
+          - Remediation cannot be automated. Please review the output below for listening services on network interfaces.
+          - ''
+          - "{{ _rhel8cis_listening_services.stdout_lines }}"

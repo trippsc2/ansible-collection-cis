@@ -1,0 +1,63 @@
+---
+- name: Gather distribution info
+  when:
+    - ansible_distribution is not defined or
+      ansible_os_family is not defined
+  ansible.builtin.setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - distribution
+      - os_family
+
+- name: Get Windows installation type
+  ansible.windows.win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+    name: InstallationType
+  register: _get_windows_installation_type
+
+- name: Set Windows installation type
+  ansible.builtin.set_fact:
+    _windows_installation_type: "{{ _get_windows_installation_type.value | default('') }}"
+
+- name: Run PowerShell to check if Hyper-V is installed.
+  ansible.windows.win_powershell:
+    script: |
+      try {
+        $Ansible.Result = Get-WindowsFeature Hyper-V | Select-Object -ExpandProperty Installed
+      } catch {
+        $Ansible.Result = $false
+      }
+      $Ansible.Changed = $false
+  register: _w2022cis_hyperv_installed
+
+- name: Set the Hyper-V variable
+  ansible.builtin.set_fact:
+    _w2022cis_hyperv: "{{ _w2022cis_hyperv_installed.result }}"
+
+- name: Validate
+  ansible.builtin.import_tasks: validate.yml
+
+- name: Execute the section 1 tasks
+  ansible.builtin.import_tasks: section1/main.yml
+
+- name: Execute the section 2 tasks
+  ansible.builtin.import_tasks: section2/main.yml
+
+- name: Execute the section 5 tasks
+  ansible.builtin.import_tasks: section5/main.yml
+
+- name: Execute the section 9 tasks
+  ansible.builtin.import_tasks: section9/main.yml
+
+- name: Execute the section 17 tasks
+  ansible.builtin.import_tasks: section17/main.yml
+
+- name: Execute the section 18 tasks
+  ansible.builtin.import_tasks: section18/main.yml
+
+- name: Execute the section 19 tasks
+  ansible.builtin.import_tasks: section19/main.yml
+
+- name: Run Handlers
+  ansible.builtin.meta: flush_handlers

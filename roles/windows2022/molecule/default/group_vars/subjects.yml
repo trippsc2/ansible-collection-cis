@@ -1,0 +1,8 @@
+---
+w2022cis_skip_reboot: false
+
+w2022cis_rule_9_3_5_enabled: false # Allow local firewall rules
+w2022cis_rule_9_3_6_enabled: false # Allow local connection security rules
+
+w2022cis_admin_username: localadmin
+w2022cis_guest_username: localguest

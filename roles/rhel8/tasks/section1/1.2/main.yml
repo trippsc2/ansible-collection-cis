@@ -1,0 +1,81 @@
+---
+- name: 1.2.x | Get /etc/yum.repos.d/ contents
+  become: true
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d
+    file_type: file
+    recurse: true
+    patterns:
+      - '*.repo'
+  register: _rhel8cis_yum_repos
+
+- name: 1.2.1 | Ensure GPG keys are configured
+  loop: "{{ _rhel8cis_yum_repos.files }}"
+  when:
+    - rhel8cis_rule_1_2_1_enabled
+  ansible.builtin.include_tasks: check-file-gpgkey.yml
+  vars:
+    _rhel8cis_gpgkey_file: "{{ item.path }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: 1.2.2 | Ensure gpgcheck is globally activated
+  when:
+    - rhel8cis_rule_1_2_2_enabled
+  become: true
+  block:
+    - name: 1.2.2 | Ensure gpgcheck is globally activated | /etc/dnf/dnf.conf
+      ansible.builtin.replace:
+        path: /etc/dnf/dnf.conf
+        regexp: '^gpgcheck=0'
+        replace: gpgcheck=1
+
+    - name: '1.2.2 | Ensure gpgcheck is globally activated | /etc/yum.repos.d/*'
+      loop: "{{ _rhel8cis_yum_repos.files }}"
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^gpgcheck=0'
+        replace: gpgcheck=1
+      loop_control:
+        label: "{{ item.path }}"
+
+- name: 1.2.3 | Ensure repo_gpgcheck is globally activated
+  when:
+    - rhel8cis_rule_1_2_3_enabled
+    - _rhel8cis_level2 or rhel8cis_rule_1_2_3_force
+  become: true
+  block:
+    - name: 1.2.3 | Ensure repo_gpgcheck is globally activated | /etc/dnf/dnf.conf
+      ansible.builtin.replace:
+        path: /etc/dnf/dnf.conf
+        regexp: '^repo_gpgcheck=0'
+        replace: repo_gpgcheck=1
+
+    - name: '1.2.3 | Ensure repo_gpgcheck is globally activated | /etc/yum.repos.d/*'
+      loop: "{{ _rhel8cis_yum_repos.files }}"
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^repo_gpgcheck=0'
+        replace: repo_gpgcheck=1
+      loop_control:
+        label: "{{ item.path }}"
+
+- name: 1.2.4 | Ensure package manager repositories are configured
+  when:
+    - rhel8cis_rule_1_2_4_enabled
+  ansible.builtin.include_tasks: ../../add-warning.yml
+  vars:
+    _rhel8cis_warning_rule: '1.2.4'
+    _rhel8cis_warning_description: "This cannot be automated. Please ensure the repositories are configured as required."
+
+- name: 1.2.5 | Ensure updates, patches, and additional security software are installed
+  when:
+    - rhel8cis_rule_1_2_5_enabled
+  become: true
+  ansible.builtin.dnf:
+    name: '*'
+    state: latest
+    update_cache: true
+    update_only: true
+  notify:
+    - _rhel8cis_reboot

@@ -1,0 +1,440 @@
+---
+
+- name: 2.2.1 | Ensure xorg-x11-server-common is not installed
+  when:
+    - rhel9cis_rule_2_2_1_enabled
+    - _rhel9cis_server
+    - _rhel9cis_server_level2 or rhel9cis_rule_2_2_1_force
+    - not rhel9cis_xorg_needed
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - xorg-x11-server-common
+    state: absent
+
+- name: 2.2.2 | Ensure Avahi Server are not installed
+  when:
+    - rhel9cis_rule_2_2_2_enabled
+    - _rhel9cis_workstation_level2 or _rhel9cis_server or rhel9cis_rule_2_2_2_force
+  become: true
+  block:
+    - name: 2.2.2 | Ensure Avahi Server are not installed | avahi package
+      ansible.builtin.dnf:
+        name:
+          - avahi
+        state: "{{ _rhel9cis_avahi_state }}"
+
+    - name: 2.2.2 | Ensure Avahi Server are not installed | Services
+      when:
+        - rhel9cis_avahi_needed
+      block:
+        - name: 2.2.2 | Ensure Avahi Server are not installed | avahi-daemon.service
+          ansible.builtin.systemd_service:
+            name: avahi-daemon.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.2 | Ensure Avahi Server are not installed | avahi-daemon.socket
+          ansible.builtin.systemd_service:
+            name: avahi-daemon.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.3 | Ensure CUPS is not installed
+  when:
+    - rhel9cis_rule_2_2_3_enabled
+    - _rhel9cis_server
+  become: true
+  block:
+    - name: 2.2.3 | Ensure CUPS is not installed | cups package
+      ansible.builtin.dnf:
+        name:
+          - cups
+        state: "{{ _rhel9cis_cups_state }}"
+
+    - name: 2.2.3 | Ensure CUPS is not installed | Services
+      when:
+        - rhel9cis_cups_needed
+      block:
+        - name: 2.2.3 | Ensure CUPS is not installed | cups.service
+          ansible.builtin.systemd_service:
+            name: cups.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.3 | Ensure CUPS is not installed | cups.socket
+          ansible.builtin.systemd_service:
+            name: cups.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.4 | Ensure DHCP Server is not installed
+  when:
+    - rhel9cis_rule_2_2_4_enabled
+  become: true
+  block:
+    - name: 2.2.4 | Ensure DHCP Server is not installed | dhcp-server package
+      ansible.builtin.dnf:
+        name:
+          - dhcp-server
+        state: "{{ _rhel9cis_dhcp_server_state }}"
+
+    - name: 2.2.4 | Ensure DHCP Server is not installed | Services
+      when:
+        - rhel9cis_dhcp_server_needed
+      block:
+        - name: 2.2.4 | Ensure DHCP Server is not installed | dhcpd.service
+          ansible.builtin.systemd_service:
+            name: dhcpd.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.4 | Ensure DHCP Server is not installed | dhcp6.service
+          ansible.builtin.systemd_service:
+            name: dhcp6.service
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.5 | Ensure DNS Server is not installed
+  when:
+    - rhel9cis_rule_2_2_5_enabled
+  become: true
+  block:
+    - name: 2.2.5 | Ensure DNS Server is not installed | bind package
+      ansible.builtin.dnf:
+        name:
+          - bind
+        state: "{{ _rhel9cis_bind_state }}"
+
+    - name: 2.2.5 | Ensure DNS Server is not installed | named.service
+      when:
+        - rhel9cis_bind_needed
+      ansible.builtin.systemd_service:
+        name: named.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.6 | Ensure VSFTP Server is not installed
+  when:
+    - rhel9cis_rule_2_2_6_enabled
+  become: true
+  block:
+    - name: 2.2.6 | Ensure VSFTP Server is not installed | vsftpd package
+      ansible.builtin.dnf:
+        name:
+          - vsftpd
+        state: "{{ _rhel9cis_vsftpd_state }}"
+
+    - name: 2.2.6 | Ensure VSFTP Server is not installed | vsftpd.service
+      when:
+        - rhel9cis_vsftpd_needed
+      ansible.builtin.systemd_service:
+        name: vsftpd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.7 | Ensure TFTP Server is not installed 
+  when:
+    - rhel9cis_rule_2_2_7_enabled
+  become: true
+  block:
+    - name: 2.2.7 | Ensure TFTP Server is not installed | tftp-server package
+      ansible.builtin.dnf:
+        name:
+          - tftp-server
+        state: "{{ _rhel9cis_tftp_server_state }}"
+
+    - name: 2.2.7 | Ensure TFTP Server is not installed | Services
+      when:
+        - rhel9cis_tftp_server_needed
+      block:
+        - name: 2.2.7 | Ensure TFTP Server is not installed | tftp.service
+          ansible.builtin.systemd_service:
+            name: tftp.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.7 | Ensure TFTP Server is not installed | tftp.socket
+          ansible.builtin.systemd_service:
+            name: tftp.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+- name: 2.2.8 | Ensure a web server is not installed
+  when:
+    - rhel9cis_rule_2_2_8_enabled
+  become: true
+  block:
+    - name: 2.2.8 | Ensure a web server is not installed | httpd package
+      ansible.builtin.dnf:
+        name:
+          - httpd
+        state: "{{ _rhel9cis_httpd_state }}"
+
+    - name: 2.2.8 | Ensure a web server is not installed | nginx package
+      ansible.builtin.dnf:
+        name:
+          - nginx
+        state: "{{ _rhel9cis_nginx_state }}"
+
+    - name: 2.2.8 | Ensure a web server is not installed | HTTPD Services
+      when:
+        - rhel9cis_httpd_needed
+      block:
+        - name: 2.2.8 | Ensure a web server is not installed | httpd.service
+          ansible.builtin.systemd_service:
+            name: httpd.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.8 | Ensure a web server is not installed | httpd.socket
+          ansible.builtin.systemd_service:
+            name: httpd.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+    - name: 2.2.8 | Ensure a web server is not installed | nginx.service
+      when:
+        - rhel9cis_nginx_needed
+      ansible.builtin.systemd_service:
+        name: nginx.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.9 | Ensure IMAP and POP3 server is not installed
+  when:
+    - rhel9cis_rule_2_2_9_enabled
+  become: true
+  block:
+    - name: 2.2.9 | Ensure IMAP and POP3 server is not installed | dovecot package
+      ansible.builtin.dnf:
+        name:
+          - dovecot
+        state: "{{ _rhel9cis_dovecot_state }}"
+
+    - name: 2.2.9 | Ensure IMAP and POP3 server is not installed | cyrus-imapd package
+      ansible.builtin.dnf:
+        name:
+          - cyrus-imapd
+        state: "{{ _rhel9cis_cyrus_imapd_state }}"
+
+    - name: 2.2.9 | Ensure IMAP and POP3 server is not installed | Dovecot Services
+      when:
+        - rhel9cis_dovecot_needed
+      block:
+        - name: 2.2.9 | Ensure IMAP and POP3 server is not installed | dovecot.service
+          ansible.builtin.systemd_service:
+            name: dovecot.service
+            enabled: false
+            state: stopped
+            masked: true
+
+        - name: 2.2.9 | Ensure IMAP and POP3 server is not installed | dovecot.socket
+          ansible.builtin.systemd_service:
+            name: dovecot.socket
+            enabled: false
+            state: stopped
+            masked: true
+
+    - name: 2.2.9 | Ensure IMAP and POP3 server is not installed | cyrus-imapd.service
+      when:
+        - rhel9cis_cyrus_imapd_needed
+      ansible.builtin.systemd_service:
+        name: cyrus-imapd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.10 | Ensure Samba is not installed
+  when:
+    - rhel9cis_rule_2_2_10_enabled
+  become: true
+  block:
+    - name: 2.2.10 | Ensure Samba is not installed | samba package
+      ansible.builtin.dnf:
+        name:
+          - samba
+        state: "{{ _rhel9cis_samba_state }}"
+
+    - name: 2.2.10 | Ensure Samba is not installed | smb.service
+      when:
+        - rhel9cis_samba_needed
+      ansible.builtin.systemd_service:
+        name: smb.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.11 | Ensure HTTP Proxy Server is not installed
+  when:
+    - rhel9cis_rule_2_2_11_enabled
+  become: true
+  block:
+    - name: 2.2.11 | Ensure HTTP Proxy Server is not installed | squid package
+      ansible.builtin.dnf:
+        name:
+          - squid
+        state: "{{ _rhel9cis_squid_state }}"
+
+    - name: 2.2.11 | Ensure HTTP Proxy Server is not installed | squid.service
+      when:
+        - rhel9cis_squid_needed
+      ansible.builtin.systemd_service:
+        name: squid.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.12 | Ensure net-snmp is not installed
+  when:
+    - rhel9cis_rule_2_2_12_enabled
+  become: true
+  block:
+    - name: 2.2.12 | Ensure net-snmp is not installed | net-snmp package
+      ansible.builtin.dnf:
+        name:
+          - net-snmp
+        state: "{{ _rhel9cis_net_snmp_state }}"
+
+    - name: 2.2.12 | Ensure net-snmp is not installed | snmpd.service
+      when:
+        - rhel9cis_net_snmp_needed
+      ansible.builtin.systemd_service:
+        name: snmpd.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.13 | Ensure telnet-server is not installed
+  when:
+    - rhel9cis_rule_2_2_13_enabled
+  become: true
+  block:
+    - name: 2.2.13 | Ensure telnet-server is not installed | telnet-server package
+      ansible.builtin.dnf:
+        name:
+          - telnet-server
+        state: "{{ _rhel9cis_telnet_server_state }}"
+
+    - name: 2.2.13 | Ensure telnet-server is not installed | telnet.socket
+      when:
+        - rhel9cis_telnet_server_needed
+      ansible.builtin.systemd_service:
+        name: telnet.socket
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.14 | Ensure dnsmasq is not installed
+  when:
+    - rhel9cis_rule_2_2_14_enabled
+  become: true
+  block:
+    - name: 2.2.14 | Ensure dnsmasq is not installed | dnsmasq package
+      ansible.builtin.dnf:
+        name:
+          - dnsmasq
+        state: "{{ _rhel9cis_dnsmasq_state }}"
+
+    - name: 2.2.14 | Ensure dnsmasq is not installed | dnsmasq.service
+      when:
+        - rhel9cis_dnsmasq_needed
+      ansible.builtin.systemd_service:
+        name: dnsmasq.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.15 | Ensure mail transfer agents is configured for local-only mode
+  when:
+    - rhel9cis_rule_2_2_15_enabled
+  become: true
+  block:
+    - name: 2.2.15 | Ensure mail transfer agents is configured for local-only mode | postfix package
+      ansible.builtin.dnf:
+        name:
+          - postfix
+        state: "{{ _rhel9cis_postfix_state }}"
+
+    - name: 2.2.15 | Ensure mail transfer agents is configured for local-only mode | Configuration
+      when:
+        - rhel9cis_postfix_needed
+      ansible.builtin.lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: '^inet_interfaces ='
+        line: inet_interfaces = loopback-only
+      notify:
+        - _rhel9cis_restart_postfix
+
+- name: 2.2.16 | Ensure nfs-utils is not installed or the nfs-server service is masked
+  when:
+    - rhel9cis_rule_2_2_9_enabled
+  become: true
+  block:
+    - name: 2.2.16 | Ensure nfs-utils is not installed or the nfs-server service is masked | nfs-utils package
+      ansible.builtin.dnf:
+        name:
+          - nfs-utils
+        state: "{{ _rhel9cis_nfs_utils_state }}"
+
+    - name: 2.2.16 | Ensure nfs-utils is not installed or the nfs-server service is masked | nfs-server.service
+      when:
+        - rhel9cis_nfs_utils_needed
+      ansible.builtin.systemd_service:
+        name: nfs-server.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.17 | Ensure rpcbind is not installed or the rpcbind services are masked
+  when:
+    - rhel9cis_rule_2_2_17_enabled
+  become: true
+  block:
+    - name: 2.2.17 | Ensure rpcbind is not installed or the rpcbind services are masked | rpcbind package
+      ansible.builtin.dnf:
+        name:
+          - rpcbind
+        state: "{{ _rhel9cis_rpcbind_state }}"
+
+    - name: 2.2.17 | Ensure rpcbind is not installed or the rpcbind services are masked | rpcbind.service
+      when:
+        - rhel9cis_rpcbind_needed
+      ansible.builtin.systemd_service:
+        name: rpcbind.service
+        enabled: false
+        state: stopped
+        masked: true
+
+- name: 2.2.18 | Ensure rsync-daemon is not installed or the rsyncd service is masked
+  when:
+    - rhel9cis_rule_2_2_13_enabled
+  become: true
+  block:
+    - name: 2.2.18 | Ensure rsync-daemon is not installed or the rsyncd service is masked | rsync-daemon package
+      ansible.builtin.dnf:
+        name:
+          - rsync-daemon
+        state: "{{ _rhel9cis_rsync_daemon_state }}"
+
+    - name: 2.2.18 | Ensure rsync-daemon is not installed or the rsyncd service is masked | rsyncd.service
+      when:
+        - rhel9cis_rsync_daemon_needed
+      ansible.builtin.systemd_service:
+        name: rsyncd.service
+        enabled: false
+        state: stopped
+        masked: true

@@ -1,0 +1,23 @@
+---
+- name: 6.2.16 | Ensure local interactive user dot files are not group or world writable | Get list of dot files
+  become: true
+  ansible.builtin.find:
+    paths: "{{ user.dir }}"
+    patterns:
+      - '.*'
+    excludes:
+      - .bash_history
+    file_type: file
+    recurse: true
+  register: _rhel9cis_user_dot_files
+
+- name: 6.2.16 | Ensure local interactive user dot files are not group or world writable | Set permissions on dot files
+  loop: "{{ _rhel9cis_user_dot_files.files }}"
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ user.id }}"
+    group: "{{ user.id }}"
+    mode: 'g-w,o-w'
+  loop_control:
+    label: "{{ item.path }}"

@@ -1,0 +1,361 @@
+---
+- name: Check OS version and family
+  ansible.builtin.assert:
+    that:
+      - ansible_os_family == 'Windows'
+      - ansible_distribution | regex_search('(Microsoft Windows Server 2022)')
+    fail_msg: "This role can only be run against Windows Server 2022.  {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+    success_msg: "This role is running against {{ ansible_distribution }} {{ ansible_distribution_major_version }}."
+
+- name: Check CIS level
+  ansible.builtin.assert:
+    that:
+      - w2022cis_level > 0
+      - w2022cis_level < 4
+    fail_msg: "The CIS level should be 1, 2, or 3 (NG).  Value: {{ w2022cis_level }}"
+    success_msg: "The CIS level is {{ w2022cis_level }}."
+
+- name: "Validate | 1.1.1 | L1 | Ensure 'Enforce password history' is set to '24 or more password(s)'"
+  when:
+    - w2022cis_rule_1_1_1_enabled
+  ansible.builtin.assert:
+    that: 
+      - w2022cis_password_history_size >= 24
+    fail_msg: "The variable 'w2022cis_password_history_size' must be set to 24 or more.  Value: {{ w2022cis_password_history_size }}"
+    success_msg: "The variable 'w2022cis_password_history_size' is set to 24 or more.  Value: {{ w2022cis_password_history_size }}"
+
+- name: "Validate | 1.1.2 | L1 | Ensure 'Maximum password age' is set to '365 or fewer days, but not 0'"
+  when:
+    - w2022cis_rule_1_1_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_maximum_password_age <= 365
+      - w2022cis_maximum_password_age > 0
+    fail_msg: "The variable 'w2022cis_maximum_password_age' must be set to between 1 and 365.  Value: {{ w2022cis_maximum_password_age }}"
+    success_msg: "The variable 'w2022cis_maximum_password_age' is set to between 1 and 365.  Value: {{ w2022cis_maximum_password_age }}"
+
+- name: "Validate | 1.1.3 | L1 | Ensure 'Minimum password age' is set to '1 or more day(s)'"
+  when:
+    - w2022cis_rule_1_1_3_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_minimum_password_age >= 1
+    fail_msg: "The variable 'w2022cis_minimum_password_age' must be set to 1 or more.  Value: {{ w2022cis_minimum_password_age }}"
+    success_msg: "The variable 'w2022cis_minimum_password_age' is set to 1 or more.  Value: {{ w2022cis_minimum_password_age }}"
+
+- name: "Validate | 1.1.4 | L1 | Ensure 'Minimum password length' is set to '14 or more character(s)'"
+  when:
+    - w2022cis_rule_1_1_4_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_minimum_password_length >= 14
+    fail_msg: "The variable 'w2022cis_minimum_password_length' must be set to 14 or more.  Value: {{ w2022cis_minimum_password_length }}"
+    success_msg: "The variable 'w2022cis_minimum_password_length' is set to 14 or more.  Value: {{ w2022cis_minimum_password_length }}"
+
+- name: "Validate | 1.2.1 | L1 | Ensure 'Account lockout duration' is set to '15 or more minute(s)'"
+  when:
+    - w2022cis_rule_1_2_1_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_lockout_duration_in_minutes >= 15
+    fail_msg: "The variable 'w2022cis_lockout_duration_in_minutes' must be set to 15 or more.  Value: {{ w2022cis_lockout_duration_in_minutes }}"
+    success_msg: "The variable 'w2022cis_lockout_duration_in_minutes' is set to 15 or more.  Value: {{ w2022cis_lockout_duration_in_minutes }}"
+
+- name: "Validate | 1.2.2 | L1 | Ensure 'Account lockout threshold' is set to '5 or fewer invalid logon attempt(s), but not 0'"
+  when:
+    - w2022cis_rule_1_2_2_enabled
+  ansible.builtin.assert:
+    that: 
+      - w2022cis_lockout_bad_logon_count <= 5
+      - w2022cis_lockout_bad_logon_count > 0
+    fail_msg: "The variable 'w2022cis_minimum_password_length' must be set to between 1 and 5.  Value: {{ w2022cis_lockout_bad_logon_count }}"
+    success_msg: "The variable 'w2022cis_minimum_password_length' is set to between 1 and 5.  Value: {{ w2022cis_lockout_bad_logon_count }}"
+
+- name: "Validate | 1.2.4 | L1 | Ensure 'Reset account lockout counter after' is set to '15 or more minute(s)'"
+  when:
+    - w2022cis_rule_1_2_4_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_lockout_reset_time_in_minutes >= 15
+    fail_msg: "The variable 'w2022cis_lockout_reset_time_in_minutes' must be set to 15 or more.  Value: {{ w2022cis_lockout_reset_time_in_minutes }}"
+    success_msg: "The variable 'w2022cis_lockout_reset_time_in_minutes' is set to 15 or more.  Value: {{ w2022cis_lockout_reset_time_in_minutes }}"
+
+- name: "Validate | 2.3.6.5 | L1 | Ensure 'Domain member: Maximum machine account password age' is set to '30 or fewer days, but not 0'"
+  when:
+    - w2022cis_rule_2_3_6_5_enabled
+    - _w2022cis_domain_controller_or_member_server
+  ansible.builtin.assert:
+    that:
+      - w2022cis_maximum_machine_account_password_age_in_days <= 30
+      - w2022cis_maximum_machine_account_password_age_in_days > 0
+    fail_msg: "The variable 'w2022cis_maximum_machine_account_password_age_in_days' must be set to between 1 and 30.  Value: {{ w2022cis_maximum_machine_account_password_age_in_days }}"
+    success_msg: "The variable 'w2022cis_maximum_machine_account_password_age_in_days' is set to between 1 and 30.  Value: {{ w2022cis_maximum_machine_account_password_age_in_days }}"
+
+- name: "Validate | 2.3.7.3 | L1 | Ensure 'Interactive logon: Machine inactivity limit' is set to '900 or fewer second(s), but not 0'"
+  when:
+    - w2022cis_rule_2_3_7_3_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_inactivity_timeout_in_seconds <= 900
+      - w2022cis_inactivity_timeout_in_seconds >= 0
+    fail_msg: "The variable 'w2022cis_inactivity_timeout_in_seconds' must be set to between 0 and 900.  Value: {{ w2022cis_inactivity_timeout_in_seconds }}"
+    success_msg: "The variable 'w2022cis_inactivity_timeout_in_seconds' is set to between 0 and 900.  Value: {{ w2022cis_inactivity_timeout_in_seconds }}"
+
+- name: "Validate | 2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only)"
+  when:
+    - w2022cis_rule_2_3_7_6_enabled
+    - _w2022cis_member_server
+    - w2022cis_rule_2_3_7_6_force or _w2022cis_level2_member_server
+  ansible.builtin.assert:
+    that:
+      - w2022cis_cached_logons_count <= 4
+      - w2022cis_cached_logons_count >= 0
+    fail_msg: "The variable 'w2022cis_cached_logons_count' must be set to between 0 and 4.  Value: {{ w2022cis_cached_logons_count }}"
+    success_msg: "The variable 'w2022cis_cached_logons_count' is set to between 0 and 4.  Value: {{ w2022cis_cached_logons_count }}"
+
+- name: "Validate | 2.3.7.7 | L1 | Ensure 'Interactive logon: Prompt user to change password before expiration' is set to 'between 5 and 14 days'"
+  when:
+    - w2022cis_rule_2_3_7_7_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_password_expiry_warning_in_days <= 14
+      - w2022cis_password_expiry_warning_in_days >= 5
+    fail_msg: "The variable 'w2022cis_password_expiry_warning_in_days' must be set to between 5 and 14.  Value: {{ w2022cis_password_expiry_warning_in_days }}"
+    success_msg: "The variable 'w2022cis_password_expiry_warning_in_days' is set to between 5 and 14.  Value: {{ w2022cis_password_expiry_warning_in_days }}"
+
+- name: "Validate | 2.3.7.9 | L1 | Ensure 'Interactive logon: Smart card removal behavior' is set to 'Lock Workstation' or higher"
+  when:
+    - w2022cis_rule_2_3_7_9_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_smart_card_removal_behavior in ['disconnect','logoff','lock']
+    fail_msg: "The variable 'w2022cis_smart_card_removal_behavior' must be set to 'disconnect', 'logoff', or 'lock'.  Value: {{ w2022cis_smart_card_removal_behavior }}"
+    success_msg: "The variable 'w2022cis_smart_card_removal_behavior' is set to 'disconnect', 'logoff', or 'lock'.  Value: {{ w2022cis_smart_card_removal_behavior }}"
+
+- name: "Validate | 2.3.9.1 | L1 | Ensure 'Microsoft network server: Amount of idle time required before suspending session' is set to '15 or fewer minute(s)'"
+  when:
+    - w2022cis_rule_2_3_9_1_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_idle_smb_timeout_in_minutes <= 15
+      - w2022cis_idle_smb_timeout_in_minutes >= 0
+    fail_msg: "The variable 'w2022cis_idle_smb_timeout_in_minutes' must be set to between 0 and 15.  Value: {{ w2022cis_idle_smb_timeout_in_minutes }}"
+    success_msg: "The variable 'w2022cis_idle_smb_timeout_in_minutes' is set to between 0 and 15.  Value: {{ w2022cis_idle_smb_timeout_in_minutes }}"
+
+- name: "Validate | 2.3.9.5 | L1 | Ensure 'Microsoft network server: Server SPN target name validation level' is set to 'Accept if provided by client' or higher (MS only)"
+  when:
+    - w2022cis_rule_2_3_9_5_enabled
+    - _w2022cis_standalone_or_member_server
+  ansible.builtin.assert:
+    that: 
+      - w2022cis_smb_spn_target_name_validation_level in ['required','accept']
+    fail_msg: "The variable 'w2022cis_smb_spn_target_name_validation_level' must be set to 'required' or 'accept'.  Value: {{ w2022cis_smb_spn_target_name_validation_level }}"
+    success_msg: "The variable 'w2022cis_smb_spn_target_name_validation_level' is set to 'required' or 'accept'.  Value: {{ w2022cis_smb_spn_target_name_validation_level }}"
+
+- name: "Validate | 2.3.11.8 | L1 | Ensure 'Network security: LDAP client signing requirements' is set to 'Negotiate signing' or higher"
+  when:
+    - w2022cis_rule_2_3_11_8_enabled
+  ansible.builtin.assert:
+    that: 
+      - w2022cis_ldap_client_signing_requirements in ['require','negotiate']
+    fail_msg: "The variable 'w2022cis_ldap_client_signing_requirements' must be set to 'require' or 'negotiate'.  Value: {{ w2022cis_ldap_client_signing_requirements }}"
+    success_msg: "The variable 'w2022cis_ldap_client_signing_requirements' is set to 'require' or 'negotiate'.  Value: {{ w2022cis_ldap_client_signing_requirements }}"
+
+- name: "Validate | 2.3.17.2 | L1 | Ensure 'User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop' or higher"
+  when:
+    - w2022cis_rule_2_3_17_2_enabled
+  ansible.builtin.assert:
+    that: 
+      - w2022cis_admin_uac_elevation_behavior in ['prompt_for_consent','prompt_for_credentials']
+    fail_msg: "The variable 'w2022cis_admin_uac_elevation_behavior' must be set to 'prompt_for_consent' or 'prompt_for_credentials'.  Value: {{ w2022cis_admin_uac_elevation_behavior }}"
+    success_msg: "The variable 'w2022cis_admin_uac_elevation_behavior' is set to 'prompt_for_consent' or 'prompt_for_credentials'.  Value: {{ w2022cis_admin_uac_elevation_behavior }}"
+
+- name: "Validate | 9.1.6 | L1 | Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
+  when:
+    - w2022cis_rule_9_1_6_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_domain_firewall_log_size_in_kb >= 16384
+    fail_msg: "The variable 'w2022cis_domain_firewall_log_size_in_kb' must be set to 16384 or more.  Value: {{ w2022cis_domain_firewall_log_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_domain_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2022cis_domain_firewall_log_size_in_kb }}"
+
+- name: "Validate | 9.2.6 | L1 | Ensure 'Windows Firewall: Private: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
+  when:
+    - w2022cis_rule_9_2_6_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_private_firewall_log_size_in_kb >= 16384
+    fail_msg: "The variable 'w2022cis_private_firewall_log_size_in_kb' must be set to 16384 or more.  Value: {{ w2022cis_private_firewall_log_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_private_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2022cis_private_firewall_log_size_in_kb }}"
+
+- name: "Validate | 9.3.8 | L1 | Ensure 'Windows Firewall: Public: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
+  when:
+    - w2022cis_rule_9_3_8_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_public_firewall_log_size_in_kb >= 16384
+    fail_msg: "The variable 'w2022cis_public_firewall_log_size_in_kb' must be set to 16384 or more.  Value: {{ w2022cis_public_firewall_log_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_public_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2022cis_public_firewall_log_size_in_kb }}"
+
+- name: "Validate | 18.3.5 | L1 | Ensure 'Password Settings: Password Length' is set to 'Enabled: 15 or more' (MS only)"
+  when:
+    - w2022cis_rule_18_3_5_enabled
+    - _w2022cis_member_server
+  ansible.builtin.assert:
+    that:
+      - w2022cis_laps_password_length >= 15
+    fail_msg: "The variable 'w2022cis_laps_password_length' must be set to 15 or more.  Value: {{ w2022cis_laps_password_length }}"
+    success_msg: "The variable 'w2022cis_laps_password_length' is set to 15 or more.  Value: {{ w2022cis_laps_password_length }}"
+
+- name: "Validate | 18.3.6 | L1 | Ensure 'Password Settings: Password Age (Days)' is set to 'Enabled: 30 or fewer' (MS only)"
+  when:
+    - w2022cis_rule_18_3_6_enabled
+    - _w2022cis_member_server
+  ansible.builtin.assert:
+    that:
+      - w2022cis_laps_password_age_in_days <= 30
+      - w2022cis_laps_password_age_in_days >= 0
+    fail_msg: "The variable 'w2022cis_laps_password_age_in_days' must be set to between 0 and 30.  Value: {{ w2022cis_laps_password_age_in_days }}"
+    success_msg: "The variable 'w2022cis_laps_password_age_in_days' is set to between 0 and 30.  Value: {{ w2022cis_laps_password_age_in_days }}"
+
+- name: "Validate | 18.5.9 | L1 | Ensure 'MSS: (ScreenSaverGracePeriod) The time in seconds before the screen saver grace period expires (0 recommended)' is set to 'Enabled: 5 or fewer seconds'"
+  ansible.builtin.assert:
+    that:
+      - w2022cis_screensaver_grace_period_in_seconds <= 5
+      - w2022cis_screensaver_grace_period_in_seconds >= 0
+    fail_msg: "The variable 'w2022cis_screensaver_grace_period_in_seconds' must be set to between 0 and 5.  Value: {{ w2022cis_screensaver_grace_period_in_seconds }}"
+    success_msg: "The variable 'w2022cis_screensaver_grace_period_in_seconds' is set to between 0 and 5.  Value: {{ w2022cis_screensaver_grace_period_in_seconds }}"
+
+- name: "Validate | 18.6.4.1 | L1 | Ensure 'Configure DNS over HTTPS (DoH) name resolution' is set to 'Enabled: Allow DoH' or higher"
+  when:
+    - w2022cis_rule_18_6_4_1_enabled
+    - not w2022cis_is_template
+  block:
+    - name: "Validate | 18.6.4.1 | L1 | Ensure 'Configure DNS over HTTPS (DoH) name resolution' is set to 'Enabled: Allow DoH' or higher | DC or MS"
+      when:
+        - _w2022cis_domain_controller_or_member_server
+      ansible.builtin.assert:
+        that:
+          - w2022cis_doh_policy == 'allow'
+        fail_msg: "The variable 'w2022cis_doh_policy' must be set to 'allow' on a domain controller or domain member.  Value: {{ w2022cis_doh_policy }}"
+        success_msg: "The variable 'w2022cis_doh_policy' is set to 'allow' on a domain controller or domain member.  Value: {{ w2022cis_doh_policy }}"
+
+    - name: "Validate | 18.6.4.1 | L1 | Ensure 'Configure DNS over HTTPS (DoH) name resolution' is set to 'Enabled: Allow DoH' or higher | Standalone"
+      when:
+        - _w2022cis_standalone
+      ansible.builtin.assert:
+        that:
+          - w2022cis_doh_policy in ['require','allow']
+        fail_msg: "The variable 'w2022cis_doh_policy' must be set to 'require' or 'allow' on a standalone server.  Value: {{ w2022cis_doh_policy }}"
+        success_msg: "The variable 'w2022cis_doh_policy' is set to 'require' or 'allow' on a standalone server.  Value: {{ w2022cis_doh_policy }}"
+
+- name: "Validate | 18.6.4.2 | L1 | Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks'"
+  when:
+    - w2022cis_rule_18_6_4_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_netbios_dns_resolution_behavior in ['disabled_on_public_networks','disabled']
+    fail_msg: "The variable 'w2022cis_netbios_dns_resolution_behavior' must be set to 'disabled_on_public_networks' or 'disabled'.  Value: {{ w2022cis_netbios_dns_resolution_behavior }}"
+    success_msg: "The variable 'w2022cis_netbios_dns_resolution_behavior' is set to 'disabled_on_public_networks' or 'disabled'.  Value: {{ w2022cis_netbios_dns_resolution_behavior }}"
+
+- name: "Validate | 18.7.6 | L1 | Ensure 'Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:' is set to 'Enabled: Negotiate' or higher"
+  when:
+    - w2022cis_rule_18_7_6_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_rpc_listener_authentication_protocol in ['negotiate','kerberos']
+    fail_msg: "The variable 'w2022cis_rpc_listener_authentication_protocol' must be set to 'negotiate' or 'kerberos'.  Value: {{ _w2022cis_rpc_listener_authentication_protocol_value }}"
+    success_msg: "The variable 'w2022cis_rpc_listener_authentication_protocol' is set to 'negotiate' or 'kerberos'.  Value: {{ _w2022cis_rpc_listener_authentication_protocol_value }}"
+
+- name: "Validate | 18.9.5.2 | NG | Ensure 'Turn On Virtualization Based Security: Select Platform Security Level' is set to 'Secure Boot' or higher"
+  when:
+    - w2022cis_rule_18_9_5_2_enabled
+    - w2022cis_rule_18_9_5_2_force or _w2022cis_ngws
+  ansible.builtin.assert:
+    that:
+      - w2022cis_vbs_platform_security_level in ['secure_boot_and_dma_protection','secure_boot']
+    fail_msg: "The variable 'w2022cis_vbs_platform_security_level' must be set to 'secure_boot_and_dma_protection' or 'secure_boot'.  Value: {{ w2022cis_vbs_platform_security_level }}"
+    success_msg: "The variable 'w2022cis_vbs_platform_security_level' is set to 'secure_boot_and_dma_protection' or 'secure_boot'.  Value: {{ w2022cis_vbs_platform_security_level }}"
+
+- name: "Validate | 18.9.38.1 | L1 | Ensure 'Configure validation of ROCA-vulnerable WHfB keys during authentication' is set to 'Enabled: Audit' or higher (DC only)"
+  when:
+    - w2022cis_rule_18_9_38_1_enabled
+    - _w2022cis_domain_controller
+  ansible.builtin.assert:
+    that:
+      - w2022cis_whfb_roca_mitigation in ['block','audit']
+    fail_msg: "The variable 'w2022cis_whfb_roca_mitigation' must be set to 'block' or 'audit'.  Value: {{ w2022cis_whfb_roca_mitigation }}"
+    success_msg: "The variable 'w2022cis_whfb_roca_mitigation' is set to 'block' or 'audit'.  Value: {{ w2022cis_whfb_roca_mitigation }}"
+
+- name: "Validate | 18.10.13.1 | L1 | Ensure 'Require pin for pairing' is set to 'Enabled: First Time' OR 'Enabled: Always'"
+  when:
+    - w2022cis_rule_18_10_13_1_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_windows_connect_pin_requirement in ['always','first_time']
+    fail_msg: "The variable 'w2022cis_windows_connect_pin_requirement' must be set to 'always' or 'first_time'.  Value: {{ w2022cis_windows_connect_pin_requirement }}"
+    success_msg: "The variable 'w2022cis_windows_connect_pin_requirement' is set to 'always' or 'first_time'.  Value: {{ w2022cis_windows_connect_pin_requirement }}"
+
+- name: "Validate | 18.10.15.1 | L1 | Ensure 'Allow Diagnostic Data' is set to 'Enabled: Diagnostic data off (not recommended)' or 'Enabled: Send required diagnostic data'"
+  when:
+    - w2022cis_rule_18_10_15_1_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_telemetry_level in ['required','off']
+    fail_msg: "The variable 'w2022cis_telemetry_level' must be set to 'required' or 'off'.  Value: {{ w2022cis_telemetry_level }}"
+    success_msg: "The variable 'w2022cis_telemetry_level' is set to 'required' or 'off'.  Value: {{ w2022cis_telemetry_level }}"
+
+- name: "Validate | 18.10.26.1.2 | L1 | Ensure 'Application: Specify the maximum log file size (KB)' is set to 'Enabled: 32,768 or greater'"
+  when:
+    - w2022cis_rule_18_10_26_1_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_application_log_max_size_in_kb >= 32768
+    fail_msg: "The variable 'w2022cis_application_log_max_size_in_kb' must be set to 32768 or more.  Value: {{ w2022cis_application_log_max_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_application_log_max_size_in_kb' is set to 32768 or more.  Value: {{ w2022cis_application_log_max_size_in_kb }}"
+
+- name: "Validate | 18.10.26.2.2 | L1 | Ensure 'Security: Specify the maximum log file size (KB)' is set to 'Enabled: 196,608 or greater'"
+  when:
+    - w2022cis_rule_18_10_26_2_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_security_log_max_size_in_kb >= 196608
+    fail_msg: "The variable 'w2022cis_security_log_max_size_in_kb' must be set to 196608 or more.  Value: {{ w2022cis_security_log_max_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_security_log_max_size_in_kb' is set to 196608 or more.  Value: {{ w2022cis_security_log_max_size_in_kb }}"
+
+- name: "Validate | 18.10.26.3.2 | L1 | Ensure 'Setup: Specify the maximum log file size (KB)' is set to 'Enabled: 32,768 or greater'"
+  when:
+    - w2022cis_rule_18_10_26_3_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_setup_log_max_size_in_kb >= 32768
+    fail_msg: "The variable 'w2022cis_setup_log_max_size_in_kb' must be set to 32768 or more.  Value: {{ w2022cis_setup_log_max_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_setup_log_max_size_in_kb' is set to 32768 or more.  Value: {{ w2022cis_setup_log_max_size_in_kb }}"
+
+- name: "Validate | 18.10.26.4.2 | L1 | Ensure 'System: Specify the maximum log file size (KB)' is set to 'Enabled: 32,768 or greater'"
+  when:
+    - w2022cis_rule_18_10_26_4_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_system_log_max_size_in_kb >= 32768
+    fail_msg: "The variable 'w2022cis_system_log_max_size_in_kb' must be set to 32768 or more.  Value: {{ w2022cis_system_log_max_size_in_kb }}"
+    success_msg: "The variable 'w2022cis_system_log_max_size_in_kb' is set to 32768 or more.  Value: {{ w2022cis_system_log_max_size_in_kb }}"
+
+- name: "Validate | 18.10.80.2 | L1 | Ensure 'Allow Windows Ink Workspace' is set to 'Enabled: On, but disallow access above lock' OR 'Disabled' but not 'Enabled: On'"
+  when:
+    - w2022cis_rule_18_10_80_2_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_windows_ink_workspace_access in ['disallow_above_lock','disabled']
+    fail_msg: "The variable 'w2022cis_windows_ink_workspace_access' must be set to 'disallow_above_lock' or 'disabled'.  Value: {{ w2022cis_windows_ink_workspace_access }}"
+    success_msg: "The variable 'w2022cis_windows_ink_workspace_access' is set to 'disallow_above_lock' or 'disabled'.  Value: {{ w2022cis_windows_ink_workspace_access }}"
+
+- name: "Validate | 19.1.3.3 | L1 | Ensure 'Screen saver timeout' is set to 'Enabled: 900 seconds or fewer, but not 0'"
+  when:
+    - w2022cis_rule_19_1_3_3_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_screensaver_timeout_in_seconds <= 900
+      - w2022cis_screensaver_timeout_in_seconds > 0
+    fail_msg: "The variable 'w2022cis_screensaver_timeout_in_seconds' must be set to between 1 and 900.  Value: {{ w2022cis_screensaver_timeout_in_seconds }}"
+    success_msg: "The variable 'w2022cis_screensaver_timeout_in_seconds' is set to between 1 and 900.  Value: {{ w2022cis_screensaver_timeout_in_seconds }}"

@@ -1,0 +1,243 @@
+---
+- name: 1.1.1.1 | Ensure cramfs kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_1_enabled
+  become: true
+  block:
+    - name: 1.1.1.1 | Ensure cramfs kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/cramfs.conf
+        regexp: "^(#)?install cramfs"
+        line: install cramfs /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.1 | Ensure cramfs kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/cramfs.conf
+        regexp: "^(#)?blacklist cramfs(\\s|$)"
+        line: blacklist cramfs
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.1 | Ensure cramfs kernel module is not available | Disable module
+      community.general.modprobe:
+        name: cramfs
+        state: absent
+
+- name: 1.1.1.2 | Ensure freevxfs kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_2_enabled
+  become: true
+  block:
+    - name: 1.1.1.2 | Ensure freevxfs kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/freevxfs.conf
+        regexp: "^(#)?install freevxfs"
+        line: install freevxfs /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.2 | Ensure freevxfs kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/freevxfs.conf
+        regexp: "^(#)?blacklist freevxfs(\\s|$)"
+        line: blacklist freevxfs
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.2 | Ensure freevxfs kernel module is not available | Disable module
+      community.general.modprobe:
+        name: freevxfs
+        state: absent
+
+- name: 1.1.1.3 | Ensure hfs kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_3_enabled
+  become: true
+  block:
+    - name: 1.1.1.3 | Ensure hfs kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/hfs.conf
+        regexp: "^(#)?install hfs"
+        line: install hfs /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.3 | Ensure hfs kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/hfs.conf
+        regexp: "^(#)?blacklist hfs(\\s|$)"
+        line: blacklist hfs
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.3 | Ensure hfs kernel module is not available | Disable module
+      community.general.modprobe:
+        name: hfs
+        state: absent
+
+- name: 1.1.1.4 | Ensure hfsplus kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_4_enabled
+  become: true
+  block:
+    - name: 1.1.1.4 | Ensure hfsplus kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/hfsplus.conf
+        regexp: "^(#)?install hfsplus"
+        line: install hfsplus /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.4 | Ensure hfsplus kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/hfsplus.conf
+        regexp: "^(#)?blacklist hfsplus(\\s|$)"
+        line: blacklist hfsplus
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.4 | Ensure hfsplus kernel module is not available | Disable module
+      community.general.modprobe:
+        name: hfsplus
+        state: absent
+
+- name: 1.1.1.5 | Ensure jffs2 kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_5_enabled
+  become: true
+  block:
+    - name: 1.1.1.5 | Ensure jffs2 kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/jffs2.conf
+        regexp: "^(#)?install jffs2"
+        line: install jffs2 /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.5 | Ensure jffs2 kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/jffs2.conf
+        regexp: "^(#)?blacklist jffs2(\\s|$)"
+        line: blacklist jffs2
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.5 | Ensure jffs2 kernel module is not available | Disable module
+      community.general.modprobe:
+        name: jffs2
+        state: absent
+
+- name: 1.1.1.6 | Ensure squashfs kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_6_enabled
+    - _rhel8cis_level2 or rhel8cis_rule_1_1_1_6_force
+  become: true
+  block:
+    - name: 1.1.1.6 | Ensure squashfs kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/squashfs.conf
+        regexp: "^(#)?install squashfs"
+        line: install squashfs /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.6 | Ensure squashfs kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/squashfs.conf
+        regexp: "^(#)?blacklist squashfs(\\s|$)"
+        line: blacklist squashfs
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.6 | Ensure squashfs kernel module is not available | Disable module
+      community.general.modprobe:
+        name: squashfs
+        state: absent
+
+- name: 1.1.1.7 | Ensure udf kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_7_enabled
+    - _rhel8cis_level2 or rhel8cis_rule_1_1_1_7_force
+  become: true
+  block:
+    - name: 1.1.1.7 | Ensure udf kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/udf.conf
+        regexp: "^(#)?install udf"
+        line: install udf /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.7 | Ensure udf kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/udf.conf
+        regexp: "^(#)?blacklist udf(\\s|$)"
+        line: blacklist udf
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.7 | Ensure udf kernel module is not available | Disable module
+      community.general.modprobe:
+        name: udf
+        state: absent
+
+- name: 1.1.1.8 | Ensure usb-storage kernel module is not available
+  when:
+    - rhel8cis_rule_1_1_1_8_enabled
+    - _rhel8cis_level2 or rhel8cis_rule_1_1_1_8_force
+  become: true
+  block:
+    - name: 1.1.1.8 | Ensure usb-storage kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/usb-storage.conf
+        regexp: "^(#)?install usb-storage"
+        line: install usb-storage /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.8 | Ensure usb-storage kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/usb-storage.conf
+        regexp: "^(#)?blacklist usb-storage(\\s|$)"
+        line: blacklist usb-storage
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.8 | Ensure usb-storage kernel module is not available | Disable module
+      community.general.modprobe:
+        name: usb-storage
+        state: absent

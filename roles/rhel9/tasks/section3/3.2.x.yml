@@ -1,0 +1,24 @@
+---
+- name: 3.2.1 | Ensure ip forwarding is disabled
+  loop:
+    - net.ipv4.ip_forward
+    - net.ipv6.conf.all.forwarding
+  when:
+    - rhel9cis_rule_3_2_1_enabled
+  become: true
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: '0'
+    sysctl_set: true
+
+- name: 3.2.2 | Ensure packet redirect sending is disabled
+  loop:
+    - net.ipv4.conf.all.send_redirects
+    - net.ipv4.conf.default.send_redirects
+  when:
+    - rhel9cis_rule_3_2_2_enabled
+  become: true
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: '0'
+    sysctl_set: true

@@ -1,0 +1,50 @@
+---
+- name: 1.3.1 | Ensure AIDE is installed
+  when:
+    - rhel9cis_rule_1_3_1_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - aide
+    state: present
+  notify:
+    - _rhel9cis_configure_aide_logrotate
+    - _rhel9cis_initialize_aide
+
+- name: 1.3.2 | Ensure filesystem integrity is regularly checked
+  when:
+    - rhel9cis_rule_1_3_2_enabled
+  become: true
+  ansible.builtin.cron:
+    name: Run AIDE
+    cron_file: "{{ rhel9cis_aide_cron_file }}"
+    user: root
+    minute: "{{ rhel9cis_aide_cron_minute }}"
+    hour: "{{ rhel9cis_aide_cron_hour }}"
+    day: "*"
+    month: "*"
+    weekday: "*"
+    job: /usr/sbin/aide --check
+
+- name: 1.3.3 | Ensure cryptographic mechanisms are used to protect the integrity of audit tools
+  loop:
+    - regexp: '^#?\s?/sbin/auditctl'
+      line: /sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512
+    - regexp: '^#?\s?/sbin/auditd'
+      line: /sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512
+    - regexp: '^#?\s?/sbin/ausearch'
+      line: /sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512
+    - regexp: '^#?\s?/sbin/aureport'
+      line: /sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512
+    - regexp: '^#?\s?/sbin/autrace'
+      line: /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512
+    - regexp: '^#?\s?/sbin/augenrules'
+      line: /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512
+  when:
+    - rhel9cis_rule_1_3_3_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/aide.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present

@@ -1,0 +1,60 @@
+---
+- name: 1.1.2.3.x | Configure /home
+  when:
+    - '"/home" not in _rhel8cis_mount_names'
+  block:
+    - name: 1.1.2.3.1 | Ensure /home is a separate partition
+      when:
+        - rhel8cis_rule_1_1_2_3_1_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.3.1'
+        _rhel8cis_warning_description: >-
+          /home is not a separate partition.
+
+    - name: 1.1.2.3.2 | Ensure nodev option set on /home partition
+      when:
+        - rhel8cis_rule_1_1_2_3_2_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.3.2'
+        _rhel8cis_warning_description: >-
+          /home is not a separate partition.
+    
+    - name: 1.1.2.3.3 | Ensure nosuid option set on /home partition'
+      when:
+        - rhel8cis_rule_1_1_2_3_3_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.3.3'
+        _rhel8cis_warning_description: >-
+          /home is not a separate partition.
+
+- name: 1.1.2.3.x | Configure /home
+  when:
+    - '"/home" in _rhel8cis_mount_names'
+    - rhel8cis_rule_1_1_2_3_1_enabled or
+      rhel8cis_rule_1_1_2_3_2_enabled or
+      rhel8cis_rule_1_1_2_3_3_enabled
+  block:
+    - name: '1.1.2.3.x | Set existing /home mount configuration fact'
+      ansible.builtin.set_fact:
+        _rhel8cis_existing_home_mount: >-
+          {{ ansible_mounts |
+              selectattr('mount', 'equalto', '/home') |
+              list |
+              first }}
+
+    - name: |
+        1.1.2.3.1 | Ensure /home is a separate partition
+        1.1.2.3.2 | Ensure nodev option set on /home partition
+        1.1.2.3.3 | Ensure nosuid option set on /home partition
+      become: true
+      ansible.posix.mount:
+        src: "{{ _rhel8cis_existing_home_mount.device }}"
+        name: /home
+        fstype: "{{ _rhel8cis_existing_home_mount.fstype }}"
+        opts: "{{ rhel8cis_home_mount_opts | join(',') }}"
+        state: present
+      notify:
+        - _rhel8cis_reboot

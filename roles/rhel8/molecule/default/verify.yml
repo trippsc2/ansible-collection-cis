@@ -1,0 +1,6 @@
+---
+- name: Verify
+  hosts:
+    - subjects
+  gather_facts: false
+  tasks: []

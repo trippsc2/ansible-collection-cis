@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+
+{% for server in rhel9cis_chrony_servers %}
+server {{ server.name }} {{ server.options | join(' ') }}
+{% endfor %}
+
+keyfile /etc/chrony/chrony.keys
+
+commandkey 1
+
+driftfile /var/lib/chrony/chrony.drift
+
+log tracking measurements statistics
+logdir /var/log/chrony
+
+maxupdateskew 100.0
+
+dumponexit
+
+dumpdir /var/lib/chrony
+
+local stratum 10
+
+logchange 0.5
+
+rtconutc

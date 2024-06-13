@@ -1,0 +1,212 @@
+---
+- name: 6.1.1 | Ensure permissions on /etc/passwd are configured
+  when:
+    - rhel9cis_rule_6_1_1_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/passwd
+    owner: root
+    group: root
+    mode: 'u=rw,g-wx,o-wx'
+
+- name: 6.1.2 | Ensure permissions on /etc/passwd- are configured
+  when:
+    - rhel9cis_rule_6_1_2_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/passwd-
+    owner: root
+    group: root
+    mode: 'u=rw,g-wx,o-wx'
+
+- name: 6.1.3 | Ensure permissions on /etc/group are configured
+  when:
+    - rhel9cis_rule_6_1_3_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/group
+    owner: root
+    group: root
+    mode: 'u=rw,g-wx,o-wx'
+
+- name: 6.1.4 | Ensure permissions on /etc/group- are configured
+  when:
+    - rhel9cis_rule_6_1_4_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/group-
+    owner: root
+    group: root
+    mode: 'u=rw,g-wx,o-wx'
+
+- name: 6.1.5 | Ensure permissions on /etc/shadow are configured
+  when:
+    - rhel9cis_rule_6_1_5_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/shadow
+    owner: root
+    group: root
+    mode: '0000'
+
+- name: 6.1.6 | Ensure permissions on /etc/shadow- are configured
+  when:
+    - rhel9cis_rule_6_1_6_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/shadow-
+    owner: root
+    group: root
+    mode: '0000'
+
+- name: 6.1.7 | Ensure permissions on /etc/gshadow are configured
+  when:
+    - rhel9cis_rule_6_1_7_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/gshadow
+    owner: root
+    group: root
+    mode: '0000'
+
+- name: 6.1.8 | Ensure permissions on /etc/gshadow- are configured
+  when:
+    - rhel9cis_rule_6_1_8_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/gshadow-
+    owner: root
+    group: root
+    mode: '0000'
+
+- name: 6.1.9 | Ensure no world writable files exist
+  when:
+    - rhel9cis_rule_6_1_9_enabled
+  become: true
+  block:
+    - name: 6.1.9 | Ensure no world writable files exist | Get list of world writable files
+      ansible.builtin.command: find / -xdev -type f -perm -0002
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_world_writable_files
+
+    - name: 6.1.9 | Ensure no world writable files exist | Remove permission
+      loop: "{{ _rhel9cis_world_writable_files.stdout_lines }}"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: 'o-w'
+
+- name: 6.1.10 | Ensure no unowned files or directories exist
+  when:
+    - rhel9cis_rule_6_1_10_enabled
+  become: true
+  block:
+    - name: 6.1.10 | Ensure no unowned files or directories exist | Get list of unowned files
+      ansible.builtin.command: find / -xdev -nouser
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_unowned_files
+
+    - name: 6.1.10 | Ensure no unowned files or directories exist | Add warning
+      when:
+        - _rhel9cis_unowned_files.stdout_lines | length > 0
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '6.1.10'
+        _rhel9cis_warning_description: |
+          The following unowned files were found on the system:
+
+          {{ _rhel9cis_unowned_files.stdout_lines | join("\n") }}
+
+- name: 6.1.11 | Ensure no ungrouped files or directories exist
+  when:
+    - rhel9cis_rule_6_1_11_enabled
+  become: true
+  block:
+    - name: 6.1.11 | Ensure no ungrouped files or directories exist | Get list of ungrouped directories
+      ansible.builtin.command: find / -xdev -nogroup
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_ungrouped_files
+
+    - name: 6.1.11 | Ensure no ungrouped files or directories exist | Add warning
+      when:
+        - _rhel9cis_ungrouped_files.stdout_lines | length > 0
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '6.1.11'
+        _rhel9cis_warning_description: |
+          The following ungrouped files were found on the system:
+
+          {{ _rhel9cis_ungrouped_files.stdout_lines | join("\n") }}
+
+- name: 6.1.12 | Ensure sticky bit is set on all world-writable directories
+  when:
+    - rhel9cis_rule_6_1_12_enabled
+  become: true
+  block:
+    - name: 6.1.12 | Ensure sticky bit is set on all world-writable directories | Get list of world writable directories
+      ansible.builtin.command: find / -xdev -type d -perm -0002
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_world_writable_directories
+
+    - name: 6.1.12 | Ensure sticky bit is set on all world-writable directories | Set sticky bit
+      loop: "{{ _rhel9cis_world_writable_directories.stdout_lines }}"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: 'a+t'
+
+- name: 6.1.13 | Audit SUID executables
+  when:
+    - rhel9cis_rule_6_1_13_enabled
+  become: true
+  block:
+    - name: 6.1.13 | Audit SUID executables | Get list of SUID files
+      ansible.builtin.command: find / -xdev -type f -perm -4000
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_suid_files
+
+    - name: 6.1.13 | Audit SUID executables | Add warning
+      when:
+        - _rhel9cis_suid_files.stdout_lines | length > 0
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '6.1.13'
+        _rhel9cis_warning_description: |
+          The following SUID files were found on the system:
+          
+          {{ _rhel9cis_suid_files.stdout_lines | join("\n") }}
+
+- name: 6.1.14 | Audit SGID files are reviewed
+  when:
+    - rhel9cis_rule_6_1_13_enabled
+  become: true
+  block:
+    - name: 6.1.14 | Audit SGID files are reviewed | Get list of SGID files
+      ansible.builtin.command: find / -xdev -type f -perm -2000
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_sgid_files
+
+    - name: 6.1.14 | Audit SGID files are reviewed | Add warning
+      when:
+        - _rhel9cis_suid_files.stdout_lines | length == 0
+        - _rhel9cis_sgid_files.stdout_lines | length > 0
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '6.1.14'
+        _rhel9cis_warning_description: |
+          The following SGID files were found on the system:
+          
+          {{ _rhel9cis_sgid_files.stdout_lines | join("\n") }}
+
+- name: 6.1.15 | Audit system file permissions
+  when:
+    - rhel9cis_rule_6_1_15_enabled
+    - _rhel9cis_level2 or rhel9cis_rule_6_1_15_force
+  ansible.builtin.include_tasks: ../add-warning.yml
+  vars:
+    _rhel9cis_warning_rule: '6.1.14'
+    _rhel9cis_warning_description: This cannot be fully automated. Please ensure system file permissions are properly configured.

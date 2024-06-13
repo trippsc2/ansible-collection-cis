@@ -1,0 +1,32 @@
+---
+- name: 2.1.1 | Ensure time synchronization is in use
+  when:
+    - rhel9cis_rule_2_1_1_enabled
+  become: true
+  ansible.builtin.dnf:
+    name: chrony
+    state: present
+
+- name: 2.1.2 | Ensure chrony is configured | Set user
+  when:
+    - rhel9cis_rule_2_1_2_enabled
+  block:
+    - name: 2.1.2 | Ensure chrony is configured | /etc/chrony.conf
+      become: true
+      ansible.builtin.template:
+        src: chrony.conf.j2
+        dest: /etc/chrony.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - _rhel9cis_restart_chronyd
+
+    - name: 2.1.2 | Ensure chrony is configured | Set user
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/sysconfig/chronyd
+        regexp: '^OPTIONS='
+        line: 'OPTIONS="-u chrony"'
+      notify:
+        - _rhel9cis_restart_chronyd

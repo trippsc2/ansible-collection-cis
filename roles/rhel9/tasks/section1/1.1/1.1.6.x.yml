@@ -1,0 +1,66 @@
+---
+- name: 1.1.6.x | Configure /var/log/audit
+  when:
+    - '"/var/log/audit" not in _rhel9cis_mount_names'
+  block:
+    - name: 1.1.6.1 | Ensure /var/log/audit is a separate partition
+      when:
+        - rhel9cis_rule_1_1_6_1_enabled
+        - _rhel9cis_level2 or rhel9cis_rule_1_1_6_1_force
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.6.1'
+        _rhel9cis_warning_description: /var/log/audit is not a separate partition.
+
+    - name: 1.1.6.2 | Ensure nodev option set on /var/log/audit partition
+      when:
+        - rhel9cis_rule_1_1_6_2_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.6.2'
+        _rhel9cis_warning_description: /var/log/audit is not a separate partition.
+    
+    - name: 1.1.6.3 | Ensure noexec option set on /var/log/audit partition
+      when:
+        - rhel9cis_rule_1_1_6_3_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.6.3'
+        _rhel9cis_warning_description: /var/log/audit is not a separate partition.
+    
+    - name: 1.1.6.4 | Ensure nosuid option set on /var/log/audit partition
+      when:
+        - rhel9cis_rule_1_1_6_4_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.6.4'
+        _rhel9cis_warning_description: /var/log/audit is not a separate partition.
+
+- name: 1.1.6.x | Configure /var/log/audit
+  when:
+    - '"/var/log/audit" in _rhel9cis_mount_names'
+    - rhel9cis_rule_1_1_6_1_enabled or
+      rhel9cis_rule_1_1_6_2_enabled or
+      rhel9cis_rule_1_1_6_3_enabled or
+      rhel9cis_rule_1_1_6_4_enabled
+  block:
+    
+    - name: 1.1.6.x | Set existing /var/log/audit mount configuration fact
+      ansible.builtin.set_fact:
+        _rhel9cis_existing_var_log_audit_mount: >-
+          {{ ansible_mounts | selectattr('mount', 'equalto', '/var/log/audit') | list | first }}
+
+    - name: |
+        1.1.6.1 | Ensure /var/log/audit is a separate partition
+        1.1.6.2 | Ensure nodev option set on /var/log/audit partition
+        1.1.6.3 | Ensure noexec option set on /var/log/audit partition
+        1.1.6.4 | Ensure nosuid option set on /var/log/audit partition
+      become: true
+      ansible.posix.mount:
+        src: "{{ _rhel9cis_existing_var_log_audit_mount.device }}"
+        name: /var/log/audit
+        fstype: "{{ _rhel9cis_existing_var_log_audit_mount.fstype }}"
+        opts: "{{ rhel9cis_var_log_audit_mount_opts | join(',') }}"
+        state: present
+      notify:
+        - _rhel9cis_reboot

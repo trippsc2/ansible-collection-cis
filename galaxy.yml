@@ -1,0 +1,25 @@
+---
+namespace: trippsc2
+name: cis
+version: '1.0.0'
+readme: README.md
+authors:
+  - Jim Tarpley
+description: This collection contains roles for applying CIS Benchmarks to various systems.
+
+license_file: 'LICENSE'
+
+tags: []
+
+dependencies:
+  ansible.posix: ">=1.0.0"
+  ansible.windows: ">=1.0.0"
+  chocolatey.chocolatey: ">=0.1.9"
+  community.general: ">=1.0.0"
+  community.windows: ">=1.0.0"
+  trippsc2.ad: ">=1.0.0"
+
+repository: https://github.com/trippsc2/ansible-collection-cis.git
+
+build_ignore:
+  - .gitignore

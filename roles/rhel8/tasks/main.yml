@@ -1,0 +1,28 @@
+---
+- name: Validate
+  ansible.builtin.import_tasks: validate.yml
+
+- name: Execute the section 1 tasks
+  ansible.builtin.import_tasks: section1/main.yml
+
+- name: Execute the section 2 tasks
+  ansible.builtin.import_tasks: section2/main.yml
+
+- name: Execute the section 3 tasks
+  ansible.builtin.import_tasks: section3/main.yml
+
+- name: Execute the section 4 tasks
+  ansible.builtin.import_tasks: section4/main.yml
+
+- name: Execute the section 5 tasks
+  ansible.builtin.import_tasks: section5/main.yml
+
+- name: Execute the section 6 tasks
+  ansible.builtin.import_tasks: section6/main.yml
+
+- name: Present warnings to user
+  ansible.builtin.debug:
+    var: _rhel8cis_warning_list
+
+- name: Run handlers
+  ansible.builtin.meta: flush_handlers

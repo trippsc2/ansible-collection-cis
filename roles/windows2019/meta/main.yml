@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: Jim Tarpley
+  namespace: trippsc2
+  role_name: windows2019
+  description: This role applies the CIS Benchmark hardening steps on Windows Server 2019 machines.
+
+  license: MIT
+
+  min_ansible_version: '2.14'
+
+  platforms:
+    - name: Windows
+      versions:
+        - '2019'
+
+collections:
+  - ansible.windows
+  - chocolatey.chocolatey
+  - community.windows
+
+dependencies: []

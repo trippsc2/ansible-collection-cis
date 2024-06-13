@@ -1,0 +1,10 @@
+---
+- name: "18.8.1.1 | L2 | Ensure 'Turn off notifications network usage' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_8_1_1_enabled
+    - w2022cis_rule_18_8_1_1_force or _w2022cis_level2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications
+    name: NoCloudApplicationNotification
+    data: 1
+    type: dword

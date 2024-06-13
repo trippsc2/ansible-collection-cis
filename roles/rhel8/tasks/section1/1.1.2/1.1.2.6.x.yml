@@ -1,0 +1,69 @@
+---
+- name: 1.1.2.6.x | Configure /var/log
+  when:
+    - '"/var/log" not in _rhel8cis_mount_names'
+  block:
+    - name: 1.1.2.6.1 | Ensure /var/log is a separate partition
+      when:
+        - rhel8cis_rule_1_1_2_6_1_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.6.1'
+        _rhel8cis_warning_description: >-
+          /var/log is not a separate partition.
+
+    - name: 1.1.2.6.2 | Ensure nodev option set on /var/log partition
+      when:
+        - rhel8cis_rule_1_1_2_6_2_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.6.2'
+        _rhel8cis_warning_description: >-
+          /var/log is not a separate partition.
+    
+    - name: 1.1.2.6.3 | Ensure nosuid option set on /var/log partition
+      when:
+        - rhel8cis_rule_1_1_2_6_3_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.6.3'
+        _rhel8cis_warning_description: >-
+          /var/log is not a separate partition.
+    
+    - name: 1.1.2.6.4 | Ensure noexec option set on /var/log partition
+      when:
+        - rhel8cis_rule_1_1_2_6_4_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.6.4'
+        _rhel8cis_warning_description: >-
+          /var/log is not a separate partition.
+
+- name: 1.1.2.6.x | Configure /var/log
+  when:
+    - '"/var/log" in _rhel8cis_mount_names'
+    - rhel8cis_rule_1_1_2_6_1_enabled or
+      rhel8cis_rule_1_1_2_6_2_enabled or
+      rhel8cis_rule_1_1_2_6_3_enabled or
+      rhel8cis_rule_1_1_2_6_4_enabled
+  block:
+    
+    - name: 1.1.2.6.x | Set existing /var/log mount configuration fact
+      ansible.builtin.set_fact:
+        _rhel8cis_existing_var_log_mount: >-
+          {{ ansible_mounts | selectattr('mount', 'equalto', '/var/log') | list | first }}
+
+    - name: |
+        1.1.2.6.1 | Ensure /var/log is a separate partition
+        1.1.2.6.2 | Ensure nodev option set on /var/log partition
+        1.1.2.6.3 | Ensure nosuid option set on /var/log partition
+        1.1.2.6.4 | Ensure noexec option set on /var/log partition
+      become: true
+      ansible.posix.mount:
+        src: "{{ _rhel8cis_existing_var_log_mount.device }}"
+        name: /var/log
+        fstype: "{{ _rhel8cis_existing_var_log_mount.fstype }}"
+        opts: "{{ rhel8cis_var_log_mount_opts | join(',') }}"
+        state: present
+      notify:
+        - _rhel8cis_reboot

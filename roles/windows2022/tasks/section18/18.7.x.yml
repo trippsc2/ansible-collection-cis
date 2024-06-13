@@ -1,0 +1,103 @@
+---
+- name: "18.7.1 | L1 | Ensure 'Allow Print Spooler to accept client connections' is set to 'Disabled'"
+  when:
+    - w2022cis_rule_18_7_1_enabled
+    - not w2022cis_is_template
+    - w2022cis_rule_18_7_1_force or _w2022cis_level2 or _w2022cis_domain_controller
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers
+    name: RegisterSpoolerRemoteRpcEndPoint
+    data: 0
+    type: dword
+
+- name: "18.7.2 | L1 | Ensure 'Configure Redirection Guard' is set to 'Enabled: Redirection Guard Enabled'"
+  when:
+    - w2022cis_rule_18_7_2_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers
+    name: RedirectionGuardPolicy
+    data: 1
+    type: dword
+
+- name: "18.7.3 | L1 | Ensure 'Configure RPC connection settings: Protocol to use for outgoing RPC connections' is set to 'Enabled: RPC over TCP'"
+  when:
+    - w2022cis_rule_18_7_3_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcUseNamedPipeProtocol
+    data: 0
+    type: dword
+
+- name: "18.7.4 | L1 | Ensure 'Configure RPC connection settings: Use authentication for outgoing RPC connections' is set to 'Enabled: Default'"
+  when:
+    - w2022cis_rule_18_7_4_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcAuthentication
+    data: 0
+    type: dword
+
+- name: "18.7.5 | L1 | Ensure 'Configure RPC listener settings: Protocols to allow for incoming RPC connections' is set to 'Enabled: RPC over TCP'"
+  when:
+    - w2022cis_rule_18_7_5_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcProtocols
+    data: 5
+    type: dword
+
+- name: "18.7.6 | L1 | Ensure 'Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:' is set to 'Enabled: Negotiate' or higher"
+  when:
+    - w2022cis_rule_18_7_6_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC
+    name: ForceKerberosForRpc
+    data: "{{ _w2022cis_rpc_listener_authentication_protocol_value }}"
+    type: dword
+
+- name: "18.7.7 | L1 | Ensure 'Configure RPC over TCP port' is set to 'Enabled: 0'"
+  when:
+    - w2022cis_rule_18_7_7_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC
+    name: RpcTcpPort
+    data: 0
+    type: dword
+
+- name: "18.7.8 | L1 | Ensure 'Limits print driver installation to Administrators' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_7_8_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: RestrictDriverInstallationToAdministrators
+    data: 0
+    type: dword
+    state: present
+
+- name: "18.7.9 | L1 | Ensure 'Manage processing of Queue-specific files' is set to 'Enabled: Limit Queue-specific files to Color profiles'"
+  when:
+    - w2022cis_rule_18_7_9_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: RestrictDriverInstallationToAdministrators
+    data: 0
+    type: dword
+    state: present
+
+- name: "18.7.10 | L1 | Ensure 'Point and Print Restrictions: When installing drivers for a new connection' is set to 'Enabled: Show warning and elevation prompt'"
+  when:
+    - w2022cis_rule_18_7_10_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: NoWarningNoElevationOnInstall
+    data: 0
+    type: dword
+
+- name: "18.7.11 | L1 | Ensure 'Point and Print Restrictions: When updating drivers for an existing connection' is set to 'Enabled: Show warning and elevation prompt'"
+  when:
+    - w2022cis_rule_18_7_11_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint
+    name: UpdatePromptSettings
+    data: 0
+    type: dword

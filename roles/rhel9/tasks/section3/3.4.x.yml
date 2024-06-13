@@ -1,0 +1,126 @@
+---
+- name: 3.4.1.1 | Ensure nftables is installed
+  when:
+    - rhel9cis_rule_3_4_1_1_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - nftables
+    state: present
+
+- name: 3.4.1.2 | Ensure a single firewall configuration utility is in use
+  when:
+    - rhel9cis_rule_3_4_1_2_enabled
+  become: true
+  block:
+    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | firewalld package
+      ansible.builtin.dnf:
+        name:
+          - firewalld
+        state: "{{ _rhel9cis_firewalld_state }}"
+
+    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | nftables service
+      ansible.builtin.systemd_service:
+        name: nftables.service
+        state: "{{ _rhel9cis_nftables_service_state }}"
+        enabled: "{{ _rhel9cis_nftables_service_enabled }}"
+        masked: "{{ _rhel9cis_nftables_service_masked }}"
+
+- name: 3.4.2.1 | Ensure firewalld default zone is set
+  when:
+    - rhel9cis_rule_3_4_2_1_enabled
+    - rhel9cis_firewall == 'firewalld'
+  block:
+    - name: 3.4.2.1 | Ensure firewalld default zone is set | Get default zone
+      ansible.builtin.command: firewall-cmd --get-default-zone
+      register: _rhel9cis_firewalld_default_zone
+      changed_when: false
+
+    - name: 3.4.2.1 | Ensure firewalld default zone is set | Set default zone
+      when:
+        - _rhel9cis_firewalld_default_zone.stdout != rhel9cis_firewalld_default_zone
+      ansible.builtin.command: firewall-cmd --set-default-zone={{ rhel9cis_firewalld_default_zone }}
+      changed_when: true
+
+- name: 3.4.2.2 | Ensure at least one nftables table exists
+  when:
+    - rhel9cis_rule_3_4_2_2_enabled
+    - rhel9cis_firewall == 'firewalld'
+  ansible.builtin.debug:
+    msg: "Rule 3.4.2.2 is implemented by firewalld automatically."
+
+- name: 3.4.2.3 | Ensure nftables base chains exist
+  when:
+    - rhel9cis_rule_3_4_2_3_enabled
+    - rhel9cis_firewall == 'firewalld'
+  ansible.builtin.debug:
+    msg: "Rule 3.4.2.3 is implemented by firewalld automatically."
+
+- name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured
+  when:
+    - rhel9cis_rule_3_4_2_4_enabled
+  become: true
+  block:
+    - name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured | firewalld
+      when:
+        - rhel9cis_firewall == 'firewalld'
+      block:
+        - name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured | firewalld interface
+          ansible.posix.firewalld:
+            zone: trusted
+            interface: lo
+            permanent: true
+            state: enabled
+
+        - name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured | firewalld block IPv4 loopback rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+            permanent: true
+            state: enabled
+        
+        - name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured | firewalld block IPv4 loopback zone rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+            zone: trusted
+            permanent: true
+            state: enabled
+
+        - name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured | firewalld block IPv6 loopback rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv6 source address="::1" destination not address="::1" drop'
+            permanent: true
+            state: enabled
+        
+        - name: 3.4.2.4 | Ensure host based firewall loopback traffic is configured | firewalld block IPv6 loopback zone rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv6 source address="::1" destination not address="::1" drop'
+            zone: trusted
+            permanent: true
+            state: enabled
+
+- name: 3.4.2.5 | Ensure firewalld drops unnecessary services and ports
+  when:
+    - rhel9cis_rule_3_4_2_5_enabled
+    - rhel9cis_firewall == 'firewalld'
+  block:
+    - name: 3.4.2.5 | Ensure firewalld drops unnecessary services and ports | Add warning
+      become: true
+      ansible.builtin.shell: |-
+        systemctl is-enabled firewalld.service | grep -q 'enabled' && firewall-cmd --list-all --zone="$(firewall-cmd --list-all | awk '/\(active\)/ { print $1 }')" | grep -P -- '^\h*(services:|ports:)'
+      changed_when: false
+      failed_when: false
+      register: _rhel9cis_firewalld_services
+      tags:
+        - always
+        - skip_ansible_lint
+      
+    - name: 3.4.2.5 | Ensure firewalld drops unnecessary services and ports | Add warning
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '3.4.2.5'
+        _rhel9cis_warning_description: |
+          Remediation cannot be automated. Please review the output below for unnecessary firewalld services and ports.
+          
+          {{ _rhel9cis_firewalld_services.stdout_lines | join("\n") }}
+
+# Rules 3.4.2.6-7 are not applicable to firewalld

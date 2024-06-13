@@ -1,0 +1,81 @@
+---
+- name: 5.1.3 | Ensure logrotate is configured | /etc/logrotate.d/aide
+  listen: _rhel8cis_configure_aide_logrotate
+  become: true
+  ansible.builtin.replace:
+    path: /etc/logrotate.d/aide
+    regexp: '^(\s*)(daily|weekly|monthly|yearly)$'
+    replace: "\\1{{ rhel8cis_logrotate_frequency }}"
+
+- name: Generate new GRUB2 configuration
+  listen: _rhel8cis_grub2-mkconfig
+  become: true
+  ansible.builtin.command: grub2-mkconfig -o {{ _rhel8cis_grub_config_path }}
+  changed_when: true
+  notify:
+    - _rhel8cis_reboot
+
+- name: Restart chronyd
+  listen: _rhel8cis_restart_chronyd
+  become: true
+  ansible.builtin.systemd_service:
+    name: chronyd.service
+    state: restarted
+
+- name: Restart postfix
+  listen: _rhel8cis_restart_postfix
+  become: true
+  ansible.builtin.systemd_service:
+    name: postfix.service
+    state: restarted
+
+- name: Restart sshd
+  listen: _rhel8cis_restart_sshd
+  become: true
+  ansible.builtin.systemd_service:
+    name: sshd.service
+    state: restarted
+
+- name: Restart systemd-journald
+  listen: _rhel8cis_restart_systemd-journald
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-journald.service
+    state: restarted
+
+- name: Restart rsyslog
+  listen: _rhel8cis_restart_rsyslog
+  become: true
+  ansible.builtin.systemd_service:
+    name: rsyslog.service
+    state: restarted
+
+- name: Restart systemd-journal-remote
+  listen: _rhel8cis_restart_systemd-journal-remote
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-journal-remote.service
+    state: restarted
+
+- name: Reload auditd rules
+  listen: _rhel8cis_auditd_rules_reload
+  become: true
+  ansible.builtin.command: augenrules --load
+  changed_when: true
+  notify:
+    - _rhel8cis_reboot
+
+- name: Initialize AIDE
+  listen: _rhel8cis_initialize_aide
+  become: true
+  ansible.builtin.shell: |
+    aide --init
+    mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+  changed_when: true
+
+- name: Reboot the machine
+  listen: _rhel8cis_reboot
+  when:
+    - not rhel8cis_skip_reboot
+  become: true
+  ansible.builtin.reboot:

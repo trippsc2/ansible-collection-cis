@@ -1,0 +1,114 @@
+---
+- name: 5.3.1 | Ensure sudo is installed
+  when:
+    - rhel9cis_rule_5_3_1_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - sudo
+    state: present
+
+- name: 5.3.x | Get /etc/sudoers.d/ files
+  become: true
+  ansible.builtin.find:
+    paths:
+      - /etc/sudoers.d
+    file_type: file
+    recurse: true
+  register: _rhel9cis_sudoers_d_files
+
+- name: 5.3.2 | Ensure sudo commands use pty
+  when:
+    - rhel9cis_rule_5_3_2_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    line: 'Defaults use_pty'
+    insertbefore: '^#includedir /etc/sudoers.d'
+
+- name: 5.3.3 | Ensure sudo log file exists
+  when:
+    - rhel9cis_rule_5_3_3_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: '^Defaults\s+logfile='
+    line: 'Defaults logfile={{ rhel9cis_sudo_log_file }}'
+    insertbefore: '^#includedir /etc/sudoers.d'
+
+- name: 5.3.4 | Ensure users must provide password for escalation
+  when:
+    - rhel9cis_rule_5_3_4_enabled
+    - _rhel9cis_level2 or rhel9cis_rule_5_3_4_force
+  become: true
+  block:
+    - name: 5.3.4 | Ensure users must provide password for escalation | /etc/sudoers
+      ansible.builtin.replace:
+        path: /etc/sudoers
+        regexp: '^([^#|].*)NOPASSWD(.*)'
+        replace: '\1PASSWD\2'
+
+    - name: 5.3.4 | Ensure users must provide password for escalation | /etc/sudoers.d/*
+      loop: "{{ _rhel9cis_sudoers_d_files.files }}"
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^([^#|].*)NOPASSWD(.*)'
+        replace: '\1PASSWD\2'
+      loop_control:
+        label: "{{ item.path }}"
+
+- name: 5.3.5 | Ensure re-authentication for privilege escalation is not disabled globally
+  when:
+    - rhel9cis_rule_5_3_5_enabled
+  become: true
+  block:
+    - name: 5.3.5 | Ensure re-authentication for privilege escalation is not disabled globally | /etc/sudoers
+      ansible.builtin.replace:
+        path: /etc/sudoers
+        regexp: '^([^#].*)!authenticate(.*)'
+        replace: '\1authenticate\2'
+
+    - name: 5.3.5 | Ensure re-authentication for privilege escalation is not disabled globally | /etc/sudoers.d/*
+      loop: "{{ _rhel9cis_sudoers_d_files.files }}"
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^([^#].*)!authenticate(.*)'
+        replace: '\1authenticate\2'
+      loop_control:
+        label: "{{ item.path }}"
+
+- name: 5.3.6 | Ensure sudo authentication timeout is configured correctly
+  when:
+    - rhel9cis_rule_5_3_6_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: '^#?Defaults\s+timestamp_timeout='
+    line: 'Defaults timestamp_timeout={{ rhel9cis_sudo_authentication_timeout }}'
+    insertbefore: '^#includedir /etc/sudoers.d'
+
+- name: 5.3.7 | Ensure access to the su command is restricted
+  when:
+    - rhel9cis_rule_5_3_7_enabled
+  become: true
+  block:
+    - name: 5.3.7 | Ensure access to the su command is restricted | Create group
+      ansible.builtin.group:
+        name: "{{ rhel9cis_su_group_name }}"
+        system: true
+        state: present
+
+    - name: 5.3.7 | Ensure access to the su command is restricted | Set group membership
+      ansible.builtin.lineinfile:
+        path: /etc/group
+        regexp: '^{{ rhel9cis_su_group_name }}(:.:.*:).*$'
+        line: '{{ rhel9cis_su_group_name }}\1{{ rhel9cis_su_group_members | join(",") }}'
+        backrefs: true
+        insertbefore: '^#includedir /etc/sudoers.d'
+
+    - name: 5.3.7 | Ensure access to the su command is restricted | /etc/pam.d/su
+      ansible.builtin.lineinfile:
+        path: /etc/pam.d/su
+        regexp: '^(#)?auth\s+required\s+pam_wheel\.so'
+        line: "auth required pam_wheel.so use_uid group={{ rhel9cis_su_group_name }}"
+        insertbefore: '^#includedir /etc/sudoers.d'

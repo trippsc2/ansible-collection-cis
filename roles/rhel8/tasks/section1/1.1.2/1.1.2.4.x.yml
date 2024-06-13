@@ -1,0 +1,60 @@
+---
+- name: 1.1.2.4.x | Configure /var
+  when:
+    - '"/var" not in _rhel8cis_mount_names'
+  block:
+    - name: 1.1.2.4.1 | Ensure /var is a separate partition
+      when:
+        - rhel8cis_rule_1_1_2_4_1_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.4.1'
+        _rhel8cis_warning_description: >-
+          /var is not a separate partition.
+
+    - name: 1.1.2.4.2 | Ensure nodev option set on /var partition
+      when:
+        - rhel8cis_rule_1_1_2_4_2_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.4.2'
+        _rhel8cis_warning_description: >-
+          /var is not a separate partition.
+    
+    - name: 1.1.2.4.3 | Ensure nosuid option set on /var partition'
+      when:
+        - rhel8cis_rule_1_1_2_4_3_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '1.1.2.4.3'
+        _rhel8cis_warning_description: >-
+          /var is not a separate partition.
+
+- name: 1.1.2.4.x | Configure /var
+  when:
+    - '"/var" in _rhel8cis_mount_names'
+    - rhel8cis_rule_1_1_2_4_1_enabled or
+      rhel8cis_rule_1_1_2_4_2_enabled or
+      rhel8cis_rule_1_1_2_4_3_enabled
+  block:
+    - name: '1.1.2.4.x | Set existing /var mount configuration fact'
+      ansible.builtin.set_fact:
+        _rhel8cis_existing_var_mount: >-
+          {{ ansible_mounts |
+              selectattr('mount', 'equalto', '/var') |
+              list |
+              first }}
+
+    - name: |
+        1.1.2.4.1 | Ensure /var is a separate partition
+        1.1.2.4.2 | Ensure nodev option set on /var partition
+        1.1.2.4.3 | Ensure nosuid option set on /var partition
+      become: true
+      ansible.posix.mount:
+        src: "{{ _rhel8cis_existing_var_mount.device }}"
+        name: /var
+        fstype: "{{ _rhel8cis_existing_var_mount.fstype }}"
+        opts: "{{ rhel8cis_var_mount_opts | join(',') }}"
+        state: present
+      notify:
+        - _rhel8cis_reboot

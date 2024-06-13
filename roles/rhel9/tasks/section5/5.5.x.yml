@@ -1,0 +1,66 @@
+---
+- name: 5.5.1 | Ensure password creation requirements are configured
+  loop:
+    - regexp: '^#?\s?minlen'
+      line: 'minlen = {{ rhel9cis_password_min_length }}'
+    - regexp: '^#?\s?minclass'
+      line: minclass = 4
+    - regexp: '^#?\s?dcredit'
+      line: dcredit = -1
+    - regexp: '^#?\s?ucredit'
+      line: ucredit = -1
+    - regexp: '^#?\s?ocredit'
+      line: ocredit = -1
+    - regexp: '^#?\s?lcredit'
+      line: lcredit = -1
+  when:
+    - rhel9cis_rule_5_5_1_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+
+- name: 5.5.2 | Ensure lockout for failed password attempts is configured
+  loop:
+    - regexp: '^#?\s?deny'
+      line: 'deny = {{ rhel9cis_lockout_failed_attempts }}'
+    - regexp: '^#?\s?unlock_time'
+      line: 'unlock_time = {{ rhel9cis_lockout_unlock_time }}'
+  when:
+    - rhel9cis_rule_5_5_2_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/security/faillock.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+
+
+- name: 5.5.3 | Ensure password reuse is limited
+  when:
+    - rhel9cis_rule_5_5_3_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwhistory.conf
+    regexp: '^#?\s?remember'
+    line: 'remember = {{ rhel9cis_passwords_remembered }}'
+    state: present
+
+- name: 5.5.4 | Ensure password hashing algorithm is SHA-512 or yescrypt
+  loop:
+    - path: /etc/libuser.conf
+      regexp: '^#?\s?crypt_style ='
+      line: 'crypt_style = {{ rhel9cis_password_hashing_algorithm }}'
+    - path: /etc/login.defs
+      regexp: '^#?\s?ENCRYPT_METHOD'
+      line: 'ENCRYPT_METHOD {{ rhel9cis_password_hashing_algorithm | upper }}'
+  when:
+    - rhel9cis_rule_5_5_4_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present

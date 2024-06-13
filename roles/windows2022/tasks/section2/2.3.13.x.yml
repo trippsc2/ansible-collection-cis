@@ -1,0 +1,9 @@
+---
+- name: "2.3.13.1 | L1 | Ensure 'Shutdown: Allow system to be shut down without having to log on' is set to 'Disabled'"
+  when:
+    - w2022cis_rule_2_3_13_1_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
+    name: ShutdownWithoutLogon
+    data: 0
+    type: dword

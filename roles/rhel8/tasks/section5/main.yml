@@ -1,0 +1,9 @@
+---
+- name: Execute the 5.1.x tasks
+  ansible.builtin.import_tasks: 5.1.x.yml
+
+- name: Execute the 5.2.x tasks
+  ansible.builtin.import_tasks: 5.2.x.yml
+
+- name: Execute the 5.3.x tasks
+  ansible.builtin.import_tasks: 5.3.x.yml

@@ -1,0 +1,7 @@
+---
+ansible_become_password: vagrant
+
+rhel9cis_bootloader_password: password
+rhel9cis_skip_reboot: false
+
+rhel9cis_remote_log_server: loghost.test.loc

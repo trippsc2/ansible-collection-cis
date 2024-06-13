@@ -1,0 +1,38 @@
+---
+- name: 1.4.1 | Ensure address space layout randomization (ASLR) is enabled
+  when:
+    - rhel8cis_rule_1_4_1_enabled
+  become: true
+  ansible.posix.sysctl:
+    name: kernel.randomize_va_space
+    value: '2'
+    state: present
+    sysctl_set: true
+
+- name: 1.4.2 | Ensure ptrace_scope is restricted
+  when:
+    - rhel8cis_rule_1_4_2_enabled
+  become: true
+  ansible.posix.sysctl:
+    name: kernel.yama.ptrace_scope
+    value: '1'
+    state: present
+    sysctl_set: true
+
+- name: 1.4.3 | Ensure core dump backtraces are disabled
+  when:
+    - rhel8cis_rule_1_4_3_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/coredump.conf
+    regexp: '^#?ProcessSizeMax='
+    line: 'ProcessSizeMax=0'
+
+- name: 1.4.4 | Ensure core dump storage is disabled
+  when:
+    - rhel8cis_rule_1_4_4_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/coredump.conf
+    regexp: '^#?Storage='
+    line: 'Storage=none'

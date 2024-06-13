@@ -1,0 +1,623 @@
+---
+rhel8cis_skip_reboot: true
+
+rhel8cis_level: 2
+
+rhel8cis_machine_type: server
+
+rhel8cis_rule_1_1_1_1_enabled: true
+rhel8cis_rule_1_1_1_2_enabled: true
+rhel8cis_rule_1_1_1_3_enabled: true
+rhel8cis_rule_1_1_1_4_enabled: true
+rhel8cis_rule_1_1_1_5_enabled: true
+rhel8cis_rule_1_1_1_6_enabled: true
+rhel8cis_rule_1_1_1_7_enabled: true
+rhel8cis_rule_1_1_1_8_enabled: true
+
+rhel8cis_rule_1_1_2_1_1_enabled: true
+rhel8cis_rule_1_1_2_1_2_enabled: true
+rhel8cis_rule_1_1_2_1_3_enabled: true
+rhel8cis_rule_1_1_2_1_4_enabled: true
+
+rhel8cis_rule_1_1_2_2_1_enabled: true
+rhel8cis_rule_1_1_2_2_2_enabled: true
+rhel8cis_rule_1_1_2_2_3_enabled: true
+rhel8cis_rule_1_1_2_2_4_enabled: true
+
+rhel8cis_rule_1_1_2_3_1_enabled: true
+rhel8cis_rule_1_1_2_3_2_enabled: true
+rhel8cis_rule_1_1_2_3_3_enabled: true
+
+rhel8cis_rule_1_1_2_4_1_enabled: true
+rhel8cis_rule_1_1_2_4_2_enabled: true
+rhel8cis_rule_1_1_2_4_3_enabled: true
+
+rhel8cis_rule_1_1_2_5_1_enabled: true
+rhel8cis_rule_1_1_2_5_2_enabled: true
+rhel8cis_rule_1_1_2_5_3_enabled: true
+rhel8cis_rule_1_1_2_5_4_enabled: true
+
+rhel8cis_rule_1_1_2_6_1_enabled: true
+rhel8cis_rule_1_1_2_6_2_enabled: true
+rhel8cis_rule_1_1_2_6_3_enabled: true
+rhel8cis_rule_1_1_2_6_4_enabled: true
+
+rhel8cis_rule_1_1_2_7_1_enabled: true
+rhel8cis_rule_1_1_2_7_2_enabled: true
+rhel8cis_rule_1_1_2_7_3_enabled: true
+rhel8cis_rule_1_1_2_7_4_enabled: true
+
+rhel8cis_rule_1_2_1_enabled: true
+rhel8cis_rule_1_2_2_enabled: true
+rhel8cis_rule_1_2_3_enabled: true
+rhel8cis_rule_1_2_4_enabled: true
+rhel8cis_rule_1_2_5_enabled: true
+
+rhel8cis_rule_1_3_1_enabled: true
+rhel8cis_rule_1_3_2_enabled: true
+
+rhel8cis_rule_1_4_1_enabled: true
+rhel8cis_rule_1_4_2_enabled: true
+rhel8cis_rule_1_4_3_enabled: true
+rhel8cis_rule_1_4_4_enabled: true
+
+rhel8cis_rule_1_5_1_1_enabled: true
+rhel8cis_rule_1_5_1_2_enabled: true
+rhel8cis_rule_1_5_1_3_enabled: true
+rhel8cis_rule_1_5_1_4_enabled: true
+rhel8cis_rule_1_5_1_5_enabled: true
+rhel8cis_rule_1_5_1_6_enabled: true
+rhel8cis_rule_1_5_1_7_enabled: true
+rhel8cis_rule_1_5_1_8_enabled: true
+
+rhel8cis_rule_1_6_1_enabled: true
+rhel8cis_rule_1_6_2_enabled: true
+rhel8cis_rule_1_6_3_enabled: true
+rhel8cis_rule_1_6_4_enabled: true
+
+rhel8cis_rule_1_7_1_enabled: true
+rhel8cis_rule_1_7_2_enabled: true
+rhel8cis_rule_1_7_3_enabled: true
+rhel8cis_rule_1_7_4_enabled: true
+rhel8cis_rule_1_7_5_enabled: true
+rhel8cis_rule_1_7_6_enabled: true
+
+rhel8cis_rule_1_8_1_enabled: true
+rhel8cis_rule_1_8_2_enabled: true
+rhel8cis_rule_1_8_3_enabled: true
+rhel8cis_rule_1_8_4_enabled: true
+rhel8cis_rule_1_8_5_enabled: true
+rhel8cis_rule_1_8_6_enabled: true
+rhel8cis_rule_1_8_7_enabled: true
+rhel8cis_rule_1_8_8_enabled: true
+rhel8cis_rule_1_8_9_enabled: true
+rhel8cis_rule_1_8_10_enabled: true
+
+rhel8cis_rule_2_1_1_enabled: true
+rhel8cis_rule_2_1_2_enabled: true
+rhel8cis_rule_2_1_3_enabled: true
+
+rhel8cis_rule_2_2_1_enabled: true
+rhel8cis_rule_2_2_2_enabled: true
+rhel8cis_rule_2_2_3_enabled: true
+rhel8cis_rule_2_2_4_enabled: true
+rhel8cis_rule_2_2_5_enabled: true
+rhel8cis_rule_2_2_6_enabled: true
+rhel8cis_rule_2_2_7_enabled: true
+rhel8cis_rule_2_2_8_enabled: true
+rhel8cis_rule_2_2_9_enabled: true
+rhel8cis_rule_2_2_10_enabled: true
+rhel8cis_rule_2_2_11_enabled: true
+rhel8cis_rule_2_2_12_enabled: true
+rhel8cis_rule_2_2_13_enabled: true
+rhel8cis_rule_2_2_14_enabled: true
+rhel8cis_rule_2_2_15_enabled: true
+rhel8cis_rule_2_2_16_enabled: true
+rhel8cis_rule_2_2_17_enabled: true
+rhel8cis_rule_2_2_18_enabled: true
+rhel8cis_rule_2_2_19_enabled: true
+rhel8cis_rule_2_2_20_enabled: true
+rhel8cis_rule_2_2_21_enabled: true
+rhel8cis_rule_2_2_22_enabled: true
+
+rhel8cis_rule_2_3_1_enabled: true
+rhel8cis_rule_2_3_2_enabled: true
+rhel8cis_rule_2_3_3_enabled: true
+rhel8cis_rule_2_3_4_enabled: true
+rhel8cis_rule_2_3_5_enabled: true
+
+rhel8cis_rule_3_1_1_enabled: true
+rhel8cis_rule_3_1_2_enabled: true
+rhel8cis_rule_3_1_3_enabled: true
+
+rhel8cis_rule_3_2_1_enabled: true
+rhel8cis_rule_3_2_2_enabled: true
+rhel8cis_rule_3_2_3_enabled: true
+rhel8cis_rule_3_2_4_enabled: true
+
+rhel8cis_rule_3_3_1_enabled: true
+rhel8cis_rule_3_3_2_enabled: true
+rhel8cis_rule_3_3_3_enabled: true
+rhel8cis_rule_3_3_4_enabled: true
+rhel8cis_rule_3_3_5_enabled: true
+rhel8cis_rule_3_3_6_enabled: true
+rhel8cis_rule_3_3_7_enabled: true
+rhel8cis_rule_3_3_8_enabled: true
+rhel8cis_rule_3_3_9_enabled: true
+rhel8cis_rule_3_3_10_enabled: true
+rhel8cis_rule_3_3_11_enabled: true
+
+rhel8cis_rule_3_4_1_1_enabled: true
+rhel8cis_rule_3_4_1_2_enabled: true
+
+rhel8cis_rule_3_4_2_1_enabled: true
+rhel8cis_rule_3_4_2_2_enabled: true
+rhel8cis_rule_3_4_2_3_enabled: true
+rhel8cis_rule_3_4_2_4_enabled: true
+rhel8cis_rule_3_4_2_5_enabled: true
+
+rhel8cis_rule_4_1_1_1_enabled: true
+rhel8cis_rule_4_1_1_2_enabled: true
+rhel8cis_rule_4_1_1_3_enabled: true
+rhel8cis_rule_4_1_1_4_enabled: true
+rhel8cis_rule_4_1_1_5_enabled: true
+rhel8cis_rule_4_1_1_6_enabled: true
+rhel8cis_rule_4_1_1_7_enabled: true
+rhel8cis_rule_4_1_1_8_enabled: true
+
+rhel8cis_rule_4_1_2_1_enabled: true
+
+rhel8cis_rule_4_2_1_enabled: true
+rhel8cis_rule_4_2_2_enabled: true
+rhel8cis_rule_4_2_3_enabled: true
+rhel8cis_rule_4_2_4_enabled: true
+rhel8cis_rule_4_2_5_enabled: true
+rhel8cis_rule_4_2_6_enabled: true
+rhel8cis_rule_4_2_7_enabled: true
+rhel8cis_rule_4_2_8_enabled: true
+rhel8cis_rule_4_2_9_enabled: true
+rhel8cis_rule_4_2_10_enabled: true
+rhel8cis_rule_4_2_11_enabled: true
+rhel8cis_rule_4_2_12_enabled: true
+rhel8cis_rule_4_2_13_enabled: true
+rhel8cis_rule_4_2_14_enabled: true
+rhel8cis_rule_4_2_15_enabled: true
+rhel8cis_rule_4_2_16_enabled: true
+rhel8cis_rule_4_2_17_enabled: true
+rhel8cis_rule_4_2_18_enabled: true
+rhel8cis_rule_4_2_19_enabled: true
+rhel8cis_rule_4_2_20_enabled: true
+rhel8cis_rule_4_2_21_enabled: true
+rhel8cis_rule_4_2_22_enabled: true
+
+rhel8cis_rule_4_3_1_enabled: true
+rhel8cis_rule_4_3_2_enabled: true
+rhel8cis_rule_4_3_3_enabled: true
+rhel8cis_rule_4_3_4_enabled: true
+rhel8cis_rule_4_3_5_enabled: true
+rhel8cis_rule_4_3_6_enabled: true
+rhel8cis_rule_4_3_7_enabled: true
+
+rhel8cis_rule_4_4_1_1_enabled: true
+rhel8cis_rule_4_4_1_2_enabled: true
+
+rhel8cis_rule_4_4_2_1_enabled: true
+rhel8cis_rule_4_4_2_2_enabled: true
+rhel8cis_rule_4_4_2_3_enabled: true
+rhel8cis_rule_4_4_2_4_enabled: true
+rhel8cis_rule_4_4_2_5_enabled: true
+
+rhel8cis_rule_4_4_3_1_1_enabled: true
+rhel8cis_rule_4_4_3_1_2_enabled: true
+rhel8cis_rule_4_4_3_1_3_enabled: true
+
+rhel8cis_rule_4_4_3_2_1_enabled: true
+rhel8cis_rule_4_4_3_2_2_enabled: true
+rhel8cis_rule_4_4_3_2_3_enabled: true
+rhel8cis_rule_4_4_3_2_4_enabled: true
+rhel8cis_rule_4_4_3_2_5_enabled: true
+rhel8cis_rule_4_4_3_2_6_enabled: true
+rhel8cis_rule_4_4_3_2_7_enabled: true
+
+rhel8cis_rule_4_4_3_3_1_enabled: true
+rhel8cis_rule_4_4_3_3_2_enabled: true
+rhel8cis_rule_4_4_3_3_3_enabled: true
+
+rhel8cis_rule_4_4_3_4_1_enabled: true
+rhel8cis_rule_4_4_3_4_2_enabled: true
+rhel8cis_rule_4_4_3_4_3_enabled: true
+rhel8cis_rule_4_4_3_4_4_enabled: true
+
+rhel8cis_rule_4_5_1_1_enabled: true
+rhel8cis_rule_4_5_1_2_enabled: true
+rhel8cis_rule_4_5_1_3_enabled: true
+rhel8cis_rule_4_5_1_4_enabled: true
+rhel8cis_rule_4_5_1_5_enabled: true
+
+rhel8cis_rule_4_5_2_1_enabled: true
+rhel8cis_rule_4_5_2_2_enabled: true
+rhel8cis_rule_4_5_2_3_enabled: true
+rhel8cis_rule_4_5_2_4_enabled: true
+
+rhel8cis_rule_4_5_3_1_enabled: true
+rhel8cis_rule_4_5_3_2_enabled: true
+rhel8cis_rule_4_5_3_3_enabled: true
+
+rhel8cis_rule_5_1_1_1_enabled: true
+rhel8cis_rule_5_1_1_2_enabled: true
+rhel8cis_rule_5_1_1_3_enabled: true
+rhel8cis_rule_5_1_1_4_enabled: true
+rhel8cis_rule_5_1_1_5_enabled: true
+rhel8cis_rule_5_1_1_6_enabled: true
+rhel8cis_rule_5_1_1_7_enabled: true
+
+rhel8cis_rule_5_1_2_1_1_enabled: true
+rhel8cis_rule_5_1_2_1_2_enabled: true
+rhel8cis_rule_5_1_2_1_3_enabled: true
+rhel8cis_rule_5_1_2_1_4_enabled: true
+
+rhel8cis_rule_5_1_2_2_enabled: true
+rhel8cis_rule_5_1_2_3_enabled: true
+rhel8cis_rule_5_1_2_4_enabled: true
+rhel8cis_rule_5_1_2_5_enabled: true
+rhel8cis_rule_5_1_2_6_enabled: true
+
+rhel8cis_rule_5_1_3_enabled: true
+rhel8cis_rule_5_1_4_enabled: true
+
+rhel8cis_rule_5_2_1_1_enabled: true
+rhel8cis_rule_5_2_1_2_enabled: true
+rhel8cis_rule_5_2_1_3_enabled: true
+rhel8cis_rule_5_2_1_4_enabled: true
+
+rhel8cis_rule_5_2_2_1_enabled: true
+rhel8cis_rule_5_2_2_2_enabled: true
+rhel8cis_rule_5_2_2_3_enabled: true
+rhel8cis_rule_5_2_2_4_enabled: true
+
+rhel8cis_rule_5_2_3_1_enabled: true
+rhel8cis_rule_5_2_3_2_enabled: true
+rhel8cis_rule_5_2_3_3_enabled: true
+rhel8cis_rule_5_2_3_4_enabled: true
+rhel8cis_rule_5_2_3_5_enabled: true
+rhel8cis_rule_5_2_3_6_enabled: true
+rhel8cis_rule_5_2_3_7_enabled: true
+rhel8cis_rule_5_2_3_8_enabled: true
+rhel8cis_rule_5_2_3_9_enabled: true
+rhel8cis_rule_5_2_3_10_enabled: true
+rhel8cis_rule_5_2_3_11_enabled: true
+rhel8cis_rule_5_2_3_12_enabled: true
+rhel8cis_rule_5_2_3_13_enabled: true
+rhel8cis_rule_5_2_3_14_enabled: true
+rhel8cis_rule_5_2_3_15_enabled: true
+rhel8cis_rule_5_2_3_16_enabled: true
+rhel8cis_rule_5_2_3_17_enabled: true
+rhel8cis_rule_5_2_3_18_enabled: true
+rhel8cis_rule_5_2_3_19_enabled: true
+rhel8cis_rule_5_2_3_20_enabled: true
+rhel8cis_rule_5_2_3_21_enabled: true
+
+rhel8cis_rule_5_2_4_1_enabled: true
+rhel8cis_rule_5_2_4_2_enabled: true
+rhel8cis_rule_5_2_4_3_enabled: true
+rhel8cis_rule_5_2_4_4_enabled: true
+rhel8cis_rule_5_2_4_5_enabled: true
+rhel8cis_rule_5_2_4_6_enabled: true
+rhel8cis_rule_5_2_4_7_enabled: true
+rhel8cis_rule_5_2_4_8_enabled: true
+rhel8cis_rule_5_2_4_9_enabled: true
+rhel8cis_rule_5_2_4_10_enabled: true
+
+rhel8cis_rule_5_3_1_enabled: true
+rhel8cis_rule_5_3_2_enabled: true
+rhel8cis_rule_5_3_3_enabled: true
+
+rhel8cis_rule_6_1_1_enabled: true
+rhel8cis_rule_6_1_2_enabled: true
+rhel8cis_rule_6_1_3_enabled: true
+rhel8cis_rule_6_1_4_enabled: true
+rhel8cis_rule_6_1_5_enabled: true
+rhel8cis_rule_6_1_6_enabled: true
+rhel8cis_rule_6_1_7_enabled: true
+rhel8cis_rule_6_1_8_enabled: true
+rhel8cis_rule_6_1_9_enabled: true
+rhel8cis_rule_6_1_10_enabled: true
+rhel8cis_rule_6_1_11_enabled: true
+rhel8cis_rule_6_1_12_enabled: true
+rhel8cis_rule_6_1_13_enabled: true
+rhel8cis_rule_6_1_14_enabled: true
+
+rhel8cis_rule_6_2_1_enabled: true
+rhel8cis_rule_6_2_2_enabled: true
+rhel8cis_rule_6_2_3_enabled: true
+rhel8cis_rule_6_2_4_enabled: true
+rhel8cis_rule_6_2_5_enabled: true
+rhel8cis_rule_6_2_6_enabled: true
+rhel8cis_rule_6_2_7_enabled: true
+rhel8cis_rule_6_2_8_enabled: true
+rhel8cis_rule_6_2_9_enabled: true
+rhel8cis_rule_6_2_10_enabled: true
+rhel8cis_rule_6_2_11_enabled: true
+
+rhel8cis_rule_1_1_1_6_force: false
+rhel8cis_rule_1_1_1_7_force: false
+rhel8cis_rule_1_1_1_8_force: false
+
+rhel8cis_rule_1_1_2_3_1_force: false
+
+rhel8cis_rule_1_1_2_4_1_force: false
+
+rhel8cis_rule_1_1_2_5_1_force: false
+
+rhel8cis_rule_1_1_2_6_1_force: false
+
+rhel8cis_rule_1_1_2_7_1_force: false
+
+rhel8cis_rule_1_2_3_force: false
+
+rhel8cis_rule_1_5_1_5_force: false
+
+rhel8cis_rule_1_8_1_force: false
+rhel8cis_rule_1_8_6_force: false
+rhel8cis_rule_1_8_7_force: false
+
+rhel8cis_rule_2_2_1_force: false
+rhel8cis_rule_2_2_2_force: false
+rhel8cis_rule_2_2_20_force: false
+
+rhel8cis_rule_2_3_2_force: false
+
+rhel8cis_rule_3_1_3_force: false
+
+rhel8cis_rule_3_2_1_force: false
+rhel8cis_rule_3_2_2_force: false
+rhel8cis_rule_3_2_3_force: false
+rhel8cis_rule_3_2_4_force: false
+
+rhel8cis_rule_4_2_8_force: false
+
+rhel8cis_rule_4_3_4_force: false
+
+rhel8cis_rule_4_4_3_1_3_force: false
+
+rhel8cis_rule_4_5_3_1_force: false
+
+rhel8cis_rule_5_2_1_1_force: false
+rhel8cis_rule_5_2_1_2_force: false
+rhel8cis_rule_5_2_1_3_force: false
+rhel8cis_rule_5_2_1_4_force: false
+
+rhel8cis_rule_5_2_2_1_force: false
+rhel8cis_rule_5_2_2_2_force: false
+rhel8cis_rule_5_2_2_3_force: false
+rhel8cis_rule_5_2_2_4_force: false
+
+rhel8cis_rule_5_2_3_1_force: false
+rhel8cis_rule_5_2_3_2_force: false
+rhel8cis_rule_5_2_3_3_force: false
+rhel8cis_rule_5_2_3_4_force: false
+rhel8cis_rule_5_2_3_5_force: false
+rhel8cis_rule_5_2_3_6_force: false
+rhel8cis_rule_5_2_3_7_force: false
+rhel8cis_rule_5_2_3_8_force: false
+rhel8cis_rule_5_2_3_9_force: false
+rhel8cis_rule_5_2_3_10_force: false
+rhel8cis_rule_5_2_3_11_force: false
+rhel8cis_rule_5_2_3_12_force: false
+rhel8cis_rule_5_2_3_13_force: false
+rhel8cis_rule_5_2_3_14_force: false
+rhel8cis_rule_5_2_3_15_force: false
+rhel8cis_rule_5_2_3_16_force: false
+rhel8cis_rule_5_2_3_17_force: false
+rhel8cis_rule_5_2_3_18_force: false
+rhel8cis_rule_5_2_3_19_force: false
+rhel8cis_rule_5_2_3_20_force: false
+rhel8cis_rule_5_2_3_21_force: false
+
+rhel8cis_rule_5_2_4_1_force: false
+rhel8cis_rule_5_2_4_2_force: false
+rhel8cis_rule_5_2_4_3_force: false
+rhel8cis_rule_5_2_4_4_force: false
+rhel8cis_rule_5_2_4_5_force: false
+rhel8cis_rule_5_2_4_6_force: false
+rhel8cis_rule_5_2_4_7_force: false
+rhel8cis_rule_5_2_4_8_force: false
+rhel8cis_rule_5_2_4_9_force: false
+rhel8cis_rule_5_2_4_10_force: false
+
+rhel8cis_rule_6_1_14_force: false
+
+rhel8cis_tmp_mount_opts:
+  - mode=1777
+  - strictatime
+  - nodev
+  - nosuid
+  - noexec
+
+rhel8cis_dev_shm_mount_opts:
+  - mode=1777
+  - strictatime
+  - nodev
+  - nosuid
+  - noexec
+
+rhel8cis_home_mount_opts:
+  - defaults
+  - nodev
+  - nosuid
+
+rhel8cis_var_mount_opts:
+  - defaults
+  - nodev
+  - nosuid
+
+rhel8cis_var_tmp_mount_opts:
+  - defaults
+  - nodev
+  - nosuid
+  - noexec
+
+rhel8cis_var_log_mount_opts:
+  - defaults
+  - nodev
+  - nosuid
+  - noexec
+
+rhel8cis_var_log_audit_mount_opts:
+  - defaults
+  - nodev
+  - nosuid
+  - noexec
+
+rhel8cis_force_reset_bootloader_password: false
+
+rhel8cis_selinux_policy: targeted
+rhel8cis_selinux_mode: enforcing
+
+rhel8cis_crypto_policy: DEFAULT
+rhel8cis_crypto_subpolicies:
+  - NO-SHA1
+  - NO-SSHCBC
+  - NO-WEAKMAC
+
+rhel8cis_use_motd: true
+rhel8cis_motd_banner: "Authorized users only.\n\nAll activity may be monitored and reported.\n\n"
+
+rhel8cis_use_issue: false
+rhel8cis_issue_banner: "Authorized users only.\n\nAll activity may be monitored and reported.\n\n"
+
+rhel8cis_use_issue_net: false
+rhel8cis_issue_net_banner: "Authorized users only.\n\nAll activity may be monitored and reported.\n\n"
+
+rhel8cis_gdm_banner_text: "Authorized users only. All activity may be monitored and reported."
+
+rhel8cis_chrony_servers:
+  - name: 0.pool.ntp.org
+    options:
+      - minpoll 8
+  - name: 1.pool.ntp.org
+    options:
+      - minpoll 8
+  - name: 2.pool.ntp.org
+    options:
+      - minpoll 8
+  - name: 3.pool.ntp.org
+    options:
+      - minpoll 8
+
+rhel8cis_autofs_needed: false
+rhel8cis_avahi_needed: false
+rhel8cis_dhcp_server_needed: false
+rhel8cis_bind_needed: false
+rhel8cis_dnsmasq_needed: false
+rhel8cis_samba_needed: false
+rhel8cis_vsftpd_needed: false
+rhel8cis_dovecot_needed: false
+rhel8cis_cyrus_imapd_needed: false
+rhel8cis_nfs_utils_needed: false
+rhel8cis_ypserv_needed: false
+rhel8cis_cups_needed: false
+rhel8cis_rpcbind_needed: false
+rhel8cis_rsync_daemon_needed: false
+rhel8cis_net_snmp_needed: false
+rhel8cis_telnet_server_needed: false
+rhel8cis_tftp_server_needed: false
+rhel8cis_squid_needed: false
+rhel8cis_httpd_needed: false
+rhel8cis_nginx_needed: false
+rhel8cis_xinetd_needed: false
+rhel8cis_xorg_needed: false
+rhel8cis_postfix_needed: false
+
+rhel8cis_ipv6_needed: false
+
+rhel8cis_bluez_needed: "{{ _rhel8cis_default_bluez_needed }}"
+
+rhel8cis_firewall: firewalld
+
+rhel8cis_sshd_allow_users: []
+rhel8cis_sshd_allow_groups:
+  - wheel
+rhel8cis_sshd_deny_users: []
+rhel8cis_sshd_deny_groups: []
+
+rhel8cis_sshd_removed_ciphers:
+  - 3des-cbc
+  - aes128-cbc
+  - aes192-cbc
+  - aes256-cbc
+  - rijndael-cbc@lysator.liu.se
+
+rhel8cis_sshd_removed_kex_algorithms:
+  - diffie-hellman-group1-sha1
+  - diffie-hellman-group14-sha1
+  - diffie-hellman-group-exchange-sha1
+
+rhel8cis_sshd_removed_macs:
+  - hmac-md5
+  - hmac-md5-96
+  - hmac-ripemd160
+  - hmac-sha1-96
+  - umac-64@openssh.com
+  - hmac-md5-etm@openssh.com
+  - hmac-md5-96-etm@openssh.com
+  - hmac-ripemd160-etm@openssh.com
+  - hmac-sha1-96-etm@openssh.com
+  - umac-64-etm@openssh.com
+
+rhel8cis_sshd_client_alive_interval: 15
+rhel8cis_sshd_client_alive_count_max: 3
+rhel8cis_sshd_login_grace_time: 60
+rhel8cis_sshd_max_auth_tries: 4
+rhel8cis_sshd_max_sessions: 10
+rhel8cis_sshd_max_startups_before_dropping: 10
+rhel8cis_sshd_max_startups_drop_percentage: 30
+rhel8cis_sshd_max_startups_absolute_maximum: 60
+
+rhel8cis_sshd_log_level: INFO
+
+rhel8cis_sudo_log_file: /var/log/sudo.log
+
+rhel8cis_sudo_authentication_timeout: 15
+
+rhel8cis_su_group_name: su
+rhel8cis_su_group_members:
+  - root
+
+rhel8cis_lockout_failed_attempts: 5
+rhel8cis_lockout_unlock_time: 900
+rhel8cis_lockout_root_unlock_time: 900
+
+rhel8cis_password_min_changed_characters: 2
+rhel8cis_password_min_length: 14
+rhel8cis_password_max_repeat_characters: 3
+rhel8cis_password_max_sequential_characters: 3
+
+rhel8cis_passwords_remembered: 24
+rhel8cis_password_expiration_days: 365
+rhel8cis_password_expiration_warning_days: 7
+rhel8cis_inactive_password_lock_days: 30
+
+rhel8cis_syslog: rsyslog
+rhel8cis_remote_log_server: loghost.example.com
+rhel8cis_journal_server_key_file: /etc/ssl/private/journal-upload.pem
+rhel8cis_journal_server_cert_file: /etc/ssl/certs/journal-upload.pem
+rhel8cis_journal_server_trusted_cert_file: /etc/ssl/ca/trusted.pem
+
+rhel8cis_journald_systemmaxuse: 10M
+rhel8cis_journald_systemkeepfree: 100G
+rhel8cis_journald_runtimemaxuse: 10M
+rhel8cis_journald_runtimekeepfree: 100G
+rhel8cis_journald_maxfilesec: 1month
+
+rhel8cis_logrotate_frequency: daily
+
+rhel8cis_audit_backlog_limit: 8192
+rhel8cis_auditd_max_log_file: 10
+
+rhel8cis_auditd_disk_full_action: halt
+rhel8cis_auditd_disk_error_action: halt
+
+rhel8cis_aide_cron_file: /etc/cron.d/aide
+rhel8cis_aide_cron_hour: 5
+rhel8cis_aide_cron_minute: 0

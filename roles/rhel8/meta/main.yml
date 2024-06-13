@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: Jim Tarpley
+  namespace: trippsc2
+  role_name: rhel8
+  description: This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
+
+  license: MIT
+
+  min_ansible_version: '2.14'
+
+  platforms:
+    - name: EL
+      versions:
+        - '8'
+
+collections:
+  - ansible.posix
+  - community.general
+
+dependencies: []

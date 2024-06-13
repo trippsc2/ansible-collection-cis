@@ -1,0 +1,13 @@
+---
+- name: 1.8.1 | Ensure GNOME Display Manager is removed
+  when:
+    - _rhel8cis_server
+    - rhel8cis_rule_1_8_1_enabled
+    - _rhel8cis_level2 or rhel8cis_rule_1_8_1_force
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - gdm
+    state: absent
+
+# 1.8.2-10 not implemented yet

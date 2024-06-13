@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+  cachier: machine
+  parallel: true
+platforms:
+  - name: dc
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+  - name: ms
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+  - name: standalone
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+  - name: template
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+provisioner:
+  name: ansible
+  inventory:
+    links:
+      hosts: ./hosts
+      host_vars: ./host_vars/
+      group_vars: ./group_vars/
+verifier:
+  name: ansible

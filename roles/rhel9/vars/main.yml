@@ -1,0 +1,86 @@
+---
+_rhel9cis_level2: "{{ rhel9cis_level > 1 }}"
+
+_rhel9cis_server: "{{ rhel9cis_machine_type == 'server' }}"
+_rhel9cis_workstation: "{{ rhel9cis_machine_type == 'workstation' }}"
+
+_rhel9cis_server_level2: "{{ _rhel9cis_server and _rhel9cis_level2 }}"
+_rhel9cis_workstation_level2: "{{ _rhel9cis_workstation and _rhel9cis_level2 }}"
+
+_rhel9cis_warning_count: 0
+_rhel9cis_warning_list: []
+
+_rhel9cis_expected_crypto_policy: >-
+  {{ rhel9cis_crypto_policy }}{% if rhel9cis_crypto_subpolicies | length > 0 %}:{{ rhel9cis_crypto_subpolicies | join(':') }}{% endif %}
+
+_rhel9cis_default_bluez_needed: "{{ _rhel9cis_workstation }}"
+
+_rhel9cis_avahi_state: "{{ 'latest' if rhel9cis_avahi_needed else 'absent' }}"
+_rhel9cis_dhcp_server_state: "{{ 'latest' if rhel9cis_dhcp_server_needed else 'absent' }}"
+_rhel9cis_bind_state: "{{ 'latest' if rhel9cis_bind_needed else 'absent' }}"
+_rhel9cis_dnsmasq_state: "{{ 'latest' if rhel9cis_dnsmasq_needed else 'absent' }}"
+_rhel9cis_samba_state: "{{ 'latest' if rhel9cis_samba_needed else 'absent' }}"
+_rhel9cis_vsftpd_state: "{{ 'latest' if rhel9cis_vsftpd_needed else 'absent' }}"
+_rhel9cis_dovecot_state: "{{ 'latest' if rhel9cis_dovecot_needed else 'absent' }}"
+_rhel9cis_cyrus_imapd_state: "{{ 'latest' if rhel9cis_cyrus_imapd_needed else 'absent' }}"
+_rhel9cis_nfs_utils_state: "{{ 'latest' if rhel9cis_nfs_utils_needed else 'absent' }}"
+_rhel9cis_cups_state: "{{ 'latest' if rhel9cis_cups_needed else 'absent' }}"
+_rhel9cis_rpcbind_state: "{{ 'latest' if rhel9cis_rpcbind_needed else 'absent' }}"
+_rhel9cis_rsync_daemon_state: "{{ 'latest' if rhel9cis_rsync_daemon_needed else 'absent' }}"
+_rhel9cis_net_snmp_state: "{{ 'latest' if rhel9cis_net_snmp_needed else 'absent' }}"
+_rhel9cis_telnet_server_state: "{{ 'latest' if rhel9cis_telnet_server_needed else 'absent' }}"
+_rhel9cis_tftp_server_state: "{{ 'latest' if rhel9cis_tftp_server_needed else 'absent' }}"
+_rhel9cis_squid_state: "{{ 'latest' if rhel9cis_squid_needed else 'absent' }}"
+_rhel9cis_httpd_state: "{{ 'latest' if rhel9cis_httpd_needed else 'absent' }}"
+_rhel9cis_nginx_state: "{{ 'latest' if rhel9cis_nginx_needed else 'absent' }}"
+_rhel9cis_postfix_state: "{{ 'latest' if rhel9cis_postfix_needed else 'absent' }}"
+
+_rhel9cis_firewalld_state: "{{ 'latest' if rhel9cis_firewall == 'firewalld' else 'absent' }}"
+
+_rhel9cis_nftables_service_state: "{{ 'started' if rhel9cis_firewall == 'nftables' else 'stopped' }}"
+_rhel9cis_nftables_service_enabled: "{{ rhel9cis_firewall == 'nftables' }}"
+_rhel9cis_nftables_service_masked: "{{ rhel9cis_firewall != 'nftables' }}"
+
+_rhel9cis_rsyslog_state: "{{ 'latest' if rhel9cis_syslog == 'rsyslog' else 'absent' }}"
+_rhel9cis_systemd_journal_remote_state: "{{ 'latest' if rhel9cis_syslog == 'journald' else 'absent' }}"
+
+_rhel9cis_rule_4_1_3_1_enabled: >-
+  {{ rhel9cis_rule_4_1_3_1_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_1_force) }}
+_rhel9cis_rule_4_1_3_2_enabled: >-
+  {{ rhel9cis_rule_4_1_3_2_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_2_force) }}
+_rhel9cis_rule_4_1_3_3_enabled: >-
+  {{ rhel9cis_rule_4_1_3_3_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_3_force) }}
+_rhel9cis_rule_4_1_3_4_enabled: >-
+  {{ rhel9cis_rule_4_1_3_4_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_4_force) }}
+_rhel9cis_rule_4_1_3_5_enabled: >-
+  {{ rhel9cis_rule_4_1_3_5_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_5_force) }}
+_rhel9cis_rule_4_1_3_6_enabled: >-
+  {{ rhel9cis_rule_4_1_3_6_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_6_force) }}
+_rhel9cis_rule_4_1_3_7_enabled: >-
+  {{ rhel9cis_rule_4_1_3_7_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_7_force) }}
+_rhel9cis_rule_4_1_3_8_enabled: >-
+  {{ rhel9cis_rule_4_1_3_8_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_8_force) }}
+_rhel9cis_rule_4_1_3_9_enabled: >-
+  {{ rhel9cis_rule_4_1_3_9_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_9_force) }}
+_rhel9cis_rule_4_1_3_10_enabled: >-
+  {{ rhel9cis_rule_4_1_3_10_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_10_force) }}
+_rhel9cis_rule_4_1_3_11_enabled: >-
+  {{ rhel9cis_rule_4_1_3_11_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_11_force) }}
+_rhel9cis_rule_4_1_3_12_enabled: >-
+  {{ rhel9cis_rule_4_1_3_12_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_12_force) }}
+_rhel9cis_rule_4_1_3_13_enabled: >-
+  {{ rhel9cis_rule_4_1_3_13_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_13_force) }}
+_rhel9cis_rule_4_1_3_14_enabled: >-
+  {{ rhel9cis_rule_4_1_3_14_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_14_force) }}
+_rhel9cis_rule_4_1_3_15_enabled: >-
+  {{ rhel9cis_rule_4_1_3_15_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_15_force) }}
+_rhel9cis_rule_4_1_3_16_enabled: >-
+  {{ rhel9cis_rule_4_1_3_16_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_16_force) }}
+_rhel9cis_rule_4_1_3_17_enabled: >-
+  {{ rhel9cis_rule_4_1_3_17_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_17_force) }}
+_rhel9cis_rule_4_1_3_18_enabled: >-
+  {{ rhel9cis_rule_4_1_3_18_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_18_force) }}
+_rhel9cis_rule_4_1_3_19_enabled: >-
+  {{ rhel9cis_rule_4_1_3_19_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_19_force) }}
+_rhel9cis_rule_4_1_3_20_enabled: >-
+  {{ rhel9cis_rule_4_1_3_20_enabled and (_rhel9cis_level2 or rhel9cis_rule_4_1_3_20_force) }}

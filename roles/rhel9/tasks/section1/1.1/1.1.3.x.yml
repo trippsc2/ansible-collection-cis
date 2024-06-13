@@ -1,0 +1,58 @@
+---
+- name: 1.1.3.x | Configure /var
+  when:
+    - '"/var" not in _rhel9cis_mount_names'
+  block:
+    - name: 1.1.3.1 | Ensure /var is a separate partition
+      when:
+        - rhel9cis_rule_1_1_3_1_enabled
+        - _rhel9cis_level2 or rhel9cis_rule_1_1_3_1_force
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.3.1'
+        _rhel9cis_warning_description: /var is not a separate partition.
+
+    - name: 1.1.3.2 | Ensure nodev option set on /var partition
+      when:
+        - rhel9cis_rule_1_1_3_2_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.3.2'
+        _rhel9cis_warning_description: /var is not a separate partition.
+    
+    - name: 1.1.3.3 | Ensure nosuid option set on /var partition'
+      when:
+        - rhel9cis_rule_1_1_3_3_enabled
+      ansible.builtin.include_tasks: ../../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '1.1.3.3'
+        _rhel9cis_warning_description: /var is not a separate partition.
+
+- name: 1.1.3.x | Configure /var
+  when:
+    - '"/var" in _rhel9cis_mount_names'
+    - rhel9cis_rule_1_1_3_1_enabled or
+      rhel9cis_rule_1_1_3_2_enabled or
+      rhel9cis_rule_1_1_3_3_enabled
+  block:
+    - name: '1.1.3.x | Set existing /var mount configuration fact'
+      ansible.builtin.set_fact:
+        _rhel9cis_existing_var_mount: >-
+          {{ ansible_mounts |
+              selectattr('mount', 'equalto', '/var') |
+              list |
+              first }}
+
+    - name: |
+        1.1.3.1 | Ensure /var is a separate partition
+        1.1.3.2 | Ensure nodev option set on /var partition
+        1.1.3.3 | Ensure nosuid option set on /var partition
+      become: true
+      ansible.posix.mount:
+        src: "{{ _rhel9cis_existing_var_mount.device }}"
+        name: /var
+        fstype: "{{ _rhel9cis_existing_var_mount.fstype }}"
+        opts: "{{ rhel9cis_var_mount_opts | join(',') }}"
+        state: present
+      notify:
+        - _rhel9cis_reboot

@@ -1,0 +1,62 @@
+---
+- name: 1.1.1.1 | Ensure squashfs kernel module is not available
+  when:
+    - rhel9cis_rule_1_1_1_1_enabled
+    - _rhel9cis_level2 or rhel9cis_rule_1_1_1_1_force
+  become: true
+  block:
+    - name: 1.1.1.1 | Ensure squashfs kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/squashfs.conf
+        regexp: "^(#)?install squashfs"
+        line: install squashfs /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.1 | Ensure squashfs kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/squashfs.conf
+        regexp: "^(#)?blacklist squashfs(\\s|$)"
+        line: blacklist squashfs
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.1 | Ensure squashfs kernel module is not available | Disable module
+      community.general.modprobe:
+        name: squashfs
+        state: absent
+
+- name: 1.1.1.2 | Ensure udf kernel module is not available
+  when:
+    - rhel9cis_rule_1_1_1_2_enabled
+    - _rhel9cis_level2 or rhel9cis_rule_1_1_1_2_force
+  become: true
+  block:
+    - name: 1.1.1.2 | Ensure udf kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/udf.conf
+        regexp: "^(#)?install udf"
+        line: install udf /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 1.1.1.2 | Ensure udf kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/udf.conf
+        regexp: "^(#)?blacklist udf(\\s|$)"
+        line: blacklist udf
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 1.1.1.2 | Ensure udf kernel module is not available | Disable module
+      community.general.modprobe:
+        name: udf
+        state: absent

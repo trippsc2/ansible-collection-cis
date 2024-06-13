@@ -1,0 +1,5 @@
+---
+ansible_become_password: vagrant
+
+rhel8cis_bootloader_password: password
+rhel8cis_skip_reboot: false

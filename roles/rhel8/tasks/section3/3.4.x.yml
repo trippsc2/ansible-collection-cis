@@ -1,0 +1,101 @@
+---
+- name: 3.4.1.1 | Ensure nftables is installed
+  when:
+    - rhel8cis_rule_3_4_1_1_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - nftables
+    state: present
+
+- name: 3.4.1.2 | Ensure a single firewall configuration utility is in use
+  when:
+    - rhel8cis_rule_3_4_1_2_enabled
+  become: true
+  block:
+    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | firewalld package
+      ansible.builtin.dnf:
+        name:
+          - firewalld
+        state: "{{ _rhel8cis_firewalld_state }}"
+
+    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | nftables service
+      ansible.builtin.systemd_service:
+        name: nftables.service
+        state: "{{ _rhel8cis_nftables_service_state }}"
+        enabled: "{{ _rhel8cis_nftables_service_enabled }}"
+        masked: "{{ _rhel8cis_nftables_service_masked }}"
+
+- name: 3.4.2.1 | Ensure nftables base chains exist
+  when:
+    - rhel8cis_rule_3_4_2_1_enabled
+    - rhel8cis_firewall == 'firewalld'
+  ansible.builtin.debug:
+    msg: "Rule 3.4.2.1 is implemented by firewalld automatically."
+
+- name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured
+  when:
+    - rhel8cis_rule_3_4_2_2_enabled
+  become: true
+  block:
+    - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured | firewalld
+      when:
+        - rhel8cis_firewall == 'firewalld'
+      block:
+        - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured | firewalld interface
+          ansible.posix.firewalld:
+            zone: trusted
+            interface: lo
+            permanent: true
+            state: enabled
+
+        - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured | firewalld block IPv4 loopback rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+            permanent: true
+            state: enabled
+        
+        - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured | firewalld block IPv4 loopback zone rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv4 source address="127.0.0.1" destination not address="127.0.0.1" drop'
+            zone: trusted
+            permanent: true
+            state: enabled
+
+        - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured | firewalld block IPv6 loopback rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv6 source address="::1" destination not address="::1" drop'
+            permanent: true
+            state: enabled
+        
+        - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured | firewalld block IPv6 loopback zone rule
+          ansible.posix.firewalld:
+            rich_rule: 'rule family=ipv6 source address="::1" destination not address="::1" drop'
+            zone: trusted
+            permanent: true
+            state: enabled
+
+- name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports
+  when:
+    - rhel8cis_rule_3_4_2_3_enabled
+    - rhel8cis_firewall == 'firewalld'
+  block:
+    - name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports | Add warning
+      become: true
+      ansible.builtin.shell: |-
+        systemctl is-enabled firewalld.service | grep -q 'enabled' && firewall-cmd --list-all --zone="$(firewall-cmd --list-all | awk '/\(active\)/ { print $1 }')" | grep -P -- '^\h*(services:|ports:)'
+      changed_when: false
+      failed_when: false
+      register: _rhel8cis_firewalld_services
+      tags:
+        - always
+        - skip_ansible_lint
+      
+    - name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports | Add warning
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel8cis_warning_rule: '3.4.2.3'
+        _rhel8cis_warning_description: 
+          - Remediation cannot be automated. Please review the output below for unnecessary firewalld services and ports.
+          - ''
+          - '{{ _rhel8cis_firewalld_services.stdout_lines }}'

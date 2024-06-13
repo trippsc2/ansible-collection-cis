@@ -1,0 +1,37 @@
+---
+- name: 2.3.1 | Ensure telnet client is not installed
+  when:
+    - rhel9cis_rule_2_3_1_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - telnet
+    state: absent
+
+- name: 2.3.2 | Ensure LDAP client is not installed
+  when:
+    - rhel9cis_rule_2_3_2_enabled
+    - _rhel9cis_level2 or rhel9cis_rule_2_3_2_force
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - openldap-clients
+    state: absent
+
+- name: 2.3.3 | Ensure TFTP client is not installed
+  when:
+    - rhel9cis_rule_2_3_3_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - tftp
+    state: absent
+
+- name: 2.3.4 | Ensure FTP client is not installed
+  when:
+    - rhel9cis_rule_2_3_4_enabled
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - ftp
+    state: absent

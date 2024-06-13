@@ -1,0 +1,11 @@
+---
+- name: Add manual task warning
+  ansible.builtin.set_fact:
+    _rhel9cis_warning_count: "{{ _rhel9cis_warning_count | int + 1 }}"
+    _rhel9cis_warning_list: >-
+      {{ _rhel9cis_warning_list + [
+          {
+            'rule_id': _rhel9cis_warning_rule,
+            'description': _rhel9cis_warning_description
+          }
+        ] }}
