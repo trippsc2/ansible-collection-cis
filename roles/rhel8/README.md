@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel8
-Version: 1.0.1
+Version: 1.0.2
 
 This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
 
@@ -476,8 +476,8 @@ This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
 ### Options for rhel8cis_chrony_servers
 |Option|Description|Type|Required|Choices|Default|
 |---|---|---|---|---|---|
-| name | <p>The NTP server name.</p> | str | yes | str | yes |  |  |
-| options | <p>The NTP server options.</p> | list of 'str' | no | list of 'str' | no |  |  |
+| name | <p>The NTP server name.</p> | str | yes |  |  |
+| options | <p>The NTP server options.</p> | list of 'str' | no |  |  |
 
 
 ## License
