@@ -101,6 +101,24 @@
     fail_msg: "The variable 'w2022cis_inactivity_timeout_in_seconds' must be set to between 0 and 900.  Value: {{ w2022cis_inactivity_timeout_in_seconds }}"
     success_msg: "The variable 'w2022cis_inactivity_timeout_in_seconds' is set to between 0 and 900.  Value: {{ w2022cis_inactivity_timeout_in_seconds }}"
 
+- name: "Validate | 2.3.7.4 | L1 | Configure 'Interactive logon: Message text for users attempting to log on'"
+  when:
+    - w2022cis_rule_2_3_7_4_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_legal_notice_text is defined
+    fail_msg: "The variable 'w2022cis_legal_notice_text' must be defined."
+    success_msg: "The variable 'w2022cis_legal_notice_text' is defined."
+
+- name: "Validate | 2.3.7.5 | L1 | Configure 'Interactive logon: Message title for users attempting to log on'"
+  when:
+    - w2022cis_rule_2_3_7_5_enabled
+  ansible.builtin.assert:
+    that:
+      - w2022cis_legal_notice_caption is defined
+    fail_msg: "The variable 'w2022cis_legal_notice_caption' must be defined."
+    success_msg: "The variable 'w2022cis_legal_notice_caption' is defined."
+
 - name: "Validate | 2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only)"
   when:
     - w2022cis_rule_2_3_7_6_enabled
