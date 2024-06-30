@@ -771,12 +771,12 @@ argument_specs:
         default: 900
         description:
           - The inactivity timeout in seconds.
-      w2022cis_login_message_text:
+      w2019cis_login_message_text:
         type: str
         required: false
         description:
           - The legal notice text.
-      w2022cis_login_message_title:
+      w2019cis_login_message_title:
         type: str
         required: false
         description:

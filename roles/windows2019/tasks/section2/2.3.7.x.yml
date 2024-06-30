@@ -32,7 +32,7 @@
   ansible.windows.win_regedit:
     path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
     name: LegalNoticeText
-    data: "{{ w2022cis_login_message_text }}"
+    data: "{{ w2019cis_login_message_text }}"
     type: string
 
 - name: "2.3.7.5 | L1 | Configure 'Interactive logon: Message title for users attempting to log on'"
@@ -41,7 +41,7 @@
   ansible.windows.win_regedit:
     path: HKLM:\Software\Microsoft\Windows\Currentversion\Policies\System
     name: LegalNoticeCaption
-    data: "{{ w2022cis_login_message_title }}"
+    data: "{{ w2019cis_login_message_title }}"
     type: string
 
 - name: "2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only)"
