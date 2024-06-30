@@ -12,16 +12,27 @@ platforms:
     box: jtarpley/rocky9_base
     memory: 2048
     cpus: 2
+    groups:
+      - subjects
   - name: workstation
     box: jtarpley/rocky9_ws_base
     memory: 2048
     cpus: 2
+    groups:
+      - subjects
 provisioner:
   name: ansible
   inventory:
-    links:
-      hosts: ./hosts
-      host_vars: ./host_vars/
-      group_vars: ./group_vars/
+    group_vars:
+      subjects:
+        ansible_become_password: vagrant
+        rhel9cis_bootloader_password: password
+        rhel9cis_skip_reboot: false
+        rhel9cis_remote_log_server: loghost.test.loc
+    host_vars:
+      server:
+        rhel9cis_machine_type: server
+      workstation:
+        rhel9cis_machine_type: workstation
 verifier:
   name: ansible

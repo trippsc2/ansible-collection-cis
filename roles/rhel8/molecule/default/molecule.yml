@@ -12,16 +12,26 @@ platforms:
     box: jtarpley/rocky8_base
     memory: 2048
     cpus: 2
+    groups:
+      - subjects
   - name: workstation
     box: jtarpley/rocky8_ws_base
     memory: 2048
     cpus: 2
+    groups:
+      - subjects
 provisioner:
   name: ansible
   inventory:
-    links:
-      hosts: ./hosts
-      host_vars: ./host_vars/
-      group_vars: ./group_vars/
+    group_vars:
+      subjects:
+        ansible_become_password: vagrant
+        rhel8cis_bootloader_password: password
+        rhel8cis_skip_reboot: false
+    host_vars:
+      server:
+        rhel8cis_machine_type: server
+      workstation:
+        rhel8cis_machine_type: workstation
 verifier:
   name: ansible
