@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel9
-Version: 1.0.2
+Version: 1.0.3
 
 This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 

@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.windows2022
-Version: 1.0.2
+Version: 1.0.3
 
 This role applies the CIS Benchmark hardening steps on Windows Server 2022 machines.
 
@@ -134,8 +134,8 @@ This role applies the CIS Benchmark hardening steps on Windows Server 2022 machi
 | w2022cis_rule_2_3_7_9_enabled | <p>Whether to enable rule 2.3.7.9.</p><p>This applies when the level and machine type are appropriate.</p> | bool | no |  | true |
 | w2022cis_rule_2_3_7_6_force | <p>Whether to override the level requirement for CIS rule 2.3.7.6.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | w2022cis_inactivity_timeout_in_seconds | <p>The inactivity timeout in seconds.</p> | int | no |  | 900 |
-| w2022cis_legal_notice_text | <p>The legal notice text.</p> | str | no |  |  |
-| w2022cis_legal_notice_caption | <p>The legal notice caption.</p> | str | no |  |  |
+| w2022cis_login_message_text | <p>The legal notice text.</p> | str | no |  |  |
+| w2022cis_login_message_title | <p>The legal notice caption.</p> | str | no |  |  |
 | w2022cis_cached_logons_count | <p>The number of cached logons to remember.</p> | int | no |  | 4 |
 | w2022cis_password_expiry_warning_in_days | <p>The password expiry warning in days.</p> | int | no |  | 14 |
 | w2022cis_smart_card_removal_behavior | <p>The smart card removal behavior.</p> | str | no | <ul><li>lock</li><li>logoff</li><li>disconnect</li></ul> | lock |

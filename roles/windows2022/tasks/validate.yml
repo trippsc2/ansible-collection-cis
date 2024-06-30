@@ -106,18 +106,18 @@
     - w2022cis_rule_2_3_7_4_enabled
   ansible.builtin.assert:
     that:
-      - w2022cis_legal_notice_text is defined
-    fail_msg: "The variable 'w2022cis_legal_notice_text' must be defined."
-    success_msg: "The variable 'w2022cis_legal_notice_text' is defined."
+      - w2022cis_login_message_text is defined
+    fail_msg: "The variable 'w2022cis_login_message_text' must be defined."
+    success_msg: "The variable 'w2022cis_login_message_text' is defined."
 
 - name: "Validate | 2.3.7.5 | L1 | Configure 'Interactive logon: Message title for users attempting to log on'"
   when:
     - w2022cis_rule_2_3_7_5_enabled
   ansible.builtin.assert:
     that:
-      - w2022cis_legal_notice_caption is defined
-    fail_msg: "The variable 'w2022cis_legal_notice_caption' must be defined."
-    success_msg: "The variable 'w2022cis_legal_notice_caption' is defined."
+      - w2022cis_login_message_title is defined
+    fail_msg: "The variable 'w2022cis_login_message_title' must be defined."
+    success_msg: "The variable 'w2022cis_login_message_title' is defined."
 
 - name: "Validate | 2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only)"
   when:
