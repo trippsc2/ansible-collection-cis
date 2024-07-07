@@ -1,4 +1,40 @@
 ---
+- name: Gather distribution info
+  when:
+    - ansible_distribution is not defined or
+      ansible_os_family is not defined
+  ansible.builtin.setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - distribution
+      - os_family
+
+- name: Get Windows installation type
+  ansible.windows.win_reg_stat:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+    name: InstallationType
+  register: _get_windows_installation_type
+
+- name: Set Windows installation type
+  ansible.builtin.set_fact:
+    _windows_installation_type: "{{ _get_windows_installation_type.value | default('') }}"
+
+- name: Run PowerShell to check if Hyper-V is installed.
+  ansible.windows.win_powershell:
+    script: |
+      try {
+        $Ansible.Result = Get-WindowsFeature Hyper-V | Select-Object -ExpandProperty Installed
+      } catch {
+        $Ansible.Result = $false
+      }
+      $Ansible.Changed = $false
+  register: _w2022cis_hyperv_installed
+
+- name: Set the Hyper-V variable
+  ansible.builtin.set_fact:
+    _w2022cis_hyperv: "{{ _w2022cis_hyperv_installed.result }}"
+
 - name: Check OS version and family
   ansible.builtin.assert:
     that:

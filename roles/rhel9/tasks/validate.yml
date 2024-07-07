@@ -1,14 +1,16 @@
 ---
 - name: Gather distribution info
   when:
-    - ansible_distribution is not defined or ansible_os_family is not defined or ansible_distribution_major_version is not defined
+    - ansible_distribution is not defined or
+      ansible_distribution_major_version is not defined or
+      ansible_os_family is not defined
   ansible.builtin.setup:
     gather_subset:
       - '!all'
       - '!min'
       - distribution
-      - os_family
       - distribution_major_version
+      - os_family
 
 - name: Validate OS version and family
   ansible.builtin.assert:
