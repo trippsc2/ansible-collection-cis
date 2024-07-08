@@ -1,7 +1,7 @@
 ---
 namespace: trippsc2
 name: cis
-version: 1.0.5
+version: 1.0.6
 readme: README.md
 authors:
   - Jim Tarpley
@@ -21,5 +21,11 @@ dependencies:
 
 repository: https://github.com/trippsc2/ansible-collection-cis.git
 
-build_ignore:
-  - .gitignore
+manifest:
+  directives:
+    - recursive-include roles/* *.md
+    - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
+    - recursive-exclude tests/output **
+    - recursive-exclude roles/*/molecule **
+    - recursive-exclude molecule **
+    - global-exclude /.* /__pycache__

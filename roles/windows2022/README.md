@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.windows2022
-Version: 1.0.5
+Version: 1.0.6
 
 This role applies the CIS Benchmark hardening steps on Windows Server 2022 machines.
 
