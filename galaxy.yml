@@ -1,7 +1,7 @@
 ---
 namespace: trippsc2
 name: cis
-version: 1.0.6
+version: 1.0.7
 readme: README.md
 authors:
   - Jim Tarpley
