@@ -12,6 +12,8 @@ platforms:
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
     groups:
       - subjects
       - windows
@@ -20,6 +22,8 @@ platforms:
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
     groups:
       - subjects
       - windows
@@ -29,6 +33,8 @@ platforms:
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
     groups:
       - subjects
       - windows
@@ -37,6 +43,8 @@ platforms:
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
     groups:
       - subjects
       - windows

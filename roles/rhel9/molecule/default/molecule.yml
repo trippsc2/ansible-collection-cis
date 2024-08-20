@@ -12,12 +12,16 @@ platforms:
     box: jtarpley/rocky9_base
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: cis_rhel9_
     groups:
       - subjects
   - name: workstation
     box: jtarpley/rocky9_ws_base
     memory: 2048
     cpus: 2
+    provider_options:
+      default_prefix: cis_rhel9_
     groups:
       - subjects
 provisioner:
