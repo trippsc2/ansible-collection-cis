@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel8
-Version: 1.0.7
+Version: 1.0.8
 
 This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
 
@@ -385,6 +385,7 @@ This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
 | rhel8cis_var_log_mount_opts | <p>The mount options for the /var/log partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid", "noexec"] |
 | rhel8cis_var_log_audit_mount_opts | <p>The mount options for the /var/log/audit partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid", "noexec"] |
 | rhel8cis_force_reset_bootloader_password | <p>Whether to force a reset of the bootloader password, even if one is set.</p><p>Setting this to `true` will make the role not idempotent.</p> | bool | no |  | false |
+| rhel8cis_bootloader_password | <p>The bootloader password to set.</p><p>If *rhel8cis_force_reset_bootloader_password* and *rhel8cis_rule_1_3_1_enabled* are `true`, this is required. Otherwise, it is ignored.</p> | str | no |  |  |
 | rhel8cis_selinux_policy | <p>The SELinux policy to use.</p> | str | no |  | targeted |
 | rhel8cis_selinux_mode | <p>The SELinux mode to use.</p> | str | no |  | enforcing |
 | rhel8cis_crypto_policy | <p>The crypto policy to use.</p> | str | no |  | DEFAULT |

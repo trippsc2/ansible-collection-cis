@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel9
-Version: 1.0.7
+Version: 1.0.8
 
 This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 
@@ -345,7 +345,7 @@ This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 | rhel9cis_aide_cron_hour | <p>The hour to run the AIDE cron job.</p> | int | no |  | 5 |
 | rhel9cis_aide_cron_minute | <p>The minute to run the AIDE cron job.</p> | int | no |  | 0 |
 | rhel9cis_force_reset_bootloader_password | <p>Whether to force a reset of the bootloader password, even if one is set.</p><p>Setting this to `true` will make the role not idempotent.</p> | bool | no |  | false |
-| rhel9cis_bootloader_password | <p>The bootloader password to set.</p> | str | no |  |  |
+| rhel9cis_bootloader_password | <p>The bootloader password to set.</p><p>If *rhel9cis_force_reset_bootloader_password* and *rhel9cis_rule_1_4_1_enabled* are `true`, this is required. Otherwise, it is ignored.</p> | str | no |  |  |
 | rhel9cis_selinux_policy | <p>The SELinux policy to use.</p> | str | no |  | targeted |
 | rhel9cis_selinux_mode | <p>The SELinux mode to use.</p> | str | no |  | enforcing |
 | rhel9cis_use_motd | <p>Whether to use the Message of the Day (MOTD).</p> | bool | no |  | true |

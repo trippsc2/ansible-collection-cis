@@ -2584,6 +2584,13 @@ argument_specs:
         description:
           - Whether to force a reset of the bootloader password, even if one is set.
           - Setting this to `true` will make the role not idempotent.
+      rhel8cis_bootloader_password:
+        type: str
+        required: false
+        no_log: true
+        description:
+          - The bootloader password to set.
+          - If *rhel8cis_force_reset_bootloader_password* and *rhel8cis_rule_1_3_1_enabled* are `true`, this is required. Otherwise, it is ignored.
       rhel8cis_selinux_policy:
         type: str
         required: false
