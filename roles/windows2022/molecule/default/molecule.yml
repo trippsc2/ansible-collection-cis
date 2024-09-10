@@ -131,7 +131,7 @@ provisioner:
       level1:
         w2022cis_level: 1
       level3:
-        w2022cis_level: 2
+        w2022cis_level: 3
       windows:
         ansible_shell_type: powershell
         ansible_become_method: runas
