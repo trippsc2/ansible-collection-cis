@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel9
-Version: 1.0.8
+Version: 1.0.9
 
 This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 
@@ -292,6 +292,7 @@ This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 | rhel9cis_rule_1_8_7_force | <p>Whether to override the level requirement for CIS rule 1.8.7.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_2_2_1_force | <p>Whether to override the level requirement for CIS rule 2.2.1.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_2_2_2_force | <p>Whether to override the level requirement for CIS rule 2.2.2.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
+| rhel9cis_rule_2_3_2_force | <p>Whether to override the level requirement for CIS rule 2.3.2.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_3_1_3_force | <p>Whether to override the level requirement for CIS rule 3.1.3.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_4_1_1_1_force | <p>Whether to override the level requirement for CIS rule 4.1.1.1.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_4_1_1_2_force | <p>Whether to override the level requirement for CIS rule 4.1.1.2.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |

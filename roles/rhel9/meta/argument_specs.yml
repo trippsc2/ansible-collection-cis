@@ -1906,6 +1906,13 @@ argument_specs:
         description:
           - Whether to override the level requirement for CIS rule 2.2.2.
           - This applies when the machine type is appropriate.
+      rhel9cis_rule_2_3_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 2.3.2.
+          - This applies when the machine type is appropriate.
       rhel9cis_rule_3_1_3_force:
         type: bool
         required: false

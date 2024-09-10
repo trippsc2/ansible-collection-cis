@@ -8,7 +8,7 @@ driver:
   cachier: machine
   parallel: true
 platforms:
-  - name: server
+  - name: l1server
     box: jtarpley/rocky9_base
     memory: 2048
     cpus: 2
@@ -16,7 +16,19 @@ platforms:
       default_prefix: cis_rhel9_
     groups:
       - subjects
-  - name: workstation
+      - level1
+      - servers
+  - name: l2server
+    box: jtarpley/rocky9_base
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: cis_rhel9_
+    groups:
+      - subjects
+      - level2
+      - servers
+  - name: l1workstation
     box: jtarpley/rocky9_ws_base
     memory: 2048
     cpus: 2
@@ -24,6 +36,18 @@ platforms:
       default_prefix: cis_rhel9_
     groups:
       - subjects
+      - level1
+      - workstations
+  - name: l2workstation
+    box: jtarpley/rocky9_ws_base
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: cis_rhel9_
+    groups:
+      - subjects
+      - level2
+      - workstations
 provisioner:
   name: ansible
   inventory:
@@ -33,10 +57,13 @@ provisioner:
         rhel9cis_bootloader_password: password
         rhel9cis_skip_reboot: false
         rhel9cis_remote_log_server: loghost.test.loc
-    host_vars:
-      server:
+      level1:
+        rhel9cis_level: 1
+      level2:
+        rhel9cis_level: 2
+      servers:
         rhel9cis_machine_type: server
-      workstation:
+      workstations:
         rhel9cis_machine_type: workstation
 verifier:
   name: ansible

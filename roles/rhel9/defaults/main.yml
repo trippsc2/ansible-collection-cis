@@ -323,6 +323,8 @@ rhel9cis_rule_1_8_7_force: false
 rhel9cis_rule_2_2_1_force: false
 rhel9cis_rule_2_2_2_force: false
 
+rhel9cis_rule_2_3_2_force: false
+
 rhel9cis_rule_3_1_3_force: false
 
 rhel9cis_rule_4_1_1_1_force: false

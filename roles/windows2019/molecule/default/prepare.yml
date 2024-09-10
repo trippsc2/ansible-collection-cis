@@ -1,7 +1,7 @@
 ---
 - name: Prepare DC
   hosts:
-    - dc
+    - windows_domain_controllers
   roles:
     - role: trippsc2.ad.testing_domain_controller
 

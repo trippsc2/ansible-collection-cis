@@ -8,7 +8,7 @@ driver:
   cachier: machine
   parallel: true
 platforms:
-  - name: dc
+  - name: l1dc
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
@@ -16,9 +16,11 @@ platforms:
       default_prefix: cis_w2022_
     groups:
       - subjects
+      - level1
       - windows
       - windows_domain
-  - name: ms
+      - windows_domain_controllers
+  - name: l3dc
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
@@ -26,10 +28,23 @@ platforms:
       default_prefix: cis_w2022_
     groups:
       - subjects
+      - level3
+      - windows
+      - windows_domain
+      - windows_domain_controllers
+  - name: l1ms
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
+    groups:
+      - subjects
+      - level1
       - windows
       - windows_domain
       - windows_domain_members
-  - name: standalone
+  - name: l3ms
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
@@ -37,9 +52,11 @@ platforms:
       default_prefix: cis_w2022_
     groups:
       - subjects
+      - level3
       - windows
-      - windows_standalone
-  - name: template
+      - windows_domain
+      - windows_domain_members
+  - name: l1standalone
     box: jtarpley/w2022_base
     memory: 2048
     cpus: 2
@@ -47,8 +64,44 @@ platforms:
       default_prefix: cis_w2022_
     groups:
       - subjects
+      - level1
       - windows
       - windows_standalone
+  - name: l3standalone
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
+    groups:
+      - subjects
+      - level3
+      - windows
+      - windows_standalone
+  - name: l1template
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
+    groups:
+      - subjects
+      - level1
+      - windows
+      - windows_standalone
+      - windows_template
+  - name: l3template
+    box: jtarpley/w2022_base
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: cis_w2022_
+    groups:
+      - subjects
+      - level3
+      - windows
+      - windows_standalone
+      - windows_template
 provisioner:
   name: ansible
   inventory:
@@ -75,14 +128,27 @@ provisioner:
             -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
 
         w2022cis_login_message_title: DoD Notice and Consent Banner
+      level1:
+        w2022cis_level: 1
+      level3:
+        w2022cis_level: 2
       windows:
         ansible_shell_type: powershell
         ansible_become_method: runas
         ansible_become_user: SYSTEM
-    host_vars:
-      ms:
-        ansible_user: TEST\vagrant
-      template:
+      windows_domain_members:
+        dc_inventory_name: l3dc
+      windows_standalone:
+        dc_inventory_name: l3dc
+      windows_template:
         w2022cis_is_template: true
+    host_vars:
+      l1dc:
+        domain_name: test2.loc
+        domain_base_dn: DC=test2,DC=loc
+      l1ms:
+        ansible_user: TEST\vagrant
+      l3ms:
+        ansible_user: TEST\vagrant
 verifier:
   name: ansible
