@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel8
-Version: 1.0.9
+Version: 1.1.0
 
 This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
 
@@ -377,6 +377,7 @@ This role applies the CIS Benchmark hardening steps on RHEL8-based machines.
 | rhel8cis_rule_5_2_4_9_force | <p>Whether to override the level requirement for CIS rule 5.2.4.9.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel8cis_rule_5_2_4_10_force | <p>Whether to override the level requirement for CIS rule 5.2.4.10.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel8cis_rule_6_1_14_force | <p>Whether to override the level requirement for CIS rule 6.1.14.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
+| rhel8cis_mount_with_uuid | <p>Whether to use UUIDs instead device paths in /etc/fstab.</p> | bool | no |  | true |
 | rhel8cis_tmp_mount_opts | <p>The mount options for the /tmp partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid", "noexec"] |
 | rhel8cis_dev_shm_mount_opts | <p>The mount options for the /dev/shm partition.</p> | list of 'str' | no |  | ["mode=1777", "strictatime", "nodev", "nosuid", "noexec"] |
 | rhel8cis_home_mount_opts | <p>The mount options for the /home partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid"] |

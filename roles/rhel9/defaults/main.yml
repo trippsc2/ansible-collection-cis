@@ -376,6 +376,8 @@ rhel9cis_rule_5_3_4_force: false
 
 rhel9cis_rule_6_1_15_force: false
 
+rhel9cis_mount_with_uuid: true
+
 rhel9cis_tmp_mount_opts:
   - mode=1777
   - strictatime

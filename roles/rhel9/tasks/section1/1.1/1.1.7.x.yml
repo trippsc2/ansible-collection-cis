@@ -43,13 +43,33 @@
               list |
               first }}
 
+    - name: 1.1.3.x | Get UUID of /home partition
+      when:
+        - rhel9cis_mount_with_uuid
+      block:
+        - name: 1.1.3.x | Get UUID of /home partition
+          become: true
+          ansible.builtin.command: "lsblk -no UUID {{ _rhel9cis_existing_home_mount.device }}"
+          changed_when: false
+          register: _rhel9cis_home_uuid
+
+        - name: 1.1.3.x | Set /home UUID to source variable
+          ansible.builtin.set_fact:
+            _rhel9cis_home_source: "UUID={{ _rhel9cis_home_uuid.stdout }}"
+
+    - name: 1.1.3.x | Set /home device path to source variable
+      when:
+        - not rhel9cis_mount_with_uuid
+      ansible.builtin.set_fact:
+        _rhel9cis_home_source: "{{ _rhel9cis_existing_home_mount.device }}"
+
     - name: |
         1.1.7.1 | Ensure /home is a separate partition
         1.1.7.2 | Ensure nodev option set on /home partition
         1.1.7.3 | Ensure nosuid option set on /home partition
       become: true
       ansible.posix.mount:
-        src: "{{ _rhel9cis_existing_home_mount.device }}"
+        src: "{{ _rhel9cis_home_source }}"
         name: /home
         fstype: "{{ _rhel9cis_existing_home_mount.fstype }}"
         opts: "{{ rhel9cis_home_mount_opts | join(',') }}"

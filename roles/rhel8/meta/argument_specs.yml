@@ -2501,6 +2501,12 @@ argument_specs:
         description:
           - Whether to override the level requirement for CIS rule 6.1.14.
           - This applies when the machine type is appropriate.
+      rhel8cis_mount_with_uuid:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use UUIDs instead device paths in /etc/fstab.
       rhel8cis_tmp_mount_opts:
         type: list
         required: false

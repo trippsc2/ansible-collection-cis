@@ -53,6 +53,26 @@
         _rhel8cis_existing_var_log_audit_mount: >-
           {{ ansible_mounts | selectattr('mount', 'equalto', '/var/log/audit') | list | first }}
 
+    - name: 1.1.2.6.x | Get UUID of /var/log/audit partition
+      when:
+        - rhel8cis_mount_with_uuid
+      block:
+        - name: 1.1.2.6.x | Get UUID of /var/log/audit partition
+          become: true
+          ansible.builtin.command: "lsblk -no UUID {{ _rhel8cis_existing_var_log_audit_mount.device }}"
+          changed_when: false
+          register: _rhel8cis_var_log_audit_uuid
+
+        - name: 1.1.2.6.x | Set /var/log/audit UUID to source variable
+          ansible.builtin.set_fact:
+            _rhel8cis_var_log_audit_source: "UUID={{ _rhel8cis_var_log_audit_uuid.stdout }}"
+
+    - name: 1.1.2.6.x | Set /var/log/audit device path to source variable
+      when:
+        - not rhel8cis_mount_with_uuid
+      ansible.builtin.set_fact:
+        _rhel8cis_var_log_audit_source: "{{ _rhel8cis_existing_var_log_audit_mount.device }}"
+
     - name: |
         1.1.2.7.1 | Ensure /var/log/audit is a separate partition
         1.1.2.7.2 | Ensure nodev option set on /var/log/audit partition
@@ -60,7 +80,7 @@
         1.1.2.7.4 | Ensure noexec option set on /var/log/audit partition
       become: true
       ansible.posix.mount:
-        src: "{{ _rhel8cis_existing_var_log_audit_mount.device }}"
+        src: "{{ _rhel8cis_var_log_audit_source }}"
         name: /var/log/audit
         fstype: "{{ _rhel8cis_existing_var_log_audit_mount.fstype }}"
         opts: "{{ rhel8cis_var_log_audit_mount_opts | join(',') }}"

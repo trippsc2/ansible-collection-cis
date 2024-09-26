@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel9
-Version: 1.0.9
+Version: 1.1.0
 
 This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 
@@ -335,6 +335,7 @@ This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 | rhel9cis_rule_5_2_12_force | <p>Whether to override the level requirement for CIS rule 5.2.12.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_5_2_13_force | <p>Whether to override the level requirement for CIS rule 5.2.13.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
 | rhel9cis_rule_6_1_15_force | <p>Whether to override the level requirement for CIS rule 6.1.15.</p><p>This applies when the machine type is appropriate.</p> | bool | no |  | false |
+| rhel9cis_mount_with_uuid | <p>Whether to use UUIDs in /etc/fstab.</p> | bool | no |  | true |
 | rhel9cis_tmp_mount_opts | <p>The mount options for the /tmp partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid", "noexec"] |
 | rhel9cis_var_mount_opts | <p>The mount options for the /var partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid"] |
 | rhel9cis_var_tmp_mount_opts | <p>The mount options for the /var/tmp partition.</p> | list of 'str' | no |  | ["defaults", "nodev", "nosuid", "noexec"] |

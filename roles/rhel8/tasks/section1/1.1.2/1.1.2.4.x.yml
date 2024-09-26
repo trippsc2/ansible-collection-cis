@@ -45,13 +45,33 @@
               list |
               first }}
 
+    - name: 1.1.2.4.x | Get UUID of /var partition
+      when:
+        - rhel8cis_mount_with_uuid
+      block:
+        - name: 1.1.2.4.x | Get UUID of /var partition
+          become: true
+          ansible.builtin.command: "lsblk -no UUID {{ _rhel8cis_existing_var_mount.device }}"
+          changed_when: false
+          register: _rhel8cis_var_uuid
+
+        - name: 1.1.2.4.x | Set /var UUID to source variable
+          ansible.builtin.set_fact:
+            _rhel8cis_var_source: "UUID={{ _rhel8cis_var_uuid.stdout }}"
+
+    - name: 1.1.2.4.x | Set /var device path to source variable
+      when:
+        - not rhel8cis_mount_with_uuid
+      ansible.builtin.set_fact:
+        _rhel8cis_var_source: "{{ _rhel8cis_existing_var_mount.device }}"
+
     - name: |
         1.1.2.4.1 | Ensure /var is a separate partition
         1.1.2.4.2 | Ensure nodev option set on /var partition
         1.1.2.4.3 | Ensure nosuid option set on /var partition
       become: true
       ansible.posix.mount:
-        src: "{{ _rhel8cis_existing_var_mount.device }}"
+        src: "{{ _rhel8cis_var_source }}"
         name: /var
         fstype: "{{ _rhel8cis_existing_var_mount.fstype }}"
         opts: "{{ rhel8cis_var_mount_opts | join(',') }}"
