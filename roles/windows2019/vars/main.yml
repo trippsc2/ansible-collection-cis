@@ -77,8 +77,14 @@ _w2019cis_smb_spn_target_name_validation_level_value: >-
   {% if w2019cis_smb_spn_target_name_validation_level == 'accept' %}1{% elif w2019cis_smb_spn_target_name_validation_level == 'required' %}2{% else %}{{ omit }}{% endif %}
 _w2019cis_ldap_client_signing_requirements_value: >-
   {% if w2019cis_ldap_client_signing_requirements == 'require' %}2{% elif w2019cis_ldap_client_signing_requirements == 'negotiate' %}1{% else %}{{ omit }}{% endif %}
+_w2019cis_outgoing_ntlm_traffice_requirement_value: >-
+  {% if w2019cis_outgoing_ntlm_traffice_requirement == 'audit_all' %}1{% elif w2019cis_outgoing_ntlm_traffice_requirement == 'deny_all' %}2{% else %}{{ omit }}{% endif %}
 _w2019cis_admin_uac_elevation_behavior_value: >-
   {% if w2019cis_admin_uac_elevation_behavior == 'prompt_for_credentials' %}1{% elif w2019cis_admin_uac_elevation_behavior == 'prompt_for_consent' %}2{% else %}{{ omit }}{% endif %}
+_w2019cis_laps_directory_value: >-
+  {% if w2019cis_laps_directory == 'azure_ad' %}1{% elif w2019cis_laps_directory == 'ad' %}2{% else %}{{ omit }}{% endif %}
+_w2019cis_laps_post_authentication_actions_value: >-
+  {% if w2019cis_laps_post_authentication_actions == 'reset_password_and_logoff' %}3{% elif w2019cis_laps_post_authentication_actions == 'reset_password_and_reboot' %}5{% else %}{{ omit }}{% endif %}
 _w2019cis_netbios_dns_resolution_behavior_value: >-
   {% if w2019cis_netbios_dns_resolution_behavior == 'disabled_on_public_networks' %}2{% elif w2019cis_netbios_dns_resolution_behavior == 'disabled' %}0{% else %}{{ omit }}{% endif %}
 _w2019cis_rpc_listener_authentication_protocol_value: >-

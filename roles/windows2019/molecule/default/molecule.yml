@@ -108,8 +108,8 @@ provisioner:
     group_vars:
       subjects:
         w2019cis_skip_reboot: false
-        w2019cis_rule_9_3_5_enabled: false # Allow local firewall rules
-        w2019cis_rule_9_3_6_enabled: false # Allow local connection security rules
+        w2019cis_rule_9_3_4_enabled: false # Allow local firewall rules
+        w2019cis_rule_9_3_5_enabled: false # Allow local connection security rules
         w2019cis_admin_username: localadmin
         w2019cis_guest_username: localguest
         w2019cis_login_message_text: |

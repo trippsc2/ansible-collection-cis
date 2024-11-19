@@ -82,8 +82,9 @@ w2022cis_rule_2_2_45_enabled: true
 w2022cis_rule_2_2_46_enabled: true
 w2022cis_rule_2_2_47_enabled: true
 w2022cis_rule_2_2_48_enabled: true
+w2022cis_rule_2_2_49_enabled: true
 
-w2022cis_rule_2_2_36_force: false
+w2022cis_rule_2_2_37_force: false
 
 w2022cis_access_this_computer_from_the_network_additional_users: []
 w2022cis_adjust_memory_quotas_for_a_process_additional_users: []
@@ -110,7 +111,6 @@ w2022cis_rule_2_3_2_2_enabled: true
 
 # 2.3.4 - Devices
 w2022cis_rule_2_3_4_1_enabled: true
-w2022cis_rule_2_3_4_2_enabled: true
 
 # 2.3.5 - Domain controller
 w2022cis_rule_2_3_5_1_enabled: true
@@ -206,8 +206,12 @@ w2022cis_rule_2_3_11_7_enabled: true
 w2022cis_rule_2_3_11_8_enabled: true
 w2022cis_rule_2_3_11_9_enabled: true
 w2022cis_rule_2_3_11_10_enabled: true
+w2022cis_rule_2_3_11_11_enabled: true
+w2022cis_rule_2_3_11_12_enabled: true
+w2022cis_rule_2_3_11_13_enabled: true
 
 w2022cis_ldap_client_signing_requirements: negotiate
+w2022cis_outgoing_ntlm_traffice_requirement: audit_all
 
 # 2.3.13 - Shutdown
 w2022cis_rule_2_3_13_1_enabled: true
@@ -244,7 +248,6 @@ w2022cis_rule_9_1_4_enabled: true
 w2022cis_rule_9_1_5_enabled: true
 w2022cis_rule_9_1_6_enabled: true
 w2022cis_rule_9_1_7_enabled: true
-w2022cis_rule_9_1_8_enabled: true
 
 w2022cis_domain_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
 w2022cis_domain_firewall_log_size_in_kb: 16384
@@ -257,7 +260,6 @@ w2022cis_rule_9_2_4_enabled: true
 w2022cis_rule_9_2_5_enabled: true
 w2022cis_rule_9_2_6_enabled: true
 w2022cis_rule_9_2_7_enabled: true
-w2022cis_rule_9_2_8_enabled: true
 
 w2022cis_private_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\privatefw.log'
 w2022cis_private_firewall_log_size_in_kb: 16384
@@ -272,7 +274,6 @@ w2022cis_rule_9_3_6_enabled: true
 w2022cis_rule_9_3_7_enabled: true
 w2022cis_rule_9_3_8_enabled: true
 w2022cis_rule_9_3_9_enabled: true
-w2022cis_rule_9_3_10_enabled: true
 
 w2022cis_public_firewall_log_path: '%SystemRoot%\System32\logfiles\firewall\publicfw.log'
 w2022cis_public_firewall_log_size_in_kb: 16384
@@ -345,17 +346,6 @@ w2022cis_rule_18_1_3_enabled: true
 
 w2022cis_rule_18_1_3_force: false
 
-# 18.3 - LAPS
-w2022cis_rule_18_3_1_enabled: true
-w2022cis_rule_18_3_2_enabled: true
-w2022cis_rule_18_3_3_enabled: true
-w2022cis_rule_18_3_4_enabled: true
-w2022cis_rule_18_3_5_enabled: true
-w2022cis_rule_18_3_6_enabled: true
-
-w2022cis_laps_password_length: 15
-w2022cis_laps_password_age_in_days: 30
-
 # 18.4 - MS Security Guide
 w2022cis_rule_18_4_1_enabled: true
 w2022cis_rule_18_4_2_enabled: true
@@ -364,6 +354,7 @@ w2022cis_rule_18_4_4_enabled: true
 w2022cis_rule_18_4_5_enabled: true
 w2022cis_rule_18_4_6_enabled: true
 w2022cis_rule_18_4_7_enabled: true
+w2022cis_rule_18_4_8_enabled: true
 
 # 18.5 - MSS (Legacy)
 w2022cis_rule_18_5_1_enabled: true
@@ -505,6 +496,8 @@ w2022cis_rule_18_9_19_2_enabled: true
 w2022cis_rule_18_9_19_3_enabled: true
 w2022cis_rule_18_9_19_4_enabled: true
 w2022cis_rule_18_9_19_5_enabled: true
+w2022cis_rule_18_9_19_6_enabled: true
+w2022cis_rule_18_9_19_7_enabled: true
 
 # 18.9.20 - Internet Communication Management
 w2022cis_rule_18_9_20_1_1_enabled: true
@@ -541,75 +534,95 @@ w2022cis_rule_18_9_23_1_force: false
 # 18.9.24 - Kernel DMA Protection
 w2022cis_rule_18_9_24_1_enabled: true
 
-# 18.9.25 - Local Security Authority
+# 18.9.25 - LAPS
 w2022cis_rule_18_9_25_1_enabled: true
 w2022cis_rule_18_9_25_2_enabled: true
+w2022cis_rule_18_9_25_3_enabled: true
+w2022cis_rule_18_9_25_4_enabled: true
+w2022cis_rule_18_9_25_5_enabled: true
+w2022cis_rule_18_9_25_6_enabled: true
+w2022cis_rule_18_9_25_7_enabled: true
+w2022cis_rule_18_9_25_8_enabled: true
 
-w2022cis_rule_18_9_25_2_force: false
+w2022cis_laps_directory: ad
+w2022cis_laps_password_length: 15
+w2022cis_laps_password_age_in_days: 30
+w2022cis_laps_post_authentication_grace_period_in_hours: 8
+w2022cis_laps_post_authentication_actions: reset_password_and_logoff
 
-# 18.9.26 - Locale Services
+# 18.9.26 - Local Security Authority
 w2022cis_rule_18_9_26_1_enabled: true
+w2022cis_rule_18_9_26_2_enabled: true
 
-w2022cis_rule_18_9_26_1_force: false
+w2022cis_rule_18_9_26_2_force: false
 
-# 18.9.27 - Logon
+# 18.9.27 - Locale Services
 w2022cis_rule_18_9_27_1_enabled: true
-w2022cis_rule_18_9_27_2_enabled: true
-w2022cis_rule_18_9_27_3_enabled: true
-w2022cis_rule_18_9_27_4_enabled: true
-w2022cis_rule_18_9_27_5_enabled: true
-w2022cis_rule_18_9_27_6_enabled: true
-w2022cis_rule_18_9_27_7_enabled: true
 
-# 18.9.30 - OS Policies
-w2022cis_rule_18_9_30_1_enabled: true
-w2022cis_rule_18_9_30_2_enabled: true
+w2022cis_rule_18_9_27_1_force: false
 
-w2022cis_rule_18_9_30_1_force: false
-w2022cis_rule_18_9_30_2_force: false
+# 18.9.28 - Logon
+w2022cis_rule_18_9_28_1_enabled: true
+w2022cis_rule_18_9_28_2_enabled: true
+w2022cis_rule_18_9_28_3_enabled: true
+w2022cis_rule_18_9_28_4_enabled: true
+w2022cis_rule_18_9_28_5_enabled: true
+w2022cis_rule_18_9_28_6_enabled: true
+w2022cis_rule_18_9_28_7_enabled: true
 
-# 18.9.32 - Power Management
-w2022cis_rule_18_9_32_6_1_enabled: true
-w2022cis_rule_18_9_32_6_2_enabled: true
-w2022cis_rule_18_9_32_6_3_enabled: true
-w2022cis_rule_18_9_32_6_4_enabled: true
+# 18.9.31 - OS Policies
+w2022cis_rule_18_9_31_1_enabled: true
+w2022cis_rule_18_9_31_2_enabled: true
 
-w2022cis_rule_18_9_32_6_1_force: false
-w2022cis_rule_18_9_32_6_2_force: false
+w2022cis_rule_18_9_31_1_force: false
+w2022cis_rule_18_9_31_2_force: false
 
-# 18.9.34 - Remote Assistance
-w2022cis_rule_18_9_34_1_enabled: true
-w2022cis_rule_18_9_34_2_enabled: true
+# 18.9.33 - Power Management
 
-# 18.9.35 - Remote Procedure Call
+# 18.9.33.6 - Sleep Settings
+w2022cis_rule_18_9_33_6_1_enabled: true
+w2022cis_rule_18_9_33_6_2_enabled: true
+w2022cis_rule_18_9_33_6_3_enabled: true
+w2022cis_rule_18_9_33_6_4_enabled: true
+
+w2022cis_rule_18_9_33_6_1_force: false
+w2022cis_rule_18_9_33_6_2_force: false
+
+# 18.9.35 - Remote Assistance
 w2022cis_rule_18_9_35_1_enabled: true
 w2022cis_rule_18_9_35_2_enabled: true
 
-w2022cis_rule_18_9_35_2_force: false
+# 18.9.36 - Remote Procedure Call
+w2022cis_rule_18_9_36_1_enabled: true
+w2022cis_rule_18_9_36_2_enabled: true
 
-# 18.9.38 - Security Account Manager
-w2022cis_rule_18_9_38_1_enabled: true
+w2022cis_rule_18_9_36_2_force: false
+
+# 18.9.39 - Security Account Manager
+w2022cis_rule_18_9_39_1_enabled: true
 
 w2022cis_whfb_roca_mitigation: audit
 
-# 18.9.46 - Troubleshooting and Diagnostics
-w2022cis_rule_18_9_46_5_1_enabled: true
-w2022cis_rule_18_9_46_11_1_enabled: true
+# 18.9.47 - Troubleshooting and Diagnostics
 
-w2022cis_rule_18_9_46_5_1_force: false
-w2022cis_rule_18_9_46_11_1_force: false
+# 18.9.47.5 - Microsoft Support Diagnostic Tool
+w2022cis_rule_18_9_47_5_1_enabled: true
 
-# 18.9.48 - User Profiles
-w2022cis_rule_18_9_48_1_enabled: true
+w2022cis_rule_18_9_47_5_1_force: false
 
-w2022cis_rule_18_9_48_1_force: false
+# 18.9.47.11 - Windows Performance PerfTrack
+w2022cis_rule_18_9_47_11_1_enabled: true
 
-# 18.9.50 - Windows Time Service
-w2022cis_rule_18_9_50_1_1_enabled: true
-w2022cis_rule_18_9_50_1_2_enabled: true
+w2022cis_rule_18_9_47_11_1_force: false
 
-w2022cis_rule_18_9_50_1_1_force: false
-w2022cis_rule_18_9_50_1_2_force: false
+# 18.9.49 - User Profiles
+w2022cis_rule_18_9_49_1_enabled: true
+
+w2022cis_rule_18_9_49_1_force: false
+
+# 18.9.51 - Windows Time Service
+w2022cis_rule_18_9_51_1_1_enabled: true
+w2022cis_rule_18_9_51_1_2_enabled: true
 
 # 18.10 - Windows Components
 
@@ -670,169 +683,226 @@ w2022cis_rule_18_10_17_2_enabled: true
 w2022cis_rule_18_10_17_3_enabled: true
 w2022cis_rule_18_10_17_4_enabled: true
 
-# 18.10.26 - Event Log Service
-w2022cis_rule_18_10_26_1_1_enabled: true
-w2022cis_rule_18_10_26_1_2_enabled: true
-w2022cis_rule_18_10_26_2_1_enabled: true
-w2022cis_rule_18_10_26_2_2_enabled: true
-w2022cis_rule_18_10_26_3_1_enabled: true
-w2022cis_rule_18_10_26_3_2_enabled: true
-w2022cis_rule_18_10_26_4_1_enabled: true
-w2022cis_rule_18_10_26_4_2_enabled: true
+# 18.10.25 - Event Log Service
+
+# 18.10.25.1 - Application
+w2022cis_rule_18_10_25_1_1_enabled: true
+w2022cis_rule_18_10_25_1_2_enabled: true
 
 w2022cis_application_log_max_size_in_kb: 32768
+
+# 18.10.25.2 - Security
+w2022cis_rule_18_10_25_2_1_enabled: true
+w2022cis_rule_18_10_25_2_2_enabled: true
+
 w2022cis_security_log_max_size_in_kb: 196608
+
+# 18.10.25.3 - Setup
+w2022cis_rule_18_10_25_3_1_enabled: true
+w2022cis_rule_18_10_25_3_2_enabled: true
+
 w2022cis_setup_log_max_size_in_kb: 32768
+
+# 18.10.25.4 - System
+w2022cis_rule_18_10_25_4_1_enabled: true
+w2022cis_rule_18_10_25_4_2_enabled: true
+
 w2022cis_system_log_max_size_in_kb: 32768
 
-# 18.10.29 - File Explorer (formerly Windows Explorer)
-w2022cis_rule_18_10_29_2_enabled: true
-w2022cis_rule_18_10_29_3_enabled: true
-w2022cis_rule_18_10_29_4_enabled: true
+# 18.10.28 - File Explorer (formerly Windows Explorer)
+w2022cis_rule_18_10_28_2_enabled: true
+w2022cis_rule_18_10_28_3_enabled: true
+w2022cis_rule_18_10_28_4_enabled: true
 
-# 18.10.37 - Location and Sensors
-w2022cis_rule_18_10_37_1_enabled: true
+# 18.10.36 - Location and Sensors
+w2022cis_rule_18_10_36_1_enabled: true
 
-w2022cis_rule_18_10_37_1_force: false
+w2022cis_rule_18_10_36_1_force: false
 
-# 18.10.41 - Messaging
+# 18.10.40 - Messaging
+w2022cis_rule_18_10_40_1_enabled: true
+
+w2022cis_rule_18_10_40_1_force: false
+
+# 18.10.41 - Microsoft account
 w2022cis_rule_18_10_41_1_enabled: true
 
-w2022cis_rule_18_10_41_1_force: false
+# 18.10.42 - Microsoft Defender Antivirus (formerly Windows Defender Antivirus)
 
-# 18.10.42 - Microsoft account
-w2022cis_rule_18_10_42_1_enabled: true
+# 18.10.42.5 - MAPS
+w2022cis_rule_18_10_42_5_1_enabled: true
+w2022cis_rule_18_10_42_5_2_enabled: true
 
-# 18.10.43 - Microsoft Defender Antivirus (formerly Windows Defender Antivirus)
-w2022cis_rule_18_10_43_5_1_enabled: true
-w2022cis_rule_18_10_43_5_2_enabled: true
-w2022cis_rule_18_10_43_6_1_1_enabled: true
-w2022cis_rule_18_10_43_6_1_2_enabled: true
-w2022cis_rule_18_10_43_6_3_1_enabled: true
-w2022cis_rule_18_10_43_7_1_enabled: true
-w2022cis_rule_18_10_43_10_1_enabled: true
-w2022cis_rule_18_10_43_10_2_enabled: true
-w2022cis_rule_18_10_43_10_3_enabled: true
-w2022cis_rule_18_10_43_10_4_enabled: true
-w2022cis_rule_18_10_43_12_1_enabled: true
-w2022cis_rule_18_10_43_13_1_enabled: true
-w2022cis_rule_18_10_43_13_2_enabled: true
-w2022cis_rule_18_10_43_16_enabled: true
-w2022cis_rule_18_10_43_17_enabled: true
+w2022cis_rule_18_10_42_5_2_force: false
 
-w2022cis_rule_18_10_43_5_2_force: false
-w2022cis_rule_18_10_43_7_1_force: false
-w2022cis_rule_18_10_43_12_1_force: false
+# 18.10.42.6 - Microsoft Defender Exploit Guard (formerly Windows Defender Exploit Guard)
 
-# 18.10.51 - OneDrive (formerly SkyDrive)
-w2022cis_rule_18_10_51_1_enabled: true
+# 18.10.42.6.1 - Attack Surface Reduction
+w2022cis_rule_18_10_42_6_1_1_enabled: true
+w2022cis_rule_18_10_42_6_1_2_enabled: true
 
-# 18.10.56 - Push To Install
-w2022cis_rule_18_10_56_1_enabled: true
+# 18.10.42.6.3 - Network Protection
+w2022cis_rule_18_10_42_6_3_1_enabled: true
 
-w2022cis_rule_18_10_56_1_force: false
+# 18.10.42.7 - MpEngine
+w2022cis_rule_18_10_42_7_1_enabled: true
 
-# 18.10.57 - Remote Desktop Services (formerly Terminal Services)
-w2022cis_rule_18_10_57_2_2_enabled: true
-w2022cis_rule_18_10_57_3_2_1_enabled: true
-w2022cis_rule_18_10_57_3_3_1_enabled: true
-w2022cis_rule_18_10_57_3_3_2_enabled: true
-w2022cis_rule_18_10_57_3_3_3_enabled: true
-w2022cis_rule_18_10_57_3_3_4_enabled: true
-w2022cis_rule_18_10_57_3_9_1_enabled: true
-w2022cis_rule_18_10_57_3_9_2_enabled: true
-w2022cis_rule_18_10_57_3_9_3_enabled: true
-w2022cis_rule_18_10_57_3_9_4_enabled: true
-w2022cis_rule_18_10_57_3_9_5_enabled: true
-w2022cis_rule_18_10_57_3_10_1_enabled: true
-w2022cis_rule_18_10_57_3_10_2_enabled: true
-w2022cis_rule_18_10_57_3_11_1_enabled: true
-w2022cis_rule_18_10_57_3_11_2_enabled: true
+w2022cis_rule_18_10_42_7_1_force: false
 
-w2022cis_rule_18_10_57_3_2_1_force: false
-w2022cis_rule_18_10_57_3_3_1_force: false
-w2022cis_rule_18_10_57_3_3_3_force: false
-w2022cis_rule_18_10_57_3_3_4_force: false
-w2022cis_rule_18_10_57_3_10_1_force: false
-w2022cis_rule_18_10_57_3_10_2_force: false
+# 18.10.42.10 - Real-time Protection
+w2022cis_rule_18_10_42_10_1_enabled: true
+w2022cis_rule_18_10_42_10_2_enabled: true
+w2022cis_rule_18_10_42_10_3_enabled: true
+w2022cis_rule_18_10_42_10_4_enabled: true
 
-# 18.10.58 - RSS Feeds
-w2022cis_rule_18_10_58_1_enabled: true
+# 18.10.42.12 - Reporting
+w2022cis_rule_18_10_42_12_1_enabled: true
 
-# 18.10.59 - Search
-w2022cis_rule_18_10_59_2_enabled: true
-w2022cis_rule_18_10_59_3_enabled: true
-w2022cis_rule_18_10_59_4_enabled: true
+w2022cis_rule_18_10_42_12_1_force: false
 
-w2022cis_rule_18_10_59_2_force: false
+# 18.10.42.13 - Scan
+w2022cis_rule_18_10_42_13_1_enabled: true
+w2022cis_rule_18_10_42_13_2_enabled: true
+w2022cis_rule_18_10_42_13_3_enabled: true
 
-# 18.10.63 - Software Protection Platform
-w2022cis_rule_18_10_63_1_enabled: true
+w2022cis_rule_18_10_42_16_enabled: true
+w2022cis_rule_18_10_42_17_enabled: true
 
-w2022cis_rule_18_10_63_1_force: false
+# 18.10.50 - OneDrive (formerly SkyDrive)
+w2022cis_rule_18_10_50_1_enabled: true
 
-# 18.10.76 - Windows Defender SmartScreen
-w2022cis_rule_18_10_76_2_1_enabled: true
+# 18.10.55 - Push To Install
+w2022cis_rule_18_10_55_1_enabled: true
 
-# 18.10.80 - Windows Ink Workspace
-w2022cis_rule_18_10_80_1_enabled: true
-w2022cis_rule_18_10_80_2_enabled: true
+w2022cis_rule_18_10_55_1_force: false
 
-w2022cis_rule_18_10_80_1_force: false
+# 18.10.56 - Remote Desktop Services (formerly Terminal Services)
+
+# 18.10.56.2 - Remote Desktop Connection Client
+
+# 18.10.56.2.1 - RemoteFX USB Device Redirection
+w2022cis_rule_18_10_56_2_2_enabled: true
+
+# 18.10.56.3 - Remote Desktop Session Host (formerly Terminal Server)
+
+# 18.10.56.3.2 - Connections
+w2022cis_rule_18_10_56_3_2_1_enabled: true
+
+w2022cis_rule_18_10_56_3_2_1_force: false
+
+# 18.10.56.3.3 - Device and Resource Redirection
+w2022cis_rule_18_10_56_3_3_1_enabled: true
+w2022cis_rule_18_10_56_3_3_2_enabled: true
+w2022cis_rule_18_10_56_3_3_3_enabled: true
+w2022cis_rule_18_10_56_3_3_4_enabled: true
+
+w2022cis_rule_18_10_56_3_3_1_force: false
+w2022cis_rule_18_10_56_3_3_3_force: false
+w2022cis_rule_18_10_56_3_3_4_force: false
+
+# 18.10.56.3.9 - Security
+w2022cis_rule_18_10_56_3_9_1_enabled: true
+w2022cis_rule_18_10_56_3_9_2_enabled: true
+w2022cis_rule_18_10_56_3_9_3_enabled: true
+w2022cis_rule_18_10_56_3_9_4_enabled: true
+w2022cis_rule_18_10_56_3_9_5_enabled: true
+
+# 18.10.56.3.10 - Session Time Limits
+w2022cis_rule_18_10_56_3_10_1_enabled: true
+w2022cis_rule_18_10_56_3_10_2_enabled: true
+
+w2022cis_rule_18_10_56_3_10_1_force: false
+w2022cis_rule_18_10_56_3_10_2_force: false
+
+# 18.10.56.3.11 - Temporary folders
+w2022cis_rule_18_10_56_3_11_1_enabled: true
+w2022cis_rule_18_10_56_3_11_2_enabled: true
+
+# 18.10.57 - RSS Feeds
+w2022cis_rule_18_10_57_1_enabled: true
+
+# 18.10.58 - Search
+w2022cis_rule_18_10_58_2_enabled: true
+w2022cis_rule_18_10_58_3_enabled: true
+w2022cis_rule_18_10_58_4_enabled: true
+
+w2022cis_rule_18_10_58_2_force: false
+
+# 18.10.62 - Software Protection Platform
+w2022cis_rule_18_10_62_1_enabled: true
+
+w2022cis_rule_18_10_62_1_force: false
+
+# 18.10.75 - Windows Defender SmartScreen
+
+# 18.10.75.2 - Explorer
+w2022cis_rule_18_10_75_2_1_enabled: true
+
+# 18.10.79 - Windows Ink Workspace
+w2022cis_rule_18_10_79_1_enabled: true
+w2022cis_rule_18_10_79_2_enabled: true
+
+w2022cis_rule_18_10_79_1_force: false
 
 w2022cis_windows_ink_workspace_access: disallow_above_lock
 
-# 18.10.81 - Windows Installer
+# 18.10.80 - Windows Installer
+w2022cis_rule_18_10_80_1_enabled: true
+w2022cis_rule_18_10_80_2_enabled: true
+w2022cis_rule_18_10_80_3_enabled: true
+
+w2022cis_rule_18_10_80_3_force: false
+
+# 18.10.81 - Windows Logon Options
 w2022cis_rule_18_10_81_1_enabled: true
-w2022cis_rule_18_10_81_2_enabled: true
-w2022cis_rule_18_10_81_3_enabled: true
 
-w2022cis_rule_18_10_81_3_force: false
+# 18.10.86 - Windows PowerShell
+w2022cis_rule_18_10_86_1_enabled: true
+w2022cis_rule_18_10_86_2_enabled: true
 
-# 18.10.82 - Windows Logon Options
-w2022cis_rule_18_10_82_1_enabled: true
+w2022cis_rule_18_10_86_1_force: false
+w2022cis_rule_18_10_86_2_force: false
 
-# 18.10.87 - Windows PowerShell
-w2022cis_rule_18_10_87_1_enabled: true
-w2022cis_rule_18_10_87_2_enabled: true
+# 18.10.88 - Windows Remote Management (WinRM)
 
-# 18.10.89 - Windows Remote Management (WinRM)
-w2022cis_rule_18_10_89_1_1_enabled: true
-w2022cis_rule_18_10_89_1_2_enabled: true
-w2022cis_rule_18_10_89_1_3_enabled: true
-w2022cis_rule_18_10_89_2_1_enabled: true
-w2022cis_rule_18_10_89_2_2_enabled: true
-w2022cis_rule_18_10_89_2_3_enabled: true
-w2022cis_rule_18_10_89_2_4_enabled: true
+# 18.10.88.1 - WinRM Client
+w2022cis_rule_18_10_88_1_1_enabled: true
+w2022cis_rule_18_10_88_1_2_enabled: true
+w2022cis_rule_18_10_88_1_3_enabled: true
 
-w2022cis_rule_18_10_89_2_2_force: false
+# 18.10.88.2 - WinRM Service
+w2022cis_rule_18_10_88_2_1_enabled: true
+w2022cis_rule_18_10_88_2_2_enabled: true
+w2022cis_rule_18_10_88_2_3_enabled: true
+w2022cis_rule_18_10_88_2_4_enabled: true
 
-# 18.10.90 - Windows Remote Shell
-w2022cis_rule_18_10_90_1_enabled: true
+w2022cis_rule_18_10_88_2_2_force: false
 
-w2022cis_rule_18_10_90_1_force: false
+# 18.10.89 - Windows Remote Shell
+w2022cis_rule_18_10_89_1_enabled: true
 
-# 18.10.92 - Windows Security (formerly Windows Defender Security Center)
+w2022cis_rule_18_10_89_1_force: false
+
+# 18.10.91 - Windows Security (formerly Windows Defender Security Center)
+
+# 18.10.91.2 - App and browser protection
+w2022cis_rule_18_10_91_2_1_enabled: true
+
+# 18.10.92 - Windows Update
+
+# 18.10.92.1 - Legacy Policies
+w2022cis_rule_18_10_92_1_1_enabled: true
+
+# 18.10.92.2 - Manage end user experience
 w2022cis_rule_18_10_92_2_1_enabled: true
+w2022cis_rule_18_10_92_2_2_enabled: true
 
-# 18.10.93 - Windows Update
-w2022cis_rule_18_10_93_1_1_enabled: true
-w2022cis_rule_18_10_93_2_1_enabled: true
-w2022cis_rule_18_10_93_2_2_enabled: true
-w2022cis_rule_18_10_93_4_1_enabled: true
-w2022cis_rule_18_10_93_4_2_enabled: true
-w2022cis_rule_18_10_93_4_3_enabled: true
+# 18.10.92.4 - Manage updates offered from Windows Update (formerly Defer Windows Updates and Windows Update for Business)
+w2022cis_rule_18_10_92_4_1_enabled: true
+w2022cis_rule_18_10_92_4_2_enabled: true
+w2022cis_rule_18_10_92_4_3_enabled: true
 
 # 19 - Administrative Templates (User)
-
-# 19.1 - Control Panel
-
-# 19.1.1 - Personalization (formerly Desktop Themes)
-w2022cis_rule_19_1_3_1_enabled: true
-w2022cis_rule_19_1_3_2_enabled: true
-w2022cis_rule_19_1_3_3_enabled: true
-
-w2022cis_screensaver_timeout_in_seconds: 900
 
 # 19.5 - Smart Menu and Taskbar
 
@@ -848,27 +918,29 @@ w2022cis_rule_19_6_6_1_1_force: false
 
 # 19.7 - Windows Components
 
-# 19.7.4 - Attachment Manager
-w2022cis_rule_19_7_4_1_enabled: true
-w2022cis_rule_19_7_4_2_enabled: true
+# 19.7.5 - Attachment Manager
+w2022cis_rule_19_7_5_1_enabled: true
+w2022cis_rule_19_7_5_2_enabled: true
 
-# 19.7.7 - Cloud Content
-w2022cis_rule_19_7_7_1_enabled: true
-w2022cis_rule_19_7_7_2_enabled: true
-w2022cis_rule_19_7_7_3_enabled: true
-w2022cis_rule_19_7_7_4_enabled: true
-w2022cis_rule_19_7_7_5_enabled: true
+# 19.7.8 - Cloud Content
+w2022cis_rule_19_7_8_1_enabled: true
+w2022cis_rule_19_7_8_2_enabled: true
+w2022cis_rule_19_7_8_3_enabled: true
+w2022cis_rule_19_7_8_4_enabled: true
+w2022cis_rule_19_7_8_5_enabled: true
 
-w2022cis_rule_19_7_7_3_force: false
-w2022cis_rule_19_7_7_4_force: false
+w2022cis_rule_19_7_8_3_force: false
+w2022cis_rule_19_7_8_4_force: false
 
-# 19.7.25 - Network Sharing
-w2022cis_rule_19_7_25_1_enabled: true
+# 19.7.26 - Network Sharing
+w2022cis_rule_19_7_26_1_enabled: true
 
-# 19.7.40 - Windows Installer
-w2022cis_rule_19_7_40_1_enabled: true
+# 19.7.42 - Windows Installer
+w2022cis_rule_19_7_42_1_enabled: true
 
-# 19.7.42 - Windows Media Player
-w2022cis_rule_19_7_42_2_1_enabled: true
+# 19.7.44 - Windows Media Player
 
-w2022cis_rule_19_7_42_2_1_force: false
+# 19.7.44.2 - Playback
+w2022cis_rule_19_7_44_2_1_enabled: true
+
+w2022cis_rule_19_7_44_2_1_force: false

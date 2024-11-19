@@ -1,5 +1,5 @@
 ---
-- name: "18.5.1 | L1 | Ensure 'MSS: (AutoAdminLogon) Enable Automatic Logon (not recommended)' is set to 'Disabled'"
+- name: "18.5.1 | L1 | Ensure 'MSS: (AutoAdminLogon) Enable Automatic Logon' is set to 'Disabled'"
   when:
     - w2019cis_rule_18_5_1_enabled
   ansible.windows.win_regedit:
@@ -9,10 +9,7 @@
     data: 0
     datatype: string
 
-- name: >
-    18.5.2 | L1 | Ensure 'MSS: (DisableIPSourceRouting IPv6) IP source routing protection level
-    (protects against packet spoofing)' is set to 'Enabled: Highest protection, source routing is completely
-    disabled'
+- name: "18.5.2 | L1 | Ensure 'MSS: (DisableIPSourceRouting IPv6) IP source routing protection level' is set to 'Enabled: Highest protection, source routing is completely disabled'"
   when:
     - w2019cis_rule_18_5_2_enabled
   ansible.windows.win_regedit:
@@ -22,9 +19,7 @@
     data: 2
     datatype: dword
 
-- name: >
-    18.5.3 | L1 | Ensure 'MSS: (DisableIPSourceRouting) IP source routing protection level (protects
-    against packet spoofing)' is set to 'Enabled: Highest protection, source routing is completely disabled'
+- name: "18.5.3 | L1 | Ensure 'MSS: (DisableIPSourceRouting) IP source routing protection level' is set to 'Enabled: Highest protection, source routing is completely disabled'"
   when:
     - w2019cis_rule_18_5_3_enabled
   ansible.windows.win_regedit:
@@ -44,7 +39,7 @@
     data: 0
     datatype: dword
 
-- name: "18.5.5 | L2 | Ensure 'MSS: (KeepAliveTime) How often keep-alive packets are sent in milliseconds' is set to 'Enabled: 300,000 or 5 minutes (recommended)'"
+- name: "18.5.5 | L2 | Ensure 'MSS: (KeepAliveTime) How often keep-alive packets are sent in milliseconds' is set to 'Enabled: 300,000 or 5 minutes'"
   when:
     - w2019cis_rule_18_5_5_enabled
     - w2019cis_rule_18_5_5_force or _w2019cis_level2
@@ -65,7 +60,7 @@
     data: 1
     type: dword
 
-- name: "18.5.7 | L2 | Ensure 'MSS: (PerformRouterDiscovery) Allow IRDP to detect and configure Default Gateway addresses (could lead to DoS)' is set to 'Disabled'"
+- name: "18.5.7 | L2 | Ensure 'MSS: (PerformRouterDiscovery) Allow IRDP to detect and configure Default Gateway addresses' is set to 'Disabled'"
   when:
     - w2019cis_rule_18_5_7_enabled
     - w2019cis_rule_18_5_7_force or _w2019cis_level2
@@ -76,7 +71,7 @@
     data: 0
     type: dword
 
-- name: "18.5.8 | L1 | Ensure 'MSS: (SafeDllSearchMode) Enable Safe DLL search mode (recommended)' is set to 'Enabled'"
+- name: "18.5.8 | L1 | Ensure 'MSS: (SafeDllSearchMode) Enable Safe DLL search mode' is set to 'Enabled'"
   when:
     - w2019cis_rule_18_5_8_enabled
   ansible.windows.win_regedit:
@@ -86,7 +81,7 @@
     type: dword
     state: present
 
-- name: "18.5.9 | L1 | Ensure 'MSS: (ScreenSaverGracePeriod) The time in seconds before the screen saver grace period expires (0 recommended)' is set to 'Enabled: 5 or fewer seconds'"
+- name: "18.5.9 | L1 | Ensure 'MSS: (ScreenSaverGracePeriod) The time in seconds before the screen saver grace period expires' is set to 'Enabled: 5 or fewer seconds'"
   when:
     - w2019cis_rule_18_5_9_enabled
   ansible.windows.win_regedit:

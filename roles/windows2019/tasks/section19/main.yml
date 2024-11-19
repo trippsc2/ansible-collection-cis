@@ -4,9 +4,6 @@
     path: HKU:\
   register: _w2019cis_user_hives
 
-- name: Execute the 19.1.x tasks
-  ansible.builtin.import_tasks: 19.1.x.yml
-
 - name: Execute the 19.5.x tasks
   ansible.builtin.import_tasks: 19.5.x.yml
 
