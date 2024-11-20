@@ -152,7 +152,7 @@
 - name: 1.1.1.6 | Ensure squashfs kernel module is not available
   when:
     - rhel8cis_rule_1_1_1_6_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_1_1_1_6_force
+    - rhel8cis_rule_1_1_1_6_force or _rhel8cis_level2
   become: true
   block:
     - name: 1.1.1.6 | Ensure squashfs kernel module is not available | Prevent modprobe install
@@ -183,7 +183,7 @@
 - name: 1.1.1.7 | Ensure udf kernel module is not available
   when:
     - rhel8cis_rule_1_1_1_7_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_1_1_1_7_force
+    - rhel8cis_rule_1_1_1_7_force or _rhel8cis_level2
   become: true
   block:
     - name: 1.1.1.7 | Ensure udf kernel module is not available | Prevent modprobe install
@@ -214,7 +214,7 @@
 - name: 1.1.1.8 | Ensure usb-storage kernel module is not available
   when:
     - rhel8cis_rule_1_1_1_8_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_1_1_1_8_force
+    - rhel8cis_rule_1_1_1_8_force or _rhel8cis_server or _rhel8cis_level2
   become: true
   block:
     - name: 1.1.1.8 | Ensure usb-storage kernel module is not available | Prevent modprobe install

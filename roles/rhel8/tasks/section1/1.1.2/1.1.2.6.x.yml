@@ -6,6 +6,7 @@
     - name: 1.1.2.6.1 | Ensure /var/log is a separate partition
       when:
         - rhel8cis_rule_1_1_2_6_1_enabled
+        - rhel8cis_rule_1_1_2_6_1_force or _rhel8cis_level2
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
         _rhel8cis_warning_rule: '1.1.2.6.1'
@@ -42,7 +43,8 @@
 - name: 1.1.2.6.x | Configure /var/log
   when:
     - '"/var/log" in _rhel8cis_mount_names'
-    - rhel8cis_rule_1_1_2_6_1_enabled or
+    - (rhel8cis_rule_1_1_2_6_1_enabled and
+      (rhel8cis_rule_1_1_2_6_1_force or _rhel8cis_level2)) or
       rhel8cis_rule_1_1_2_6_2_enabled or
       rhel8cis_rule_1_1_2_6_3_enabled or
       rhel8cis_rule_1_1_2_6_4_enabled
@@ -54,7 +56,7 @@
 
     - name: 1.1.2.6.x | Get UUID of /var/log partition
       when:
-        - rhel8cis_mount_with_uuid
+        - rhel8cis_var_log_mount_with_uuid
       block:
         - name: 1.1.2.6.x | Get UUID of /var/log partition
           become: true
@@ -68,7 +70,7 @@
 
     - name: 1.1.2.6.x | Set /var/log device path to source variable
       when:
-        - not rhel8cis_mount_with_uuid
+        - not rhel8cis_var_log_mount_with_uuid
       ansible.builtin.set_fact:
         _rhel8cis_var_log_source: "{{ _rhel8cis_existing_var_log_mount.device }}"
 

@@ -42,7 +42,7 @@
 - name: 1.2.3 | Ensure repo_gpgcheck is globally activated
   when:
     - rhel8cis_rule_1_2_3_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_1_2_3_force
+    - rhel8cis_rule_1_2_3_force or _rhel8cis_level2
   become: true
   block:
     - name: 1.2.3 | Ensure repo_gpgcheck is globally activated | /etc/dnf/dnf.conf

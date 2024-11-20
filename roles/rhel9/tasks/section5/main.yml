@@ -8,14 +8,5 @@
 - name: Execute the 5.3.x tasks
   ansible.builtin.import_tasks: 5.3.x.yml
 
-- name: 5.4.x | Configure authselect
-  ansible.builtin.include_tasks: ../add-warning.yml
-  vars:
-    _rhel9cis_warning_rule: '5.4.x'
-    _rhel9cis_warning_description: PAM configuration is not automated for safety reasons. Please carefully configure PAM using authselect manually.
-
-- name: Execute the 5.5.x tasks
-  ansible.builtin.import_tasks: 5.5.x.yml
-
-- name: Execute the 5.6.x tasks
-  ansible.builtin.import_tasks: 5.6.x.yml
+- name: Execute the 5.4.x tasks
+  ansible.builtin.import_tasks: 5.4.x.yml

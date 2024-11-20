@@ -2,34 +2,23 @@
 - name: Execute the 1.1.1.x tasks
   ansible.builtin.import_tasks: 1.1.1.x.yml
 
-- name: Execute the 1.1.2.x tasks
-  ansible.builtin.import_tasks: 1.1.2.x.yml
+- name: Execute the 1.1.2.1.x tasks
+  ansible.builtin.import_tasks: 1.1.2.1.x.yml
 
-- name: Gather mount facts
-  ansible.builtin.setup:
-    gather_subset:
-      - '!all'
-      - '!min'
-      - mounts
+- name: Execute the 1.1.2.2.x tasks
+  ansible.builtin.import_tasks: 1.1.2.2.x.yml
 
-- name: Set mount names
-  ansible.builtin.set_fact:
-    _rhel9cis_mount_names: "{{ ansible_mounts | map(attribute='mount') | list }}"
+- name: Execute the 1.1.2.3.x tasks
+  ansible.builtin.import_tasks: 1.1.2.3.x.yml
 
-- name: Execute the 1.1.3.x tasks
-  ansible.builtin.import_tasks: 1.1.3.x.yml
+- name: Execute the 1.1.2.4.x tasks
+  ansible.builtin.import_tasks: 1.1.2.4.x.yml
 
-- name: Execute the 1.1.4.x tasks
-  ansible.builtin.import_tasks: 1.1.4.x.yml
+- name: Execute the 1.1.2.5.x tasks
+  ansible.builtin.import_tasks: 1.1.2.5.x.yml
 
-- name: Execute the 1.1.5.x tasks
-  ansible.builtin.import_tasks: 1.1.5.x.yml
+- name: Execute the 1.1.2.6.x tasks
+  ansible.builtin.import_tasks: 1.1.2.6.x.yml
 
-- name: Execute the 1.1.6.x tasks
-  ansible.builtin.import_tasks: 1.1.6.x.yml
-
-- name: Execute the 1.1.7.x tasks
-  ansible.builtin.import_tasks: 1.1.7.x.yml
-
-- name: Execute the 1.1.8.x tasks
-  ansible.builtin.import_tasks: 1.1.8.x.yml
+- name: Execute the 1.1.2.7.x tasks
+  ansible.builtin.import_tasks: 1.1.2.7.x.yml

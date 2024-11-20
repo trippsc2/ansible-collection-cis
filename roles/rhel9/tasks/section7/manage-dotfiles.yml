@@ -1,5 +1,5 @@
 ---
-- name: 6.2.16 | Ensure local interactive user dot files are not group or world writable | Get list of dot files
+- name: 7.2.9 | Ensure local interactive user dot files access is configured | Get list of dot files
   become: true
   ansible.builtin.find:
     paths: "{{ user.dir }}"
@@ -11,7 +11,7 @@
     recurse: true
   register: _rhel9cis_user_dot_files
 
-- name: 6.2.16 | Ensure local interactive user dot files are not group or world writable | Set permissions on dot files
+- name: 7.2.9 | Ensure local interactive user dot files access is configured | Set permissions on dot files
   loop: "{{ _rhel9cis_user_dot_files.files }}"
   become: true
   ansible.builtin.file:

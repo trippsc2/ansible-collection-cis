@@ -2,11 +2,12 @@
 - name: 5.1.1.1 | Ensure rsyslog is installed
   when:
     - rhel8cis_rule_5_1_1_1_enabled
+    - rhel8cis_syslog == 'rsyslog'
   become: true
   ansible.builtin.dnf:
     name:
       - rsyslog
-    state: "{{ _rhel8cis_rsyslog_state }}"
+    state: present
 
 - name: 5.1.1.2 | Ensure rsyslog service is enabled
   when:
@@ -51,7 +52,7 @@
   ansible.builtin.include_tasks: ../add-warning.yml
   vars:
     _rhel8cis_warning_rule: '5.1.1.5'
-    _rhel8cis_warning_description: "This cannot be automated. Please ensure the logging is configured as required."
+    _rhel8cis_warning_description: This cannot be automated.  Please ensure the logging is configured as required.
 
 - name: 5.1.1.6 | Ensure rsyslog is configured to send logs to a remote log host
   when:
@@ -87,11 +88,12 @@
 - name: 5.1.2.1.1 | Ensure systemd-journal-remote is installed
   when:
     - rhel8cis_rule_5_1_2_1_1_enabled
+    - rhel8cis_syslog == 'journald'
   become: true
   ansible.builtin.dnf:
     name:
       - systemd-journal-remote
-    state: "{{ _rhel8cis_systemd_journal_remote_state }}"
+    state: present
 
 - name: 5.1.2.1.2 | Ensure systemd-journal-remote is configured
   loop:

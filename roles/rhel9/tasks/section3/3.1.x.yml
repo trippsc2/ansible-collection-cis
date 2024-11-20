@@ -31,33 +31,27 @@
       changed_when: true
       failed_when: false
 
-- name: 3.1.3 | Ensure TIPC is disabled
+- name: 3.1.3 | Ensure bluetooth services are not in use
   when:
     - rhel9cis_rule_3_1_3_enabled
-    - _rhel9cis_level2 or rhel9cis_rule_3_1_3_force
+    - rhel9cis_rule_3_1_3_force or _rhel9cis_server or _rhel9cis_level2
   become: true
   block:
-    - name: 3.1.3 | Ensure TIPC is disabled | Prevent modprobe install
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/tipc.conf
-        regexp: "^(#)?install tipc"
-        line: install tipc /bin/false
-        create: true
-        owner: root
-        group: root
-        mode: '0600'
-
-    - name: 3.1.3 | Ensure TIPC is disabled | Add modprobe blacklist
-      ansible.builtin.lineinfile:
-        path: /etc/modprobe.d/tipc.conf
-        regexp: "^(#)?blacklist tipc(\\s|$)"
-        line: blacklist tipc
-        create: true
-        owner: root
-        group: root
-        mode: '0600'
-    
-    - name: 3.1.3 | Ensure TIPC is disabled | Disable module
-      community.general.modprobe:
-        name: tipc
+    - name: 3.1.3 | Ensure bluetooth services are not in use | bluez package
+      when:
+        - not _rhel9cis_bluez_package_needed
+      ansible.builtin.dnf:
+        name:
+          - bluez
         state: absent
+
+    - name: 3.1.3 | Ensure bluetooth services are not in use | bluetooth.service
+      ansible.builtin.systemd_service:
+        name: bluetooth.service
+        state: stopped
+        enabled: false
+        masked: true
+      register: _rhel9cis_bluetooth_service
+      failed_when:
+        - _rhel9cis_bluetooth_service is failed
+        - ("Could not find the requested service" not in _rhel9cis_bluetooth_service.msg)

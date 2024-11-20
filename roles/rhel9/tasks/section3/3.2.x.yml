@@ -1,24 +1,124 @@
 ---
-- name: 3.2.1 | Ensure ip forwarding is disabled
-  loop:
-    - net.ipv4.ip_forward
-    - net.ipv6.conf.all.forwarding
+- name: 3.2.1 | Ensure dccp kernel module is not available
   when:
     - rhel9cis_rule_3_2_1_enabled
+    - rhel9cis_rule_3_2_1_force or _rhel9cis_level2
   become: true
-  ansible.posix.sysctl:
-    name: "{{ item }}"
-    value: '0'
-    sysctl_set: true
+  block:
+    - name: 3.2.1 | Ensure dccp kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/dccp.conf
+        regexp: "^(#)?install dccp"
+        line: install dccp /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
 
-- name: 3.2.2 | Ensure packet redirect sending is disabled
-  loop:
-    - net.ipv4.conf.all.send_redirects
-    - net.ipv4.conf.default.send_redirects
+    - name: 3.2.1 | Ensure dccp kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/dccp.conf
+        regexp: "^(#)?blacklist dccp(\\s|$)"
+        line: blacklist dccp
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 3.2.1 | Ensure dccp kernel module is not available | Disable module
+      community.general.modprobe:
+        name: dccp
+        state: absent
+
+- name: 3.2.2 | Ensure tipc kernel module is not available
   when:
     - rhel9cis_rule_3_2_2_enabled
+    - rhel9cis_rule_3_2_2_force or _rhel9cis_level2
   become: true
-  ansible.posix.sysctl:
-    name: "{{ item }}"
-    value: '0'
-    sysctl_set: true
+  block:
+    - name: 3.2.2 | Ensure tipc kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/tipc.conf
+        regexp: "^(#)?install tipc"
+        line: install tipc /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 3.2.2 | Ensure tipc kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/tipc.conf
+        regexp: "^(#)?blacklist tipc(\\s|$)"
+        line: blacklist tipc
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 3.2.2 | Ensure tipc kernel module is not available | Disable module
+      community.general.modprobe:
+        name: tipc
+        state: absent
+
+- name: 3.2.3 | Ensure rds kernel module is not available
+  when:
+    - rhel9cis_rule_3_2_3_enabled
+    - rhel9cis_rule_3_2_3_force or _rhel9cis_level2
+  become: true
+  block:
+    - name: 3.2.3 | Ensure rds kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/rds.conf
+        regexp: "^(#)?install rds"
+        line: install rds /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 3.2.3 | Ensure rds kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/rds.conf
+        regexp: "^(#)?blacklist rds(\\s|$)"
+        line: blacklist rds
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 3.2.3 | Ensure rds kernel module is not available | Disable module
+      community.general.modprobe:
+        name: rds
+        state: absent
+
+- name: 3.2.4 | Ensure sctp kernel module is not available
+  when:
+    - rhel9cis_rule_3_2_4_enabled
+    - rhel9cis_rule_3_2_4_force or _rhel9cis_level2
+  become: true
+  block:
+    - name: 3.2.4 | Ensure sctp kernel module is not available | Prevent modprobe install
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/sctp.conf
+        regexp: "^(#)?install sctp"
+        line: install sctp /bin/false
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 3.2.4 | Ensure sctp kernel module is not available | Add modprobe blacklist
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/sctp.conf
+        regexp: "^(#)?blacklist sctp(\\s|$)"
+        line: blacklist sctp
+        create: true
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: 3.2.4 | Ensure sctp kernel module is not available | Disable module
+      community.general.modprobe:
+        name: sctp
+        state: absent

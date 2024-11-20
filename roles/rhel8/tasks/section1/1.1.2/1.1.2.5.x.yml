@@ -6,6 +6,7 @@
     - name: 1.1.2.5.1 | Ensure /var/tmp is a separate partition
       when:
         - rhel8cis_rule_1_1_2_5_1_enabled
+        - rhel8cis_rule_1_1_2_5_1_force or _rhel8cis_level2
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
         _rhel8cis_warning_rule: '1.1.2.5.1'
@@ -42,7 +43,8 @@
 - name: 1.1.2.5.x | Configure /var/tmp
   when:
     - '"/var/tmp" in _rhel8cis_mount_names'
-    - rhel8cis_rule_1_1_2_5_1_enabled or
+    - (rhel8cis_rule_1_1_2_5_1_enabled and
+      (rhel8cis_rule_1_1_2_5_1_force or _rhel8cis_level2)) or
       rhel8cis_rule_1_1_2_5_2_enabled or
       rhel8cis_rule_1_1_2_5_3_enabled or
       rhel8cis_rule_1_1_2_5_4_enabled
@@ -54,7 +56,7 @@
 
     - name: 1.1.2.5.x | Get UUID of /var/tmp partition
       when:
-        - rhel8cis_mount_with_uuid
+        - rhel8cis_var_tmp_mount_with_uuid
       block:
         - name: 1.1.2.5.x | Get UUID of /var/tmp partition
           become: true
@@ -68,7 +70,7 @@
 
     - name: 1.1.2.5.x | Set /var/tmp device path to source variable
       when:
-        - not rhel8cis_mount_with_uuid
+        - not rhel8cis_var_tmp_mount_with_uuid
       ansible.builtin.set_fact:
         _rhel8cis_var_tmp_source: "{{ _rhel8cis_existing_var_tmp_mount.device }}"
 

@@ -12,6 +12,9 @@
       - distribution_major_version
       - os_family
 
+- name: Get package facts
+  ansible.builtin.package_facts:
+
 - name: Validate OS version and family
   ansible.builtin.assert:
     that:
@@ -215,60 +218,26 @@
     fail_msg: "The 'rhel8cis_bootloader_password' is not defined."
     success_msg: "The 'rhel8cis_bootloader_password' is defined."
 
-- name: Validate | 1.5.1.3 | Ensure SELinux policy is configured
-  when:
-    - rhel8cis_rule_1_5_1_3_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_selinux_policy in ['targeted', 'mls']
-    fail_msg: "The 'rhel8cis_selinux_policy' must be set to 'targeted' or 'mls'."
-    success_msg: "The 'rhel8cis_selinux_policy' is set to {{ rhel8cis_selinux_policy }}."
-
-- name: Validate | 1.5.1.4 | Ensure the SELinux mode is not disabled
-  when:
-    - rhel8cis_rule_1_5_1_4_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_selinux_mode in ['permissive', 'enforcing']
-    fail_msg: "The 'rhel8cis_selinux_mode' must be set to 'permissive' or 'enforcing'."
-    success_msg: "The 'rhel8cis_selinux_mode' is set to {{ rhel8cis_selinux_mode }}."
-
 - name: Validate | 1.5.1.5 | Ensure the SELinux mode is enforcing
   when:
     - rhel8cis_rule_1_5_1_5_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_1_5_1_5_force
+    - rhel8cis_rule_1_5_1_5_force or _rhel8cis_level2
   ansible.builtin.assert:
     that:
-      - rhel8cis_selinux_mode in ['enforcing']
+      - rhel8cis_selinux_mode == 'enforcing'
     fail_msg: "The 'rhel8cis_selinux_mode' must be set to 'enforcing'."
-    success_msg: "The 'rhel8cis_selinux_mode' is set to {{ rhel8cis_selinux_mode }}."
+    success_msg: "The 'rhel8cis_selinux_mode' is set to '{{ rhel8cis_selinux_mode }}'."
 
-- name: Validate | 1.6.2 | Ensure system wide crypto policy disables sha1 hash and signature support
+- name: Validate | 1.6.1 | Ensure system wide crypto policy is not set to legacy
   when:
-    - rhel8cis_rule_1_6_2_enabled
+    - rhel8cis_rule_1_6_1_enabled
   ansible.builtin.assert:
     that:
-      - '"NO-SHA1" in rhel8cis_crypto_subpolicies'
-    fail_msg: "The 'rhel8cis_crypto_subpolicies' does not include 'NO-SHA1'."
-    success_msg: "The 'rhel8cis_crypto_subpolicies' includes 'NO-SHA1'."
+      - rhel8cis_crypto_policy != 'LEGACY'
+    fail_msg: "The 'rhel8cis_crypto_policy' cannot be 'LEGACY'."
+    success_msg: "The 'rhel8cis_crypto_policy' is set to '{{ rhel8cis_crypto_policy }}'."
 
-- name: Validate | 1.6.3 | Ensure system wide crypto policy disables cbc for ssh
-  when:
-    - rhel8cis_rule_1_6_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"NO-SSHCBC" in rhel8cis_crypto_subpolicies'
-    fail_msg: "The 'rhel8cis_crypto_subpolicies' does not include 'NO-SSHCBC'."
-    success_msg: "The 'rhel8cis_crypto_subpolicies' includes 'NO-SSHCBC'."
-
-- name: Validate | 1.6.4 | Ensure system wide crypto policy disables macs less than 128 bits | Assert
-  when:
-    - rhel8cis_rule_1_6_4_enabled
-  ansible.builtin.assert:
-    that:
-      - '"NO-WEAKMAC" in rhel8cis_crypto_subpolicies'
-    fail_msg: "The 'rhel8cis_crypto_subpolicies' does not include 'NO-WEAKMAC'."
-    success_msg: "The 'rhel8cis_crypto_subpolicies' includes 'NO-WEAKMAC'."
+# TODO - Validate banners do not contain OS information.
 
 - name: Validate | 4.2.7 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured
   when:
@@ -451,17 +420,10 @@
     fail_msg: "The 'rhel8cis_inactive_password_lock_days' variable must be less than or equal to 30 but not 0."
     success_msg: "The 'rhel8cis_inactive_password_lock_days' is set to {{ rhel8cis_inactive_password_lock_days }}."
 
-- name: Validate | 5.1.x | Validate logging solution
-  ansible.builtin.assert:
-    that:
-      - rhel8cis_syslog in ['rsyslog', 'journald']
-    fail_msg: "The 'rhel8cis_syslog' must be set to 'rsyslog' or 'journald'."
-    success_msg: "The 'rhel8cis_syslog' is set to {{ rhel8cis_syslog }}."
-
 - name: Validate | 5.2.1.3 | Ensure audit_backlog_limit is sufficient
   when:
     - rhel8cis_rule_5_2_1_3_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_5_2_1_3_force
+    - rhel8cis_rule_5_2_1_3_force or _rhel8cis_level2
   ansible.builtin.assert:
     that:
       - rhel8cis_audit_backlog_limit >= 8192

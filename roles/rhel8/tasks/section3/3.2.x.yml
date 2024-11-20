@@ -2,7 +2,7 @@
 - name: 3.2.1 | Ensure dccp kernel module is not available
   when:
     - rhel8cis_rule_3_2_1_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_3_2_1_force
+    - rhel8cis_rule_3_2_1_force or _rhel8cis_level2
   become: true
   block:
     - name: 3.2.1 | Ensure dccp kernel module is not available | Prevent modprobe install
@@ -33,7 +33,7 @@
 - name: 3.2.2 | Ensure tipc kernel module is not available
   when:
     - rhel8cis_rule_3_2_2_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_3_2_2_force
+    - rhel8cis_rule_3_2_2_force or _rhel8cis_level2
   become: true
   block:
     - name: 3.2.2 | Ensure tipc kernel module is not available | Prevent modprobe install
@@ -64,7 +64,7 @@
 - name: 3.2.3 | Ensure rds kernel module is not available
   when:
     - rhel8cis_rule_3_2_3_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_3_2_3_force
+    - rhel8cis_rule_3_2_3_force or _rhel8cis_level2
   become: true
   block:
     - name: 3.2.3 | Ensure rds kernel module is not available | Prevent modprobe install
@@ -95,7 +95,7 @@
 - name: 3.2.4 | Ensure sctp kernel module is not available
   when:
     - rhel8cis_rule_3_2_4_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_3_2_4_force
+    - rhel8cis_rule_3_2_4_force or _rhel8cis_level2
   become: true
   block:
     - name: 3.2.4 | Ensure sctp kernel module is not available | Prevent modprobe install

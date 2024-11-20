@@ -12,6 +12,67 @@
       - distribution_major_version
       - os_family
 
+- name: Get package facts
+  ansible.builtin.package_facts:
+
+- name: Gather mount facts
+  ansible.builtin.setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - mounts
+
+- name: Set mount names
+  ansible.builtin.set_fact:
+    _rhel9cis_mount_names: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+- name: Get /etc/passwd contents
+  check_mode: false
+  ansible.builtin.command: cat /etc/passwd
+  changed_when: false
+  register: _rhel9cis_passwd_file_audit
+
+- name: Parse /etc/passwd contents to variable
+  ansible.builtin.set_fact:
+    _rhel9cis_passwd: "{{ _rhel9cis_passwd_file_audit.stdout_lines | map('regex_replace', ld_passwd_regex, ld_passwd_yaml) | map('from_yaml') | list }}"
+  vars:
+    ld_passwd_regex: >-
+      ^(?P<id>[^:]*):(?P<password>[^:]*):(?P<uid>[^:]*):(?P<gid>[^:]*):(?P<gecos>[^:]*):(?P<dir>[^:]*):(?P<shell>[^:]*)
+    ld_passwd_yaml: |
+      id: >-4
+          \g<id>
+      password: >-4
+          \g<password>
+      uid: \g<uid>
+      gid: \g<gid>
+      gecos: >-4
+          \g<gecos>
+      dir: >-4
+          \g<dir>
+      shell: >-4
+          \g<shell>
+
+- name: Get /etc/group contents
+  check_mode: false
+  ansible.builtin.command: cat /etc/group
+  changed_when: false
+  register: _rhel9cis_group_file_audit
+
+- name: Parse /etc/group contents to variable
+  ansible.builtin.set_fact:
+    _rhel9cis_group: "{{ _rhel9cis_group_file_audit.stdout_lines | map('regex_replace', ld_group_regex, ld_group_yaml) | map('from_yaml') | list }}"
+  vars:
+    ld_group_regex: >-
+      ^(?P<id>[^:]*):(?P<password>[^:]*):(?P<gid>[^:]*):(?P<members>[^:]*)
+    ld_group_yaml: |
+      id: >-4
+          \g<id>
+      password: >-4
+          \g<password>
+      gid: \g<gid>
+      members: >-4
+          \g<members>
+
 - name: Validate OS version and family
   ansible.builtin.assert:
     that:
@@ -35,300 +96,219 @@
     fail_msg: The 'rhel9cis_machine_type' variable must be set to 'server' or 'workstation'.
     success_msg: The 'rhel9cis_machine_type' is set to {{ rhel9cis_machine_type }}.
 
-- name: Validate | 1.1.2.2 | Ensure nodev option set on /tmp partition
+- name: Validate | 1.1.2.1.2 | Ensure nodev option set on /tmp partition
   when:
-    - rhel9cis_rule_1_1_2_2_enabled
+    - rhel9cis_rule_1_1_2_1_2_enabled
   ansible.builtin.assert:
     that:
       - '"nodev" in rhel9cis_tmp_mount_opts'
     fail_msg: /tmp mount options are not configured to use 'nodev' option.
     success_msg: /tmp mount options are configured to use 'nodev' option.
 
-- name: Validate | 1.1.2.3 | Ensure noexec option set on /tmp partition
+- name: Validate | 1.1.2.1.3 | Ensure nosuid option set on /tmp partition
   when:
-    - rhel9cis_rule_1_1_2_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"noexec" in rhel9cis_tmp_mount_opts'
-    fail_msg: /tmp mount options are not configured to use 'noexec' option.
-    success_msg: /tmp mount options are configured to use 'noexec' option.
-
-- name: Validate | 1.1.2.4 | Ensure nosuid option set on /tmp partition
-  when:
-    - rhel9cis_rule_1_1_2_4_enabled
+    - rhel9cis_rule_1_1_2_1_3_enabled
   ansible.builtin.assert:
     that:
       - '"nosuid" in rhel9cis_tmp_mount_opts'
     fail_msg: /tmp mount options are not configured to use 'nosuid' option.
     success_msg: /tmp mount options are configured to use 'nosuid' option.
 
-- name: Validate | 1.1.3.2 | Ensure nodev option set on /var partition
+- name: Validate | 1.1.2.1.4 | Ensure noexec option set on /tmp partition
   when:
-    - rhel9cis_rule_1_1_3_2_enabled
+    - rhel9cis_rule_1_1_2_1_4_enabled
   ansible.builtin.assert:
     that:
-      - '"nodev" in rhel9cis_var_mount_opts'
-    fail_msg: /var mount options are not configured to use 'nodev' option.
-    success_msg: /var mount options are configured to use 'nodev' option.
+      - '"noexec" in rhel9cis_tmp_mount_opts'
+    fail_msg: /tmp mount options are not configured to use 'noexec' option.
+    success_msg: /tmp mount options are configured to use 'noexec' option.
 
-- name: Validate | 1.1.3.3 | Ensure nosuid option set on /var partition
+- name: Validate | 1.1.2.2.2 | Ensure nodev option set on /dev/shm partition
   when:
-    - rhel9cis_rule_1_1_3_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nosuid" in rhel9cis_var_mount_opts'
-    fail_msg: /var mount options are not configured to use 'nosuid' option.
-    success_msg: /var mount options are configured to use 'nosuid' option.
-
-- name: Validate | 1.1.4.2 | Ensure nodev option set on /var/tmp partition
-  when:
-    - rhel9cis_rule_1_1_4_2_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nodev" in rhel9cis_var_tmp_mount_opts'
-    fail_msg: /var/tmp mount options are not configured to use 'nodev' option.
-    success_msg: /var/tmp mount options are configured to use 'nodev' option.
-
-- name: Validate | 1.1.4.3 | Ensure noexec option set on /var/tmp partition
-  when:
-    - rhel9cis_rule_1_1_4_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"noexec" in rhel9cis_var_tmp_mount_opts'
-    fail_msg: /var/tmp mount options are not configured to use 'noexec' option.
-    success_msg: /var/tmp mount options are configured to use 'noexec' option.
-
-- name: Validate | 1.1.4.4 | Ensure nosuid option set on /var/tmp partition
-  when:
-    - rhel9cis_rule_1_1_4_4_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nosuid" in rhel9cis_var_tmp_mount_opts'
-    fail_msg: /var/tmp mount options are not configured to use 'nosuid' option.
-    success_msg: /var/tmp mount options are configured to use 'nosuid' option.
-
-- name: Validate | 1.1.5.2 | Ensure nodev option set on /var/log partition
-  when:
-    - rhel9cis_rule_1_1_5_2_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nodev" in rhel9cis_var_log_mount_opts'
-    fail_msg: /var/log mount options are not configured to use 'nodev' option.
-    success_msg: /var/log mount options are configured to use 'nodev' option.
-
-- name: Validate | 1.1.5.3 | Ensure noexec option set on /var/log partition
-  when:
-    - rhel9cis_rule_1_1_5_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"noexec" in rhel9cis_var_log_mount_opts'
-    fail_msg: /var/log mount options are not configured to use 'noexec' option.
-    success_msg: /var/log mount options are configured to use 'noexec' option.
-
-- name: Validate | 1.1.5.4 | Ensure nosuid option set on /var/log partition
-  when:
-    - rhel9cis_rule_1_1_5_4_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nosuid" in rhel9cis_var_log_mount_opts'
-    fail_msg: /var/log mount options are not configured to use 'nosuid' option.
-    success_msg: /var/log mount options are configured to use 'nosuid' option.
-
-- name: Validate | 1.1.6.2 | Ensure nodev option set on /var/log/audit partition
-  when:
-    - rhel9cis_rule_1_1_6_2_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nodev" in rhel9cis_var_log_audit_mount_opts'
-    fail_msg: /var/log/audit mount options are not configured to use 'nodev' option.
-    success_msg: /var/log/audit mount options are configured to use 'nodev' option.
-
-- name: Validate | 1.1.6.3 | Ensure noexec option set on /var/log/audit partition
-  when:
-    - rhel9cis_rule_1_1_6_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"noexec" in rhel9cis_var_log_audit_mount_opts'
-    fail_msg: /var/log/audit mount options are not configured to use 'noexec' option.
-    success_msg: /var/log/audit mount options are configured to use 'noexec' option.
-
-- name: Validate | 1.1.6.4 | Ensure nosuid option set on /var/log/audit partition
-  when:
-    - rhel9cis_rule_1_1_6_4_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nosuid" in rhel9cis_var_log_audit_mount_opts'
-    fail_msg: /var/log/audit mount options are not configured to use 'nosuid' option.
-    success_msg: /var/log/audit mount options are configured to use 'nosuid' option.
-
-- name: Validate | 1.1.7.2 | Ensure nodev option set on /home partition
-  when:
-    - rhel9cis_rule_1_1_7_2_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nodev" in rhel9cis_home_mount_opts'
-    fail_msg: /home mount options are not configured to use 'nodev' option.
-    success_msg: /home mount options are configured to use 'nodev' option.
-
-- name: Validate | 1.1.7.3 | Ensure nosuid option set on /home partition
-  when:
-    - rhel9cis_rule_1_1_7_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"nosuid" in rhel9cis_home_mount_opts'
-    fail_msg: /home mount options are not configured to use 'nosuid' option.
-    success_msg: /home mount options are configured to use 'nosuid' option.
-
-- name: Validate | 1.1.8.2 | Ensure nodev option set on /dev/shm partition
-  when:
-    - rhel9cis_rule_1_1_8_2_enabled
+    - rhel9cis_rule_1_1_2_2_2_enabled
   ansible.builtin.assert:
     that:
       - '"nodev" in rhel9cis_dev_shm_mount_opts'
     fail_msg: /dev/shm mount options are not configured to use 'nodev' option.
     success_msg: /dev/shm mount options are configured to use 'nodev' option.
 
-- name: Validate | 1.1.8.3 | Ensure noexec option set on /dev/shm partition
+- name: Validate | 1.1.2.2.3 | Ensure nosuid option set on /dev/shm partition
   when:
-    - rhel9cis_rule_1_1_8_3_enabled
-  ansible.builtin.assert:
-    that:
-      - '"noexec" in rhel9cis_dev_shm_mount_opts'
-    fail_msg: /dev/shm mount options are not configured to use 'noexec' option.
-    success_msg: /dev/shm mount options are configured to use 'noexec' option.
-
-- name: Validate | 1.1.8.4 | Ensure nosuid option set on /dev/shm partition
-  when:
-    - rhel9cis_rule_1_1_8_4_enabled
+    - rhel9cis_rule_1_1_2_2_3_enabled
   ansible.builtin.assert:
     that:
       - '"nosuid" in rhel9cis_dev_shm_mount_opts'
     fail_msg: /dev/shm mount options are not configured to use 'nosuid' option.
     success_msg: /dev/shm mount options are configured to use 'nosuid' option.
 
-- name: Validate | 1.4.1 | Ensure bootloader password is set
+- name: Validate | 1.1.2.2.4 | Ensure noexec option set on /dev/shm partition
   when:
-    - rhel9cis_rule_1_4_1_enabled
+    - rhel9cis_rule_1_1_2_2_4_enabled
   ansible.builtin.assert:
     that:
-      - rhel9cis_bootloader_password is defined
-    fail_msg: "The 'rhel9cis_bootloader_password' is not defined."
-    success_msg: "The 'rhel9cis_bootloader_password' is defined."
+      - '"noexec" in rhel9cis_dev_shm_mount_opts'
+    fail_msg: /dev/shm mount options are not configured to use 'noexec' option.
+    success_msg: /dev/shm mount options are configured to use 'noexec' option.
 
-- name: Validate | 1.6.1.5 | Ensure the SELinux mode is enforcing
+- name: Validate | 1.1.2.3.2 | Ensure nodev option set on /home partition
   when:
-    - rhel9cis_rule_1_6_1_5_enabled
-    - _rhel9cis_level2 or rhel9cis_rule_1_6_1_5_force
+    - rhel9cis_rule_1_1_2_3_2_enabled
   ansible.builtin.assert:
     that:
-      - rhel9cis_selinux_mode in ['enforcing']
+      - '"nodev" in rhel9cis_home_mount_opts'
+    fail_msg: /home mount options are not configured to use 'nodev' option.
+    success_msg: /home mount options are configured to use 'nodev' option.
+
+- name: Validate | 1.1.2.3.3 | Ensure nosuid option set on /home partition
+  when:
+    - rhel9cis_rule_1_1_2_3_3_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nosuid" in rhel9cis_home_mount_opts'
+    fail_msg: /home mount options are not configured to use 'nosuid' option.
+    success_msg: /home mount options are configured to use 'nosuid' option.
+
+- name: Validate | 1.1.2.4.2 | Ensure nodev option set on /var partition
+  when:
+    - rhel9cis_rule_1_1_2_4_2_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nodev" in rhel9cis_var_mount_opts'
+    fail_msg: /var mount options are not configured to use 'nodev' option.
+    success_msg: /var mount options are configured to use 'nodev' option.
+
+- name: Validate | 1.1.2.4.3 | Ensure nosuid option set on /var partition
+  when:
+    - rhel9cis_rule_1_1_2_4_3_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nosuid" in rhel9cis_var_mount_opts'
+    fail_msg: /var mount options are not configured to use 'nosuid' option.
+    success_msg: /var mount options are configured to use 'nosuid' option.
+
+- name: Validate | 1.1.2.5.2 | Ensure nodev option set on /var/tmp partition
+  when:
+    - rhel9cis_rule_1_1_2_5_2_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nodev" in rhel9cis_var_tmp_mount_opts'
+    fail_msg: /var/tmp mount options are not configured to use 'nodev' option.
+    success_msg: /var/tmp mount options are configured to use 'nodev' option.
+
+- name: Validate | 1.1.2.5.3 | Ensure nosuid option set on /var/tmp partition
+  when:
+    - rhel9cis_rule_1_1_2_5_3_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nosuid" in rhel9cis_var_tmp_mount_opts'
+    fail_msg: /var/tmp mount options are not configured to use 'nosuid' option.
+    success_msg: /var/tmp mount options are configured to use 'nosuid' option.
+
+- name: Validate | 1.1.2.5.4 | Ensure noexec option set on /var/tmp partition
+  when:
+    - rhel9cis_rule_1_1_2_5_4_enabled
+  ansible.builtin.assert:
+    that:
+      - '"noexec" in rhel9cis_var_tmp_mount_opts'
+    fail_msg: /var/tmp mount options are not configured to use 'noexec' option.
+    success_msg: /var/tmp mount options are configured to use 'noexec' option.
+
+- name: Validate | 1.1.2.6.2 | Ensure nodev option set on /var/log partition
+  when:
+    - rhel9cis_rule_1_1_2_6_2_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nodev" in rhel9cis_var_log_mount_opts'
+    fail_msg: /var/log mount options are not configured to use 'nodev' option.
+    success_msg: /var/log mount options are configured to use 'nodev' option.
+
+- name: Validate | 1.1.2.6.3 | Ensure nosuid option set on /var/log partition
+  when:
+    - rhel9cis_rule_1_1_2_6_3_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nosuid" in rhel9cis_var_log_mount_opts'
+    fail_msg: /var/log mount options are not configured to use 'nosuid' option.
+    success_msg: /var/log mount options are configured to use 'nosuid' option.
+
+- name: Validate | 1.1.2.6.4 | Ensure noexec option set on /var/log partition
+  when:
+    - rhel9cis_rule_1_1_2_6_4_enabled
+  ansible.builtin.assert:
+    that:
+      - '"noexec" in rhel9cis_var_log_mount_opts'
+    fail_msg: /var/log mount options are not configured to use 'noexec' option.
+    success_msg: /var/log mount options are configured to use 'noexec' option.
+
+- name: Validate | 1.1.2.7.2 | Ensure nodev option set on /var/log/audit partition
+  when:
+    - rhel9cis_rule_1_1_2_7_2_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nodev" in rhel9cis_var_log_audit_mount_opts'
+    fail_msg: /var/log/audit mount options are not configured to use 'nodev' option.
+    success_msg: /var/log/audit mount options are configured to use 'nodev' option.
+
+- name: Validate | 1.1.2.7.3 | Ensure nosuid option set on /var/log/audit partition
+  when:
+    - rhel9cis_rule_1_1_2_7_3_enabled
+  ansible.builtin.assert:
+    that:
+      - '"nosuid" in rhel9cis_var_log_audit_mount_opts'
+    fail_msg: /var/log/audit mount options are not configured to use 'nosuid' option.
+    success_msg: /var/log/audit mount options are configured to use 'nosuid' option.
+
+- name: Validate | 1.1.2.7.4 | Ensure noexec option set on /var/log/audit partition
+  when:
+    - rhel9cis_rule_1_1_2_7_4_enabled
+  ansible.builtin.assert:
+    that:
+      - '"noexec" in rhel9cis_var_log_audit_mount_opts'
+    fail_msg: /var/log/audit mount options are not configured to use 'noexec' option.
+    success_msg: /var/log/audit mount options are configured to use 'noexec' option.
+
+- name: Validate | 1.3.1.5 | Ensure the SELinux mode is enforcing
+  when:
+    - rhel9cis_rule_1_3_1_5_enabled
+    - rhel9cis_rule_1_3_1_5_force or _rhel9cis_level2
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_selinux_mode == 'enforcing'
     fail_msg: "The 'rhel9cis_selinux_mode' must be set to 'enforcing'."
-    success_msg: "The 'rhel9cis_selinux_mode' is set to {{ rhel9cis_selinux_mode }}."
+    success_msg: "The 'rhel9cis_selinux_mode' is set to '{{ rhel9cis_selinux_mode }}'."
 
-- name: Validate | 4.1.1.3 | Ensure audit_backlog_limit is sufficient
+- name: Validate | 1.6.1 | Ensure system wide crypto policy is not set to legacy
   when:
-    - rhel9cis_rule_4_1_1_3_enabled
-    - _rhel9cis_level2 or rhel9cis_rule_4_1_1_3_force
+    - rhel9cis_rule_1_6_1_enabled
   ansible.builtin.assert:
     that:
-      - rhel9cis_auditd_backlog_limit >= 8192
-    fail_msg: "The 'rhel9cis_auditd_backlog_limit' must be set to a minimum of 8192."
-    success_msg: "The 'rhel9cis_auditd_backlog_limit' is set to {{ rhel9cis_auditd_backlog_limit }}."
+      - rhel9cis_crypto_policy != 'LEGACY'
+    fail_msg: "The 'rhel9cis_crypto_policy' cannot be 'LEGACY'."
+    success_msg: "The 'rhel9cis_crypto_policy' is set to '{{ rhel9cis_crypto_policy }}'."
 
-- name: Validate | 4.2.1.6 | Ensure rsyslog is configured to send logs to a remote log host
-  when:
-    - rhel9cis_rule_4_2_1_6_enabled
-    - rhel9cis_syslog == 'rsyslog'
-  ansible.builtin.assert:
-    that:
-      - rhel9cis_remote_log_server is defined
-    fail_msg: "The 'rhel9cis_remote_log_server' is not defined."
-    success_msg: "The 'rhel9cis_remote_log_server' is defined."
+# TODO - Validate banners do not contain OS information.
 
-- name: Validate | 4.2.2.1.2 | Ensure systemd-journal-remote is configured
+- name: Validate | 5.1.9 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured
   when:
-    - rhel9cis_rule_4_2_2_1_2_enabled
-    - rhel9cis_syslog == 'journald'
+    - rhel9cis_rule_5_1_9_enabled
   block:
-    - name: Validate | 4.2.2.1.2 | Ensure systemd-journal-remote is configured | Remote server
+    - name: Validate | 5.1.9 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | ClientAliveInterval
       ansible.builtin.assert:
         that:
-          - rhel9cis_remote_log_server is defined
-        fail_msg: "The 'rhel9cis_remote_log_server' is not defined."
-        success_msg: "The 'rhel9cis_remote_log_server' is defined."
+          - rhel9cis_sshd_client_alive_interval > 0
+        fail_msg: "The 'rhel9cis_sshd_client_alive_interval' variable must be greater than 0."
+        success_msg: "The 'rhel9cis_sshd_client_alive_interval' variable is set to {{ rhel9cis_sshd_client_alive_interval }}."
 
-    - name: Validate | 4.2.2.1.2 | Ensure systemd-journal-remote is configured | Server key file
+    - name: Validate | 5.1.9 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | ClientAliveCountMax
       ansible.builtin.assert:
         that:
-          - rhel9cis_journal_server_key_file is defined
-        fail_msg: "The 'rhel9cis_journal_server_key_file' is not defined."
-        success_msg: "The 'rhel9cis_journal_server_key_file' is defined."
+          - rhel9cis_sshd_client_alive_count_max > 0
+        fail_msg: "The 'rhel9cis_sshd_client_alive_count_max' variable must be greater than 0."
+        success_msg: "The 'rhel9cis_sshd_client_alive_count_max' variable is set to {{ rhel9cis_sshd_client_alive_count_max }}."
 
-    - name: Validate | 4.2.2.1.2 | Ensure systemd-journal-remote is configured | Server cert file
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_journal_server_cert_file is defined
-        fail_msg: "The 'rhel9cis_journal_server_cert_file' is not defined."
-        success_msg: "The 'rhel9cis_journal_server_cert_file' is defined."
-
-    - name: Validate | 4.2.2.1.2 | Ensure systemd-journal-remote is configured | Server CA file
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_journal_server_trusted_cert_file is defined
-        fail_msg: "The 'rhel9cis_journal_server_trusted_cert_file' is not defined."
-        success_msg: "The 'rhel9cis_journal_server_trusted_cert_file' is defined."
-
-- name: Validate | 5.2.16 | Ensure SSH MaxAuthTries is set to 4 or less
+- name: Validate | 5.1.14 | Ensure sshd LoginGraceTime is configured
   when:
-    - rhel9cis_rule_5_2_16_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel9cis_sshd_max_auth_tries > 0
-      - rhel9cis_sshd_max_auth_tries <= 4
-    fail_msg: "The 'rhel9cis_sshd_max_auth_tries' variable must be greater than 0 and less than or equal to 4."
-    success_msg: "The 'rhel9cis_sshd_max_auth_tries' variable is set to {{ rhel9cis_sshd_max_auth_tries }}."
-
-- name: Validate | 5.2.17 | Ensure sshd MaxStartups is configured
-  when:
-    - rhel9cis_rule_5_2_17_enabled
-  block:
-    - name: Validate | 5.2.17 | Ensure SSH MaxStartups is configured | Validate startups before dropping
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_sshd_max_startups_before_dropping > 0
-          - rhel9cis_sshd_max_startups_before_dropping <= 10
-        fail_msg: "The 'rhel9cis_sshd_max_startups_before_dropping' variable must be greater than 0 and less than or equal to 10."
-        success_msg: "The 'rhel9cis_sshd_max_startups_before_dropping' variable is set to {{ rhel9cis_sshd_max_startups_before_dropping }}."
-
-    - name: Validate | 5.2.17 | Ensure SSH MaxStartups is configured | Validate startup drop percentage
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_sshd_max_startups_drop_percentage <= 30
-          - rhel9cis_sshd_max_startups_drop_percentage >= 0
-        fail_msg: "The 'rhel9cis_sshd_max_startups_drop_percentage' variable must be a percentage less than or equal to 30."
-        success_msg: "The 'rhel9cis_sshd_max_startups_drop_percentage' variable is set to {{ rhel9cis_sshd_max_startups_drop_percentage }}."
-
-    - name: Validate | 5.2.17 | Ensure SSH MaxStartups is configured | Validate startup absolute maximum
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_sshd_max_startups_absolute_maximum >= rhel9cis_sshd_max_startups_before_dropping
-          - rhel9cis_sshd_max_startups_absolute_maximum <= 60
-        fail_msg: "The 'rhel9cis_sshd_max_startups_absolute_maximum' variable must be greater than or equal to the 'rhel9cis_sshd_max_startups_before_dropping' variable and less than or equal to 60."
-        success_msg: "The 'rhel9cis_sshd_max_startups_absolute_maximum' variable is set to {{ rhel9cis_sshd_max_startups_absolute_maximum }}."
-
-- name: Validate | 5.2.18 | Ensure SSH MaxSessions is set to 10 or less
-  when:
-    - rhel9cis_rule_5_2_18_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel9cis_sshd_max_sessions > 0
-      - rhel9cis_sshd_max_sessions <= 10
-    fail_msg: "The 'rhel9cis_sshd_max_sessions' variable must be greater than 0 and less than or equal to 10."
-    success_msg: "The 'rhel9cis_sshd_max_sessions' variable is set to {{ rhel9cis_sshd_max_sessions }}."
-
-- name: Validate | 5.2.19 | Ensure SSH LoginGraceTime is set to one minute or less
-  when:
-    - rhel9cis_rule_5_2_19_enabled
+    - rhel9cis_rule_5_1_14_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_sshd_login_grace_time > 0
@@ -336,27 +316,57 @@
     fail_msg: "The 'rhel9cis_sshd_login_grace_time' variable must be greater than 0 and less than or equal to 60."
     success_msg: "The 'rhel9cis_sshd_login_grace_time' variable is set to {{ rhel9cis_sshd_login_grace_time }}."
 
-- name: Validate | 5.2.20 | Ensure SSH Idle Timeout Interval is configured
+- name: Validate | 5.1.16 | Ensure sshd MaxAuthTries is configured
   when:
-    - rhel9cis_rule_5_2_20_enabled
+    - rhel9cis_rule_5_1_16_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_sshd_max_auth_tries > 0
+      - rhel9cis_sshd_max_auth_tries <= 4
+    fail_msg: "The 'rhel9cis_sshd_max_auth_tries' variable must be greater than 0 and less than or equal to 4."
+    success_msg: "The 'rhel9cis_sshd_max_auth_tries' variable is set to {{ rhel9cis_sshd_max_auth_tries }}."
+
+- name: Validate | 5.1.18 | Ensure sshd MaxSessions is configured
+  when:
+    - rhel9cis_rule_5_1_18_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_sshd_max_sessions > 0
+      - rhel9cis_sshd_max_sessions <= 10
+    fail_msg: "The 'rhel9cis_sshd_max_sessions' variable must be greater than 0 and less than or equal to 10."
+    success_msg: "The 'rhel9cis_sshd_max_sessions' variable is set to {{ rhel9cis_sshd_max_sessions }}."
+
+- name: Validate | 5.1.17 | Ensure sshd MaxStartups is configured
+  when:
+    - rhel9cis_rule_5_1_17_enabled
   block:
-    - name: Validate | 5.2.20 | Ensure SSH Idle Timeout Interval is configured | ClientAliveInterval
+    - name: Validate | 5.1.17 | Ensure sshd MaxStartups is configured | Validate startups before dropping
       ansible.builtin.assert:
         that:
-          - rhel9cis_sshd_client_alive_interval > 0
-        fail_msg: "The 'rhel9cis_sshd_client_alive_interval' variable must be greater than 0."
-        success_msg: "The 'rhel9cis_sshd_client_alive_interval' variable is set to {{ rhel9cis_sshd_client_alive_interval }}."
+          - rhel9cis_sshd_max_startups_before_dropping > 0
+          - rhel9cis_sshd_max_startups_before_dropping <= 10
+        fail_msg: "The 'rhel9cis_sshd_max_startups_before_dropping' variable must be greater than 0 and less than or equal to 10."
+        success_msg: "The 'rhel9cis_sshd_max_startups_before_dropping' variable is set to {{ rhel9cis_sshd_max_startups_before_dropping }}."
 
-    - name: Validate | 5.2.20 | Ensure SSH Idle Timeout Interval is configured | ClientAliveCountMax
+    - name: Validate | 5.1.17 | Ensure sshd MaxStartups is configured | Validate startup drop percentage
       ansible.builtin.assert:
         that:
-          - rhel9cis_sshd_client_alive_count_max > 0
-        fail_msg: "The 'rhel9cis_sshd_client_alive_count_max' variable must be greater than 0."
-        success_msg: "The 'rhel9cis_sshd_client_alive_count_max' variable is set to {{ rhel9cis_sshd_client_alive_count_max }}."
+          - rhel9cis_sshd_max_startups_drop_percentage <= 30
+          - rhel9cis_sshd_max_startups_drop_percentage >= 0
+        fail_msg: "The 'rhel9cis_sshd_max_startups_drop_percentage' variable must be a percentage less than or equal to 30."
+        success_msg: "The 'rhel9cis_sshd_max_startups_drop_percentage' variable is set to {{ rhel9cis_sshd_max_startups_drop_percentage }}."
 
-- name: Validate | 5.3.6 | Ensure sudo authentication timeout is configured correctly
+    - name: Validate | 5.1.17 | Ensure sshd MaxStartups is configured | Validate startup absolute maximum
+      ansible.builtin.assert:
+        that:
+          - rhel9cis_sshd_max_startups_absolute_maximum >= rhel9cis_sshd_max_startups_before_dropping
+          - rhel9cis_sshd_max_startups_absolute_maximum <= 60
+        fail_msg: "The 'rhel9cis_sshd_max_startups_absolute_maximum' variable must be greater than or equal to the 'rhel9cis_sshd_max_startups_before_dropping' variable and less than or equal to 60."
+        success_msg: "The 'rhel9cis_sshd_max_startups_absolute_maximum' variable is set to {{ rhel9cis_sshd_max_startups_absolute_maximum }}."
+
+- name: Validate | 5.2.6 | Ensure sudo authentication timeout is configured correctly
   when:
-    - rhel9cis_rule_5_3_6_enabled
+    - rhel9cis_rule_5_2_6_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_sudo_authentication_timeout >= 0
@@ -364,78 +374,107 @@
     fail_msg: "The 'rhel9cis_sudo_authentication_timeout' must be greater than or equal to 0 and be less than or equal to 15."
     success_msg: "The 'rhel9cis_sudo_authentication_timeout' is set to {{ rhel9cis_sudo_authentication_timeout }}."
 
-- name: Validate | 5.5.1 | Ensure password creation requirements are configured
+- name: Validate | 5.3.3.1.1 | Ensure password failed attempts lockout is configured
   when:
-    - rhel9cis_rule_5_5_1_enabled
+    - rhel9cis_rule_5_3_3_1_1_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_lockout_failed_attempts > 0
+      - rhel9cis_lockout_failed_attempts <= 5
+    fail_msg: "The 'rhel9cis_lockout_failed_attempts' variable must be greater than 0 and less than or equal to 5."
+    success_msg: "The 'rhel9cis_lockout_failed_attempts' variable is set to {{ rhel9cis_lockout_failed_attempts }}."
+
+- name: Validate | 5.3.3.1.2 | Ensure password unlock time is configured
+  when:
+    - rhel9cis_rule_5_3_3_1_2_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_lockout_unlock_time >= 900
+    fail_msg: "The 'rhel9cis_lockout_unlock_time' variable must be greater than or equal to 900."
+    success_msg: "The 'rhel9cis_lockout_unlock_time' variable is set to {{ rhel9cis_lockout_unlock_time }}."
+
+- name: Validate | 5.3.3.2.1 | Ensure password number of changed characters is configured
+  when:
+    - rhel9cis_rule_5_3_3_2_1_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_password_min_changed_characters >= 2
+    fail_msg: "The 'rhel9cis_password_min_changed_characters' variable must be greater than or equal to 2."
+    success_msg: "The 'rhel9cis_password_min_changed_characters' variable is set to {{ rhel9cis_password_min_changed_characters }}."
+
+- name: Validate | 5.3.3.2.2 | Ensure password length is configured
+  when:
+    - rhel9cis_rule_5_3_3_2_2_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_password_min_length >= 14
     fail_msg: "The 'rhel9cis_password_min_length' variable must be greater than or equal to 14."
     success_msg: "The 'rhel9cis_password_min_length' variable is set to {{ rhel9cis_password_min_length }}."
 
-- name: Validate | 5.5.2 | Ensure lockout for failed password attempts is configured
+- name: Validate | 5.3.3.2.4 | Ensure password same consecutive characters is configured
   when:
-    - rhel9cis_rule_5_5_2_enabled
-  block:
-    - name: Validate | 5.5.2 | Ensure lockout for failed password attempts is configured | Failed attempts
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_lockout_failed_attempts > 0
-          - rhel9cis_lockout_failed_attempts <= 5
-        fail_msg: "The 'rhel9cis_lockout_failed_attempts' variable must be greater than 0 and less than or equal to 5."
-        success_msg: "The 'rhel9cis_lockout_failed_attempts' variable is set to {{ rhel9cis_lockout_failed_attempts }}."
+    - rhel9cis_rule_5_3_3_2_4_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_password_max_repeat_characters <= 3
+      - rhel9cis_password_max_repeat_characters > 0
+    fail_msg: "The 'rhel9cis_password_max_repeat_characters' variable must be less than or equal to 3 but not 0."
+    success_msg: "The 'rhel9cis_password_max_repeat_characters' variable is set to {{ rhel9cis_password_max_repeat_characters }}."
 
-    - name: Validate | 5.5.2 | Ensure lockout for failed password attempts is configured | Unlock time
-      ansible.builtin.assert:
-        that:
-          - rhel9cis_lockout_unlock_time >= 900
-        fail_msg: "The 'rhel9cis_lockout_unlock_time' variable must be greater than or equal to 900."
-        success_msg: "The 'rhel9cis_lockout_unlock_time' variable is set to {{ rhel9cis_lockout_unlock_time }}."
-
-- name: Validate | 5.5.3 | Ensure password reuse is limited
+- name: Validate | 5.3.3.2.5 | Ensure password maximum sequential characters is configured
   when:
-    - rhel9cis_rule_5_5_3_enabled
+    - rhel9cis_rule_5_3_3_2_5_enabled
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_password_max_sequential_characters <= 3
+      - rhel9cis_password_max_sequential_characters > 0
+    fail_msg: "The 'rhel9cis_password_max_sequential_characters' variable must be less than or equal to 3 but not 0."
+    success_msg: "The 'rhel9cis_password_max_sequential_characters' variable is set to {{ rhel9cis_password_max_sequential_characters }}."
+
+- name: Validate | 5.3.3.3.1 | Ensure password history remember is configured
+  when:
+    - rhel9cis_rule_5_3_3_3_1_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_passwords_remembered >= 24
     fail_msg: "The 'rhel9cis_passwords_remembered' variable must be greater than or equal to 24."
     success_msg: "The 'rhel9cis_passwords_remembered' variable is set to {{ rhel9cis_passwords_remembered }}."
 
-- name: Validate | 5.6.1.1 | Ensure password expiration is 365 days or less
+- name: Validate | 5.4.1.1 | Ensure password expiration is configured
   when:
-    - rhel9cis_rule_5_6_1_1_enabled
+    - rhel9cis_rule_5_4_1_1_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_password_expiration_days <= 365
       - rhel9cis_password_expiration_days > 0
     fail_msg: "The 'rhel9cis_password_expiration_days' variable must be less than or equal to 365 but not 0."
-    success_msg: "The 'rhel9cis_password_expiration_days' variable is set to {{ rhel9cis_password_expiration_days }}."
+    success_msg: "The 'rhel9cis_password_expiration_days' is set to {{ rhel9cis_password_expiration_days }}."
 
-- name: Validate | 5.6.1.2 | Ensure minimum days between password changes is configured
+- name: Validate | 5.4.1.3 | Ensure password expiration warning days is configured
   when:
-    - rhel9cis_rule_5_6_1_2_enabled
-  ansible.builtin.assert:
-    that:
-      - rhel9cis_min_password_age <= rhel9cis_password_expiration_days
-      - rhel9cis_min_password_age > 0
-    fail_msg: "The 'rhel9cis_min_password_age' variable must be greater than 0."
-    success_msg: "The 'rhel9cis_min_password_age' variable is set to {{ rhel9cis_min_password_age }}."
-
-- name: Validate | 5.6.1.3 | Ensure password expiration warning days is 7 or more
-  when:
-    - rhel9cis_rule_5_6_1_3_enabled
+    - rhel9cis_rule_5_4_1_3_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_password_expiration_warning_days >= 7
     fail_msg: "The 'rhel9cis_password_expiration_warning_days' variable must be greater than or equal to 7."
-    success_msg: "The 'rhel9cis_password_expiration_warning_days' variable is set to {{ rhel9cis_password_expiration_warning_days }}."
+    success_msg: "The 'rhel9cis_password_expiration_warning_days' is set to {{ rhel9cis_password_expiration_warning_days }}."
 
-- name: Validate | 5.6.1.4 | Ensure inactive password lock is 30 days or less
+- name: Validate | 5.4.1.5 | Ensure inactive password lock is configured
   when:
-    - rhel9cis_rule_5_6_1_4_enabled
+    - rhel9cis_rule_5_4_1_5_enabled
   ansible.builtin.assert:
     that:
       - rhel9cis_inactive_password_lock_days <= 30
       - rhel9cis_inactive_password_lock_days > 0
     fail_msg: "The 'rhel9cis_inactive_password_lock_days' variable must be less than or equal to 30 but not 0."
-    success_msg: "The 'rhel9cis_inactive_password_lock_days' variable is set to {{ rhel9cis_inactive_password_lock_days }}."
+    success_msg: "The 'rhel9cis_inactive_password_lock_days' is set to {{ rhel9cis_inactive_password_lock_days }}."
+
+- name: Validate | 6.3.1.3 | Ensure audit_backlog_limit is sufficient
+  when:
+    - rhel9cis_rule_6_3_1_3_enabled
+    - rhel9cis_rule_6_3_1_3_force or _rhel9cis_level2
+  ansible.builtin.assert:
+    that:
+      - rhel9cis_audit_backlog_limit >= 8192
+    fail_msg: "The 'rhel9cis_audit_backlog_limit' must be set to a minimum of 8192."
+    success_msg: "The 'rhel9cis_audit_backlog_limit' is set to {{ rhel9cis_audit_backlog_limit }}."

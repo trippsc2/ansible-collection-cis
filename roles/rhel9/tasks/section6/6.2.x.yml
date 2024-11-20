@@ -1,318 +1,335 @@
 ---
-- name: 6.2.1 | Ensure accounts in /etc/passwd use shadowed passwords
+- name: 6.2.1.1 | Ensure journald service is enabled and active
   when:
-    - rhel9cis_rule_6_2_1_enabled
+    - rhel9cis_rule_6_2_1_1_enabled
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-journald.service
+    enabled: true
+    state: started
+    masked: false
+
+- name: 6.2.1.2 | Ensure journald log file access
+  when:
+    - rhel9cis_rule_6_2_1_2_enabled
+  become: true
+  block:
+    - name: 6.2.1.2 | Ensure journald log file access | Check /etc/tmpfiles.d/systemd.conf
+      ansible.builtin.stat:
+        path: /etc/tmpfiles.d/systemd.conf
+      register: _rhel9cis_systemd_conf
+
+    - name: 6.2.1.2 | Ensure journald log file access | /usr/lib/tmpfiles.d/systemd.conf
+      ansible.builtin.file:
+        dest: /usr/lib/tmpfiles.d/systemd.conf
+        owner: root
+        group: root
+        mode: '0640'
+        state: file
+
+    - name: 6.2.1.2 | Ensure journald log file access | /etc/tmpfiles.d/systemd.conf
+      when:
+        - _rhel9cis_systemd_conf.stat.exists
+      ansible.builtin.file:
+        dest: /etc/tmpfiles.d/systemd.conf
+        owner: root
+        group: root
+        mode: '0640'
+        state: file
+
+- name: 6.2.1.3 | Ensure journald log file rotation is configured
+  loop:
+    - regexp: '^#?\s?SystemMaxUse='
+      line: 'SystemMaxUse={{ rhel9cis_journald_systemmaxuse }}'
+    - regexp: '^#?\s?SystemKeepFree='
+      line: 'SystemKeepFree={{ rhel9cis_journald_systemkeepfree }}'
+    - regexp: '^#?\s?RuntimeMaxUse='
+      line: 'RuntimeMaxUse={{ rhel9cis_journald_runtimemaxuse }}'
+    - regexp: '^#?\s?RuntimeKeepFree='
+      line: 'RuntimeKeepFree={{ rhel9cis_journald_runtimekeepfree }}'
+    - regexp: '^#?\s?MaxFileSec='
+      line: 'MaxFileSec={{ rhel9cis_journald_maxfilesec }}'
+  when:
+    - rhel9cis_rule_6_2_1_3_enabled
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  notify:
+    - _rhel9cis_restart_systemd-journald
+
+- name: 6.2.1.4 | Ensure only one logging system is in use
+  when:
+    - rhel9cis_rule_6_2_1_4_enabled
+  become: true
+  block:
+    - name: 6.2.1.4 | Ensure only one logging system is in use | rsyslog
+      when:
+        - rhel9cis_syslog == 'rsyslog'
+      ansible.builtin.systemd_service:
+        name: rsyslog.service
+        state: started
+        enabled: true
+        masked: false
+
+    - name: 6.2.1.4 | Ensure only one logging system is in use | journald
+      when:
+        - rhel9cis_syslog == 'journald'
+      ansible.builtin.systemd_service:
+        name: rsyslog.service
+        state: stopped
+        enabled: false
+        masked: false
+
+
+- name: 6.2.2.1.1 | Ensure systemd-journal-remote is installed
+  when:
+    - rhel9cis_rule_6_2_2_1_1_enabled
+    - rhel9cis_syslog == 'journald'
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - systemd-journal-remote
+    state: present
+
+- name: 6.2.2.1.2 | Ensure systemd-journal-upload authentication is configured
+  loop:
+    - regexp: '^#?\s?URL='
+      line: 'URL={{ rhel9cis_remote_log_server }}'
+    - regexp: '^#?\s?ServerKeyFile='
+      line: 'ServerKeyFile={{ rhel9cis_journal_server_key_file }}'
+    - regexp: '^#?\s?ServerCertificateFile='
+      line: 'ServerCertificateFile={{ rhel9cis_journal_server_cert_file }}'
+    - regexp: '^#?\s?TrustedCertificateFile='
+      line: 'TrustedCertificateFile={{ rhel9cis_journal_server_trusted_cert_file }}'
+  when:
+    - rhel9cis_rule_6_2_2_1_2_enabled
+    - rhel9cis_syslog == 'journald'
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journal-upload.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  notify:
+    - _rhel9cis_restart_systemd-journal-upload
+
+- name: 6.2.2.1.3 | Ensure systemd-journal-upload is enabled and active
+  when:
+    - rhel9cis_rule_6_2_2_1_3_enabled
+    - rhel9cis_syslog == 'journald'
+  become: true
+  ansible.builtin.systemd_service:
+    name: systemd-journal-upload.service
+    enabled: true
+    state: started
+
+- name: 6.2.2.1.4 | Ensure systemd-journal-remote service is not in use
+  when:
+    - rhel9cis_rule_6_2_2_1_4_enabled
+    - rhel9cis_syslog == 'journald'
+  become: true
+  block:
+    - name: 6.2.2.1.4 | Ensure systemd-journal-remote service is not in use | systemd-journal-remote.service
+      ansible.builtin.systemd_service:
+        name: systemd-journal-remote.service
+        enabled: false
+        state: stopped
+
+    - name: 6.2.2.1.4 | Ensure systemd-journal-remote service is not in use | systemd-journal-remote.socket
+      ansible.builtin.systemd_service:
+        name: systemd-journal-remote.socket
+        enabled: false
+        state: stopped
+
+- name: 6.2.2.2 | Ensure journald is not configured to send logs to rsyslog
+  when:
+    - rhel9cis_rule_6_2_2_2_enabled
+    - rhel9cis_syslog == 'journald'
   become: true
   ansible.builtin.replace:
-    path: /etc/passwd
-    regexp: '^(\S+)(?::[^:]*):(\d+):(\d+):([^:]*):([^:]*):([^:]*)$'
-    replace: '\1:x:\2:\3:\4:\5:\6'
+    path: /etc/systemd/journald.conf
+    regexp: '^#?\s?ForwardToSyslog='
+    replace: 'ForwardToSyslog=no'
+  notify:
+    - _rhel9cis_restart_systemd-journald
 
-- name: 6.2.2 | Ensure /etc/shadow password fields are not empty
+- name: 6.2.2.3 | Ensure journald Compress is configured
   when:
-    - rhel9cis_rule_6_2_2_enabled
+    - rhel9cis_rule_6_2_2_3_enabled
+    - rhel9cis_syslog == 'journald'
   become: true
-  block:
-    - name: 6.2.2 | Ensure /etc/shadow password fields are not empty | Get list of empty password users
-      ansible.builtin.shell: |
-        cat /etc/shadow | awk -F: '($2 == \"\" ) { print $1; }'
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_empty_password_users
-      tags:
-        - always
-        - skip_ansible_lint
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: '^#?\s?Compress='
+    line: 'Compress=yes'
+  notify:
+    - _rhel9cis_restart_systemd-journald
 
-    - name: 6.2.2 | Ensure /etc/shadow password fields are not empty | Lock empty password users
-      loop: "{{ _rhel9cis_empty_password_users.stdout_lines }}"
-      ansible.builtin.user:
-        name: "{{ item }}"
-        password: "!"
-        password_lock: true
-
-- name: 6.2.3 | Ensure all groups in /etc/passwd exist in /etc/group
+- name: 6.2.2.4 | Ensure journald Storage is configured
   when:
-    - rhel9cis_rule_6_2_3_enabled
-  block:
-    - name: 6.2.3 | Ensure all groups in /etc/passwd exist in /etc/group | Get list of users with missing groups
-      become: true
-      ansible.builtin.shell: |
-        pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_missing_group_users
-      tags:
-        - always
-        - skip_ansible_lint
+    - rhel9cis_rule_6_2_2_4_enabled
+    - rhel9cis_syslog == 'journald'
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: '^#?\s?Storage='
+    line: 'Storage=persistent'
+  notify:
+    - _rhel9cis_restart_systemd-journald
 
-    - name: 6.2.3 | Ensure all groups in /etc/passwd exist in /etc/group | Add warning
-      when:
-        - _rhel9cis_missing_group_users.stdout_lines | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.3'
-        _rhel9cis_warning_description: |
-          The following users have a group assigned that does not exist on the system:
-          
-          {{ _rhel9cis_missing_group_users.stdout_lines | join("\n") }}
-
-- name: 6.2.4 | Ensure no duplicate UIDs exist
+- name: 6.2.3.1 | Ensure rsyslog is installed
   when:
-    - rhel9cis_rule_6_2_4_enabled
-  block:
-    - name: 6.2.4 | Ensure no duplicate UIDs exist | Get list of duplicate UIDs
-      become: true
-      ansible.builtin.shell: |
-        pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_duplicate_uids
-      tags:
-        - always
-        - skip_ansible_lint
+    - rhel9cis_rule_6_2_3_1_enabled
+    - rhel9cis_syslog == 'rsyslog'
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - rsyslog
+    state: present
 
-    - name: 6.2.4 | Ensure no duplicate UIDs exist | Add warning
-      when:
-        - _rhel9cis_duplicate_uids.stdout_lines | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.4'
-        _rhel9cis_warning_description: |
-          The following UIDs have duplicate users:
-          
-          {{ _rhel9cis_duplicate_uids.stdout_lines | join("\n") }}
-
-- name: 6.2.5 | Ensure no duplicate GIDs exist
+- name: 6.2.3.2 | Ensure rsyslog service is enabled and active
   when:
-    - rhel9cis_rule_6_2_5_enabled
-  block:
-    - name: 6.2.5 | Ensure no duplicate GIDs exist | Get list of duplicate GIDs
-      become: true
-      ansible.builtin.shell: |
-        pwck -r | awk -F: '{if ($3 in gid) print $1 ; else gid[$3]}' /etc/group
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_duplicate_gids
-      tags:
-        - always
-        - skip_ansible_lint
+    - rhel9cis_rule_6_2_3_2_enabled
+    - rhel9cis_syslog == 'rsyslog'
+  become: true
+  ansible.builtin.systemd_service:
+    name: rsyslog.service
+    enabled: true
 
-    - name: 6.2.5 | Ensure no duplicate GIDs exist | Add warning
-      when:
-        - _rhel9cis_duplicate_gids.stdout_lines | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.5'
-        _rhel9cis_warning_description: |
-          The following GIDs have duplicate groups:
-          
-          {{ _rhel9cis_duplicate_gids.stdout_lines | join("\n") }}
-
-- name: 6.2.6 | Ensure no duplicate user names exist
+- name: 6.2.3.3 | Ensure journald is configured to send logs to rsyslog
   when:
-    - rhel9cis_rule_6_2_6_enabled
-  block:
-    - name: 6.2.6 | Ensure no duplicate user names exist | Get list of duplicate user names
-      become: true
-      ansible.builtin.shell: |
-        pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_duplicate_user_names
-      tags:
-        - always
-        - skip_ansible_lint
+    - rhel9cis_rule_6_2_3_3_enabled
+    - rhel9cis_syslog == 'rsyslog'
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: '^#?\s?ForwardToSyslog='
+    line: 'ForwardToSyslog=yes'
+    state: present
+  notify:
+    - _rhel9cis_restart_systemd-journald
 
-    - name: 6.2.6 | Ensure no duplicate user names exist | Add warning
-      when:
-        - _rhel9cis_duplicate_user_names.stdout_lines | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.6'
-        _rhel9cis_warning_description: |
-          The following users have duplicate names:
-          
-          {{ _rhel9cis_duplicate_user_names.stdout_lines | join("\n") }}
-
-- name: 6.2.7 | Ensure no duplicate group names exist
+- name: 6.2.3.4 | Ensure rsyslog default file permissions are configured
   when:
-    - rhel9cis_rule_6_2_7_enabled
-  block:
-    - name: 6.2.7 | Ensure no duplicate group names exist | Get list of duplicate group names
-      become: true
-      ansible.builtin.shell: |
-        getent passwd | cut -d: -f1 | sort -n | uniq -d
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_duplicate_group_names
-      tags:
-        - always
-        - skip_ansible_lint
+    - rhel9cis_rule_6_2_3_4_enabled
+    - rhel9cis_syslog == 'rsyslog'
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    regexp: '^#?\s?\$FileCreateMode'
+    line: '$FileCreateMode 0640'
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - _rhel9cis_restart_rsyslog
 
-    - name: 6.2.7 | Ensure no duplicate group names exist | Add warning
-      when:
-        - _rhel9cis_duplicate_group_names.stdout_lines | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.7'
-        _rhel9cis_warning_description: |
-          The following groups have duplicate names:
-          
-          {{ _rhel9cis_duplicate_group_names.stdout_lines | join("\n") }}
-
-- name: 6.2.8 | Ensure root PATH integrity
+- name: 6.2.3.5 | Ensure logging is configured
   when:
-    - rhel9cis_rule_6_2_8_enabled
+    - rhel9cis_rule_6_2_3_5_enabled
   ansible.builtin.include_tasks: ../add-warning.yml
   vars:
-    _rhel9cis_warning_rule: '6.2.8'
-    _rhel9cis_warning_description: This cannot be fully automated. Please ensure the root path integrity is as required.
+    _rhel9cis_warning_rule: '6.2.3.5'
+    _rhel9cis_warning_description: This cannot be automated.  Please ensure the logging is configured as required.
 
-- name: 6.2.9 | Ensure root is the only UID 0 account
+- name: 6.2.3.6 | Ensure rsyslog is configured to send logs to a remote log host
   when:
-    - rhel9cis_rule_6_2_9_enabled
+    - rhel9cis_rule_6_2_3_6_enabled
+    - rhel9cis_syslog == 'rsyslog'
+  become: true
+  ansible.builtin.blockinfile:
+    path: /etc/rsyslog.conf
+    state: present
+    block: |
+      *.* @@{{ rhel9cis_remote_log_server }}
+    insertafter: EOF
+  notify:
+    - _rhel9cis_restart_rsyslog
+
+- name: 6.2.3.7 | Ensure rsyslog is not configured to receive logs from a remote client
+  loop:
+    - '^(\$ModLoad imtcp)'
+    - '^(\$InputTCPServerRun)'
+    - '^(module\(load="imtcp"\))'
+    - '^(input\(type="imtcp")'
+  when:
+    - rhel9cis_rule_6_2_3_7_enabled
+    - rhel9cis_syslog == 'rsyslog'
+  become: true
+  ansible.builtin.replace:
+    path: /etc/rsyslog.conf
+    regexp: '({{ item }})'
+    replace: '#\1'
+  notify:
+    - _rhel9cis_restart_rsyslog
+
+- name: 6.2.3.8 | Ensure rsyslog logrotate is configured
+  when:
+    - rhel9cis_rule_6_2_3_8_enabled
+    - rhel9cis_syslog == 'rsyslog'
   block:
-    - name: 6.2.9 | Ensure root is the only UID 0 account | Get list of non-root UID 0 users
+    - name: 6.2.3.8 | Ensure rsyslog logrotate is configured | Get /etc/logrotate.d/* files
       become: true
-      ansible.builtin.shell: |
-        cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") { print $1 }'
-      changed_when: false
-      failed_when: false
-      register: _rhel9cis_non_root_uid_0_users
+      ansible.builtin.find:
+        paths: 
+          - /etc/logrotate.d
+        file_type: file
+        recurse: true
+      register: _rhel9cis_logrotate_d
+
+    - name: 6.2.3.8 | Ensure rsyslog logrotate is configured | /etc/logrotate.conf
+      become: true
+      ansible.builtin.replace:
+        path: /etc/logrotate.conf
+        regexp: '^(\s*)(daily|weekly|monthly|yearly)$'
+        replace: "\\1{{ rhel9cis_logrotate_frequency }}"
+    
+    - name: 6.2.3.8 | Ensure rsyslog logrotate is configured | /etc/logrotate.d/*
+      loop: "{{ _rhel9cis_logrotate_d.files }}"
+      become: true
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^(\s*)(daily|weekly|monthly|yearly)$'
+        replace: "\\1{{ rhel9cis_logrotate_frequency }}"
+      loop_control:
+        label: "{{ item.path }}"
+
+    - name: 6.2.3.8 | Ensure rsyslog logrotate is configured | Add warning
+      ansible.builtin.include_tasks: ../add-warning.yml
+      vars:
+        _rhel9cis_warning_rule: '6.2.3.8'
+        _rhel9cis_warning_description: "This cannot be fully automated. Please ensure logrotate is configured as required for all log types."
+
+- name: 6.2.4.1 | Ensure all logfiles have appropriate access configured
+  when:
+    - rhel9cis_rule_6_2_4_1_enabled
+  become: true
+  block:
+    - name: 6.2.4.1 | Ensure all logfiles have appropriate access configured | Get list of log files
+      ansible.builtin.find:
+        paths: 
+          - /var/log
+        file_type: file
+        recurse: true
+      register: _rhel9cis_log_files
+
+    - name: 6.2.4.1 | Ensure all logfiles have appropriate access configured | Set permissions
+      loop: "{{ _rhel9cis_log_files.files }}"
+      when:
+        - item.path != '/var/log/btmp'
+        - item.path != '/var/log/utmp'
+        - item.path != '/var/log/wtmp'
+        - item.path != '/var/log/lastlog'
+        - item.path != '/var/log/chrony/measurements.log'
+        - item.path != '/var/log/chrony/tracking.log'
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        mode: 'u=rw,g-wx,o-rwx'
+      loop_control:
+        label: "{{ item.path }}"
       tags:
         - always
-        - skip_ansible_lint
-
-    - name: 6.2.9 | Ensure root is the only UID 0 account | Add warning
-      when:
-        - _rhel9cis_non_root_uid_0_users.stdout_lines | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.9'
-        _rhel9cis_warning_description: |
-          The following non-root users have UID 0:
-          
-          {{ _rhel9cis_non_root_uid_0_users.stdout_lines | join("\n") }}
-
-- name: 6.2.10 | Ensure local interactive user home directories are configured
-  when:
-    - rhel9cis_rule_6_2_10_enabled
-  block:
-    - name: 6.2.10 | Ensure local interactive user home directories are configured | Add warning
-      loop: "{{ _rhel9cis_passwd }}"
-      when:
-        - user.uid >= 1000
-        - user.uid <= 60000
-        - user.dir is not defined or user.dir == ''
-      ansible.builtin.set_fact:
-        _rhel9cis_no_home_users: "{{ _rhel9cis_no_home_users | default([]) + [user.id] }}"
-      loop_control:
-        loop_var: user
-
-    - name: 6.2.10 | Ensure local interactive user home directories are configured | Add warning
-      when:
-        - _rhel9cis_no_home_users | default([]) | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '6.2.10'
-        _rhel9cis_warning_description: |
-          The following users do not have a home directory.
-
-          {{ _rhel9cis_no_home_users }}
-
-          Please remediate this appropriately.
-
-- name: |
-    6.2.10 | Ensure local interactive user home directories are configured
-    6.2.11 | Ensure local interactive users own their home directories
-    6.2.12 | Ensure local interactive user home directories are mode 750 or more restrictive
-  when:
-    - rhel9cis_rule_6_2_10_enabled or
-      rhel9cis_rule_6_2_11_enabled or
-      rhel9cis_rule_6_2_12_enabled
-  block:
-    - name: |
-        6.2.10 | Ensure local interactive user home directories are configured
-        6.2.11 | Ensure local interactive users own their home directories
-        6.2.12 | Ensure local interactive user home directories are mode 750 or more restrictive
-      loop: "{{ _rhel9cis_passwd }}"
-      when:
-        - user.uid >= 1000
-        - user.uid <= 60000
-        - user.dir is defined
-        - user.dir != ''
-      become: true
-      ansible.builtin.file:
-        path: "{{ user.dir }}"
-        state: directory
-        owner: "{{ user.id }}"
-        group: "{{ user.id }}"
-        mode: '0750'
-      loop_control:
-        loop_var: user
-
-- name: 6.2.13 | Ensure no local interactive user has .netrc files
-  when:
-    - rhel9cis_rule_6_2_13_enabled
-  block:
-    - name: 6.2.13 | Ensure no local interactive user has .netrc files
-      loop: "{{ _rhel9cis_passwd }}"
-      when:
-        - user.uid >= 1000
-        - user.uid <= 60000
-        - user.dir is defined
-        - user.dir != ''
-      become: true
-      ansible.builtin.file:
-        path: "{{ user.dir }}/.netrc"
-        state: absent
-      loop_control:
-        loop_var: user
-
-- name: 6.2.14 | Ensure no local interactive user has .forward files
-  when:
-    - rhel9cis_rule_6_2_14_enabled
-  block:
-    - name: 6.2.14 | Ensure no local interactive user has .forward files
-      loop: "{{ _rhel9cis_passwd }}"
-      when:
-        - user.uid >= 1000
-        - user.uid <= 60000
-        - user.dir is defined
-        - user.dir != ''
-      become: true
-      ansible.builtin.file:
-        path: "{{ user.dir }}/.forward"
-        state: absent
-      loop_control:
-        loop_var: user
-
-- name: 6.2.15 | Ensure no local interactive user has .rhosts files
-  when:
-    - rhel9cis_rule_6_2_15_enabled
-  block:
-    - name: 6.2.15 | Ensure no local interactive user has .rhosts files
-      loop: "{{ _rhel9cis_passwd }}"
-      when:
-        - user.uid >= 1000
-        - user.uid <= 60000
-        - user.dir is defined
-        - user.dir != ''
-      become: true
-      ansible.builtin.file:
-        path: "{{ user.dir }}/.rhosts"
-        state: absent
-      loop_control:
-        loop_var: user
-
-- name: 6.2.16 | Ensure local interactive user dot files are not group or world writable
-  loop: "{{ _rhel9cis_passwd }}"
-  when:
-    - rhel9cis_rule_6_2_16_enabled
-    - user.uid >= 1000
-    - user.uid <= 60000
-    - user.dir is defined
-    - user.dir != ''
-  ansible.builtin.include_tasks: manage-dotfiles.yml
-  loop_control:
-    loop_var: user
+        - molecule-idempotence-notest

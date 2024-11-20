@@ -167,26 +167,12 @@
   when:
     - rhel8cis_rule_4_2_5_enabled
   become: true
-  block:
-    - name: 4.2.5 | Ensure sshd Banner is configured | No Banner
-      when:
-        - not rhel8cis_use_issue_net
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?Banner'
-        line: '#Banner'
-      notify:
-        - _rhel8cis_restart_sshd
-
-    - name: 4.2.5 | Ensure sshd Banner is configured | Banner
-      when:
-        - rhel8cis_use_issue_net
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?Banner'
-        line: 'Banner /etc/issue.net'
-      notify:
-        - _rhel8cis_restart_sshd
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?Banner'
+    line: 'Banner /etc/issue.net'
+  notify:
+    - _rhel8cis_restart_sshd
 
 - name: 4.2.6 | Ensure sshd Ciphers are configured
   when:
@@ -238,9 +224,7 @@
 - name: 4.2.8 | Ensure sshd DisableForwarding is enabled
   when:
     - rhel8cis_rule_4_2_8_enabled
-    - _rhel8cis_workstation or
-      _rhel8cis_server_level2 or
-      rhel8cis_rule_4_2_8_force
+    - rhel8cis_rule_4_2_8_force or _rhel8cis_workstation or _rhel8cis_level2
   become: true
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config

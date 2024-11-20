@@ -6,6 +6,7 @@
     - name: 1.1.2.4.1 | Ensure /var is a separate partition
       when:
         - rhel8cis_rule_1_1_2_4_1_enabled
+        - rhel8cis_rule_1_1_2_4_1_force or _rhel8cis_level2
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
         _rhel8cis_warning_rule: '1.1.2.4.1'
@@ -33,7 +34,8 @@
 - name: 1.1.2.4.x | Configure /var
   when:
     - '"/var" in _rhel8cis_mount_names'
-    - rhel8cis_rule_1_1_2_4_1_enabled or
+    - (rhel8cis_rule_1_1_2_4_1_enabled and
+      (rhel8cis_rule_1_1_2_4_1_force or _rhel8cis_level2)) or
       rhel8cis_rule_1_1_2_4_2_enabled or
       rhel8cis_rule_1_1_2_4_3_enabled
   block:
@@ -47,7 +49,7 @@
 
     - name: 1.1.2.4.x | Get UUID of /var partition
       when:
-        - rhel8cis_mount_with_uuid
+        - rhel8cis_var_mount_with_uuid
       block:
         - name: 1.1.2.4.x | Get UUID of /var partition
           become: true
@@ -61,7 +63,7 @@
 
     - name: 1.1.2.4.x | Set /var device path to source variable
       when:
-        - not rhel8cis_mount_with_uuid
+        - not rhel8cis_var_mount_with_uuid
       ansible.builtin.set_fact:
         _rhel8cis_var_source: "{{ _rhel8cis_existing_var_mount.device }}"
 

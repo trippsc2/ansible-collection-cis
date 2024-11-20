@@ -1,79 +1,103 @@
 ---
-- name: 1.6.1.1 | Ensure SELinux is installed
+- name: 1.6.x | Get system wide crypto policy
   when:
-    - rhel9cis_rule_1_6_1_1_enabled
+    - rhel9cis_rule_1_6_1_enabled or
+      rhel9cis_rule_1_6_3_enabled or
+      rhel9cis_rule_1_6_4_enabled or
+      rhel9cis_rule_1_6_5_enabled or
+      rhel9cis_rule_1_6_6_enabled or
+      rhel9cis_rule_1_6_7_enabled
   become: true
-  ansible.builtin.dnf:
-    name:
-      - libselinux
-    state: present
+  ansible.builtin.command: update-crypto-policies --show
+  changed_when: false
+  register: _rhel9cis_crypto_policy
 
-- name: 1.6.1.2 | Ensure SELinux is not disabled in bootloader configuration
+- name: 1.6.2 | Ensure system wide crypto policy is not set in sshd configuration
   when:
-    - rhel9cis_rule_1_6_1_2_enabled
+    - rhel9cis_rule_1_6_2_enabled
   become: true
-  ansible.builtin.replace:
-    path: /etc/default/grub
-    regexp: '(selinux|enforcing)\s*=\s*0\s*'
-    replace: ''
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/sshd
+    regexp: '^#?CRYPTO_POLICY'
+    state: absent
   notify:
-    - _rhel9cis_grub2-mkconfig
+    - _rhel9cis_restart_sshd
+
+- name: 1.6.3 | Ensure system wide crypto policy disables sha1 hash and signature support
+  when:
+    - rhel9cis_rule_1_6_3_enabled
+  become: true
+  ansible.builtin.copy:
+    content: |
+      hash = -SHA1
+      sign = -*-SHA1
+      sha1_in_certs = 0
+    dest: /etc/crypto-policies/policies/modules/NO-SHA1.pmod
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: 1.6.4 | Ensure system wide crypto policy disables macs less than 128 bits
+  when:
+    - rhel9cis_rule_1_6_4_enabled
+  become: true
+  ansible.builtin.copy:
+    content: mac = -*-64*
+    dest: /etc/crypto-policies/policies/modules/NO-WEAKMAC.pmod
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: 1.6.5 | Ensure system wide crypto policy disables cbc for ssh
+  when:
+    - rhel9cis_rule_1_6_5_enabled
+  become: true
+  ansible.builtin.copy:
+    content: cipher@SSH = -*-CBC
+    dest: /etc/crypto-policies/policies/modules/NO-SSHCBC.pmod
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: 1.6.6 | Ensure system wide crypto policy disables chacha20-poly1305 for ssh
+  when:
+    - rhel9cis_rule_1_6_6_enabled
+  become: true
+  ansible.builtin.copy:
+    content: cipher@SSH = -CHACHA20-POLY1305
+    dest: /etc/crypto-policies/policies/modules/NO-SSHCHACHA20.pmod
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: 1.6.7 | Ensure system wide crypto policy disables EtM for ssh
+  when:
+    - rhel9cis_rule_1_6_7_enabled
+  become: true
+  ansible.builtin.copy:
+    content: etm@SSH = DISABLE_ETM
+    dest: /etc/crypto-policies/policies/modules/NO-SSHETM.pmod
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: |
-    1.6.1.3 | Ensure SELinux policy is configured
-    1.6.1.4 | Ensure the SELinux mode is not disabled
-    1.6.1.5 | Ensure the SELinux state is enforcing
+    1.6.1 | Ensure system wide crypto policy is not set to legacy
+    1.6.3 | Ensure system wide crypto policy disables sha1 hash and signature support
+    1.6.4 | Ensure system wide crypto policy disables macs less than 128 bits
+    1.6.5 | Ensure system wide crypto policy disables cbc for ssh
+    1.6.6 | Ensure system wide crypto policy disables chacha20-poly1305 for ssh
+    1.6.7 | Ensure system wide crypto policy disables EtM for ssh
   when:
-    - rhel9cis_rule_1_6_1_3_enabled or
-      rhel9cis_rule_1_6_1_4_enabled or
-      (rhel9cis_rule_1_6_1_5_enabled and
-      (_rhel9cis_level2 or rhel9cis_rule_1_6_1_5_force))
+    - rhel9cis_rule_1_6_1_enabled or
+      rhel9cis_rule_1_6_3_enabled or
+      rhel9cis_rule_1_6_4_enabled or
+      rhel9cis_rule_1_6_5_enabled or
+      rhel9cis_rule_1_6_6_enabled or
+      rhel9cis_rule_1_6_7_enabled
+    - _rhel9cis_expected_crypto_policy != _rhel9cis_crypto_policy.stdout
   become: true
-  ansible.posix.selinux:
-    conf: /etc/selinux/config
-    policy: "{{ rhel9cis_selinux_policy }}"
-    state: "{{ rhel9cis_selinux_mode }}"
-
-- name: 1.6.1.6 | Ensure no unconfined services exist
-  when:
-    - rhel9cis_rule_1_6_1_6_enabled
-  block:
-    - name: 1.6.1.6 | Ensure no unconfined services exist | Get list of unconfined services
-      become: true
-      ansible.builtin.shell: |
-        ps -eZ | grep unconfined_service_t | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
-      changed_when: false
-      register: _rhel9cis_unconfined_services
-      tags:
-        - always
-        - skip_ansible_lint
-
-    - name: 1.6.1.6 | Ensure no unconfined services exist | Generate warning
-      when:
-        - _rhel9cis_unconfined_services.stdout | length > 0
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '1.6.1.6'
-        _rhel9cis_warning_description: | 
-          The following unconfined services are running:
-          
-          {{ _rhel9cis_unconfined_services.stdout_lines | join("\n") }}
-
-- name: 1.6.1.7 | Ensure SETroubleshoot is not installed
-  when:
-    - rhel9cis_rule_1_6_1_7_enabled
-    - _rhel9cis_server
-  become: true
-  ansible.builtin.dnf:
-    name:
-      - setroubleshoot
-    state: absent
-
-- name: 1.6.1.8 | Ensure the MCS Translation Service (mcstrans) is not installed
-  when:
-    - rhel9cis_rule_1_6_1_8_enabled
-  become: true
-  ansible.builtin.dnf:
-    name:
-      - mcstrans
-    state: absent
+  ansible.builtin.command: "update-crypto-policies --set {{ _rhel9cis_expected_crypto_policy }}"
+  changed_when: true
+  notify:
+    - _rhel9cis_reboot

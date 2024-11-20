@@ -13,15 +13,12 @@
     - rhel8cis_rule_6_2_2_enabled
   become: true
   block:
-    - name: 6.2.2 | Ensure /etc/shadow password fields are not empty | Get list of empty password users
+    - name: 6.2.2 | Ensure /etc/shadow password fields are not empty | Get list of empty password users # noqa risky-shell-pipe
       ansible.builtin.shell: |
         cat /etc/shadow | awk -F: '($2 == \"\" ) { print $1; }'
       changed_when: false
       failed_when: false
       register: _rhel8cis_empty_password_users
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.2 | Ensure /etc/shadow password fields are not empty | Lock empty password users
       loop: "{{ _rhel8cis_empty_password_users.stdout_lines }}"
@@ -34,16 +31,13 @@
   when:
     - rhel8cis_rule_6_2_3_enabled
   block:
-    - name: 6.2.3 | Ensure all groups in /etc/passwd exist in /etc/group | Get list of users with missing groups
+    - name: 6.2.3 | Ensure all groups in /etc/passwd exist in /etc/group | Get list of users with missing groups # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         pwck -r | grep 'no group' | awk '{ gsub("[:\47]",""); print $2}'
       changed_when: false
       failed_when: false
       register: _rhel8cis_missing_group_users
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.3 | Ensure all groups in /etc/passwd exist in /etc/group | Add warning
       when:
@@ -60,16 +54,13 @@
   when:
     - rhel8cis_rule_6_2_4_enabled
   block:
-    - name: 6.2.4 | Ensure no duplicate UIDs exist | Get list of duplicate UIDs
+    - name: 6.2.4 | Ensure no duplicate UIDs exist | Get list of duplicate UIDs # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         pwck -r | awk -F: '{if ($3 in uid) print $1 ; else uid[$3]}' /etc/passwd
       changed_when: false
       failed_when: false
       register: _rhel8cis_duplicate_uids
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.4 | Ensure no duplicate UIDs exist | Add warning
       when:
@@ -86,16 +77,13 @@
   when:
     - rhel8cis_rule_6_2_5_enabled
   block:
-    - name: 6.2.5 | Ensure no duplicate GIDs exist | Get list of duplicate GIDs
+    - name: 6.2.5 | Ensure no duplicate GIDs exist | Get list of duplicate GIDs # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         pwck -r | awk -F: '{if ($3 in gid) print $1 ; else gid[$3]}' /etc/group
       changed_when: false
       failed_when: false
       register: _rhel8cis_duplicate_gids
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.5 | Ensure no duplicate GIDs exist | Add warning
       when:
@@ -112,16 +100,13 @@
   when:
     - rhel8cis_rule_6_2_6_enabled
   block:
-    - name: 6.2.6 | Ensure no duplicate user names exist | Get list of duplicate user names
+    - name: 6.2.6 | Ensure no duplicate user names exist | Get list of duplicate user names # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         pwck -r | awk -F: '{if ($1 in users) print $1 ; else users[$1]}' /etc/passwd
       changed_when: false
       failed_when: false
       register: _rhel8cis_duplicate_user_names
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.6 | Ensure no duplicate user names exist | Add warning
       when:
@@ -138,16 +123,13 @@
   when:
     - rhel8cis_rule_6_2_7_enabled
   block:
-    - name: 6.2.7 | Ensure no duplicate group names exist | Get list of duplicate group names
+    - name: 6.2.7 | Ensure no duplicate group names exist | Get list of duplicate group names # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         getent passwd | cut -d: -f1 | sort -n | uniq -d
       changed_when: false
       failed_when: false
       register: _rhel8cis_duplicate_group_names
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.7 | Ensure no duplicate group names exist | Add warning
       when:
@@ -172,16 +154,13 @@
   when:
     - rhel8cis_rule_6_2_9_enabled
   block:
-    - name: 6.2.9 | Ensure root is the only UID 0 account | Get list of non-root UID 0 users
+    - name: 6.2.9 | Ensure root is the only UID 0 account | Get list of non-root UID 0 users # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         cat /etc/passwd | awk -F: '($3 == 0 && $1 != \"root\") { print $1 }'
       changed_when: false
       failed_when: false
       register: _rhel8cis_non_root_uid_0_users
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 6.2.9 | Ensure root is the only UID 0 account | Add warning
       when:

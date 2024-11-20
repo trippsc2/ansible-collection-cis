@@ -11,7 +11,7 @@
 - name: 2.3.2 | Ensure ldap client is not installed
   when:
     - rhel8cis_rule_2_3_2_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_2_3_2_force
+    - rhel8cis_rule_2_3_2_force or _rhel8cis_level2
   become: true
   ansible.builtin.dnf:
     name:

@@ -1,41 +1,41 @@
 ---
-- name: 1.1.7.x | Configure /home
+- name: 1.1.2.3.x | Configure /home
   when:
     - '"/home" not in _rhel9cis_mount_names'
   block:
-    - name: 1.1.7.1 | Ensure /home is a separate partition
+    - name: 1.1.2.3.1 | Ensure /home is a separate partition
       when:
-        - rhel9cis_rule_1_1_7_1_enabled
-        - _rhel9cis_level2 or rhel9cis_rule_1_1_7_1_force
+        - rhel9cis_rule_1_1_2_3_1_enabled
+        - _rhel9cis_level2 or rhel9cis_rule_1_1_2_3_1_force
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.7.1'
+        _rhel9cis_warning_rule: '1.1.2.3.1'
         _rhel9cis_warning_description: /home is not a separate partition.
 
-    - name: 1.1.7.2 | Ensure nodev option set on /home partition
+    - name: 1.1.2.3.2 | Ensure nodev option set on /home partition
       when:
-        - rhel9cis_rule_1_1_7_2_enabled
+        - rhel9cis_rule_1_1_2_3_2_enabled
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.7.2'
+        _rhel9cis_warning_rule: '1.1.2.3.2'
         _rhel9cis_warning_description: /home is not a separate partition.
     
-    - name: 1.1.7.3 | Ensure nosuid option set on /home partition'
+    - name: 1.1.2.3.3 | Ensure nosuid option set on /home partition'
       when:
-        - rhel9cis_rule_1_1_7_3_enabled
+        - rhel9cis_rule_1_1_2_3_3_enabled
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.7.3'
+        _rhel9cis_warning_rule: '1.1.2.3.3'
         _rhel9cis_warning_description: /home is not a separate partition.
 
-- name: 1.1.7.x | Configure /home
+- name: 1.1.2.3.x | Configure /home
   when:
     - '"/home" in _rhel9cis_mount_names'
-    - rhel9cis_rule_1_1_7_1_enabled or
-      rhel9cis_rule_1_1_7_2_enabled or
-      rhel9cis_rule_1_1_7_3_enabled
+    - rhel9cis_rule_1_1_2_3_1_enabled or
+      rhel9cis_rule_1_1_2_3_2_enabled or
+      rhel9cis_rule_1_1_2_3_3_enabled
   block:
-    - name: '1.1.7.x | Set existing /home mount configuration fact'
+    - name: '1.1.2.3.x | Set existing /home mount configuration fact'
       ansible.builtin.set_fact:
         _rhel9cis_existing_home_mount: >-
           {{ ansible_mounts |
@@ -45,7 +45,7 @@
 
     - name: 1.1.3.x | Get UUID of /home partition
       when:
-        - rhel9cis_mount_with_uuid
+        - rhel9cis_home_mount_with_uuid
       block:
         - name: 1.1.3.x | Get UUID of /home partition
           become: true
@@ -59,14 +59,14 @@
 
     - name: 1.1.3.x | Set /home device path to source variable
       when:
-        - not rhel9cis_mount_with_uuid
+        - not rhel9cis_home_mount_with_uuid
       ansible.builtin.set_fact:
         _rhel9cis_home_source: "{{ _rhel9cis_existing_home_mount.device }}"
 
     - name: |
-        1.1.7.1 | Ensure /home is a separate partition
-        1.1.7.2 | Ensure nodev option set on /home partition
-        1.1.7.3 | Ensure nosuid option set on /home partition
+        1.1.2.3.1 | Ensure /home is a separate partition
+        1.1.2.3.2 | Ensure nodev option set on /home partition
+        1.1.2.3.3 | Ensure nosuid option set on /home partition
       become: true
       ansible.posix.mount:
         src: "{{ _rhel9cis_home_source }}"

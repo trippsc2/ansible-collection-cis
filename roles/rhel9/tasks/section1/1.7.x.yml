@@ -1,47 +1,29 @@
 ---
-- name: |
-    1.7.1 | Ensure message of the day is configured properly
-    1.7.4 | Ensure access to /etc/motd is configured
+- name: 1.7.1 | Ensure message of the day is configured properly
   when:
-    - rhel9cis_rule_1_7_1_enabled or
-      rhel9cis_rule_1_7_4_enabled
+    - rhel9cis_rule_1_7_1_enabled
   become: true
   block:
-    - name: |
-        1.7.1 | Ensure message of the day is configured properly
-        1.7.4 | Ensure access to /etc/motd is configured
+    - name: 1.7.1 | Ensure message of the day is configured properly | Set content # noqa risky-file-permissions
       when:
         - rhel9cis_use_motd
       ansible.builtin.copy:
         content: "{{ rhel9cis_motd_banner }}"
         dest: /etc/motd
-        owner: root
-        group: root
-        mode: '0644'
 
-    - name: |
-        1.7.1 | Ensure message of the day is configured properly
-        1.7.4 | Ensure access to /etc/motd is configured
+    - name: 1.7.1 | Ensure message of the day is configured properly | Remove content # noqa risky-file-permissions
       when:
         - not rhel9cis_use_motd
       ansible.builtin.copy:
-        content: ""
+        content: ''
         dest: /etc/motd
-        owner: root
-        group: root
-        mode: '0644'
 
-- name: |
-    1.7.2 | Ensure local login warning banner is configured properly
-    1.7.5 | Ensure access to /etc/issue is configured
+- name: 1.7.2 | Ensure local login warning banner is configured properly    
   when:
-    - rhel9cis_rule_1_7_2_enabled or
-      rhel9cis_rule_1_7_5_enabled
+    - rhel9cis_rule_1_7_2_enabled
   become: true
   block:
-    - name: |
-        1.7.2 | Ensure local login warning banner is configured properly
-        1.7.5 | Ensure access to /etc/issue is configured
+    - name: 1.7.2 | Ensure local login warning banner is configured properly | Set content # noqa risky-file-permissions
       when:
         - rhel9cis_use_issue
       ansible.builtin.copy:
@@ -51,29 +33,22 @@
         group: root
         mode: '0644'
 
-    - name: |
-        1.7.2 | Ensure local login warning banner is configured properly
-        1.7.5 | Ensure access to /etc/issue is configured
+    - name: 1.7.2 | Ensure local login warning banner is configured properly | Remove content # noqa risky-file-permissions
       when:
         - not rhel9cis_use_issue
       ansible.builtin.copy:
-        content: ""
+        content: ''
         dest: /etc/issue
         owner: root
         group: root
         mode: '0644'
 
-- name: |
-    1.7.3 | Ensure remote login warning banner is configured properly
-    1.7.6 | Ensure access to /etc/issue.net is configured
+- name: 1.7.3 | Ensure remote login warning banner is configured properly
   when:
-    - rhel9cis_rule_1_7_3_enabled or
-      rhel9cis_rule_1_7_6_enabled
+    - rhel9cis_rule_1_7_3_enabled
   become: true
   block:
-    - name: |
-        1.7.3 | Ensure remote login warning banner is configured properly
-        1.7.6 | Ensure access to /etc/issue.net is configured
+    - name: 1.7.3 | Ensure remote login warning banner is configured properly | Set content # noqa risky-file-permissions
       when:
         - rhel9cis_use_issue_net
       ansible.builtin.copy:
@@ -83,14 +58,45 @@
         group: root
         mode: '0644'
 
-    - name: |
-        1.7.3 | Ensure remote login warning banner is configured properly
-        1.7.6 | Ensure access to /etc/issue.net is configured
+    - name: 1.7.3 | Ensure remote login warning banner is configured properly | Remove content # noqa risky-file-permissions
       when:
         - not rhel9cis_use_issue_net
       ansible.builtin.copy:
-        content: ""
+        content: ''
         dest: /etc/issue.net
         owner: root
         group: root
         mode: '0644'
+
+- name: 1.7.4 | Ensure access to /etc/motd is configured
+  when:
+    - rhel9cis_rule_1_7_4_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/motd
+    owner: root
+    group: root
+    mode: '0644'
+    state: file
+
+- name: 1.7.5 | Ensure access to /etc/issue is configured
+  when:
+    - rhel9cis_rule_1_7_5_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/issue
+    owner: root
+    group: root
+    mode: '0644'
+    state: file
+
+- name: 1.7.6 | Ensure access to /etc/issue.net is configured
+  when:
+    - rhel9cis_rule_1_7_6_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/issue.net
+    owner: root
+    group: root
+    mode: '0644'
+    state: file

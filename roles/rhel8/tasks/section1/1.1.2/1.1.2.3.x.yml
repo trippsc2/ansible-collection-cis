@@ -6,6 +6,7 @@
     - name: 1.1.2.3.1 | Ensure /home is a separate partition
       when:
         - rhel8cis_rule_1_1_2_3_1_enabled
+        - rhel8cis_rule_1_1_2_3_1_force or _rhel8cis_level2
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
         _rhel8cis_warning_rule: '1.1.2.3.1'
@@ -33,7 +34,8 @@
 - name: 1.1.2.3.x | Configure /home
   when:
     - '"/home" in _rhel8cis_mount_names'
-    - rhel8cis_rule_1_1_2_3_1_enabled or
+    - (rhel8cis_rule_1_1_2_3_1_enabled and
+      (rhel8cis_rule_1_1_2_3_1_force or _rhel8cis_level2)) or
       rhel8cis_rule_1_1_2_3_2_enabled or
       rhel8cis_rule_1_1_2_3_3_enabled
   block:
@@ -47,7 +49,7 @@
 
     - name: 1.1.2.3.x | Get UUID of /home partition
       when:
-        - rhel8cis_mount_with_uuid
+        - rhel8cis_home_mount_with_uuid
       block:
         - name: 1.1.2.3.x | Get UUID of /home partition
           become: true
@@ -61,7 +63,7 @@
 
     - name: 1.1.2.3.x | Set /home device path to source variable
       when:
-        - not rhel8cis_mount_with_uuid
+        - not rhel8cis_home_mount_with_uuid
       ansible.builtin.set_fact:
         _rhel8cis_home_source: "{{ _rhel8cis_existing_home_mount.device }}"
 

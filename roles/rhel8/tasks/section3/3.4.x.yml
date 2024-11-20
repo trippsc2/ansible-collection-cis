@@ -13,25 +13,38 @@
     - rhel8cis_rule_3_4_1_2_enabled
   become: true
   block:
-    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | firewalld package
-      ansible.builtin.dnf:
-        name:
-          - firewalld
-        state: "{{ _rhel8cis_firewalld_state }}"
+    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | firewalld
+      when:
+        - rhel8cis_firewall == 'firewalld'
+      block:
+        - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | firewalld package
+          ansible.builtin.dnf:
+            name:
+              - firewalld
+            state: present
 
-    - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | nftables service
-      ansible.builtin.systemd_service:
-        name: nftables.service
-        state: "{{ _rhel8cis_nftables_service_state }}"
-        enabled: "{{ _rhel8cis_nftables_service_enabled }}"
-        masked: "{{ _rhel8cis_nftables_service_masked }}"
+        - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | firewalld.service
+          ansible.builtin.systemd_service:
+            name: firewalld.service
+            state: started
+            enabled: true
+            masked: false
+
+        - name: 3.4.1.2 | Ensure a single firewall configuration utility is in use | nftables service
+          ansible.builtin.systemd_service:
+            name: nftables.service
+            state: stopped
+            enabled: false
+            masked: true
+
+    # NFTables is not implemented yet
 
 - name: 3.4.2.1 | Ensure nftables base chains exist
   when:
     - rhel8cis_rule_3_4_2_1_enabled
     - rhel8cis_firewall == 'firewalld'
   ansible.builtin.debug:
-    msg: "Rule 3.4.2.1 is implemented by firewalld automatically."
+    msg: Rule 3.4.2.1 is implemented by firewalld automatically.
 
 - name: 3.4.2.2 | Ensure host based firewall loopback traffic is configured
   when:
@@ -75,22 +88,21 @@
             permanent: true
             state: enabled
 
+    # NFTables is not implemented yet
+
 - name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports
   when:
     - rhel8cis_rule_3_4_2_3_enabled
     - rhel8cis_firewall == 'firewalld'
   block:
-    - name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports | Add warning
+    - name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports | Add warning # noqa command-instead-of-module risky-shell-pipe
       become: true
       ansible.builtin.shell: |-
         systemctl is-enabled firewalld.service | grep -q 'enabled' && firewall-cmd --list-all --zone="$(firewall-cmd --list-all | awk '/\(active\)/ { print $1 }')" | grep -P -- '^\h*(services:|ports:)'
       changed_when: false
       failed_when: false
       register: _rhel8cis_firewalld_services
-      tags:
-        - always
-        - skip_ansible_lint
-      
+
     - name: 3.4.2.3 | Ensure firewalld drops unnecessary services and ports | Add warning
       ansible.builtin.include_tasks: ../add-warning.yml
       vars:
@@ -99,3 +111,5 @@
           - Remediation cannot be automated. Please review the output below for unnecessary firewalld services and ports.
           - ''
           - '{{ _rhel8cis_firewalld_services.stdout_lines }}'
+
+# Rules 3.4.2.4 and 3.4.2.5 are for NFTables and are not implemented yet

@@ -39,7 +39,7 @@
 - name: 4.3.4 | Ensure users must provide password for escalation
   when:
     - rhel8cis_rule_4_3_4_enabled
-    - _rhel8cis_level2 or rhel8cis_rule_4_3_4_force
+    - rhel8cis_rule_4_3_4_force or _rhel8cis_level2
   become: true
   block:
     - name: 4.3.4 | Ensure users must provide password for escalation | /etc/sudoers

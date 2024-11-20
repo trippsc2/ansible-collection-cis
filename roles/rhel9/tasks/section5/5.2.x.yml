@@ -1,370 +1,114 @@
 ---
-- name: 5.2.1 | Ensure permissions on /etc/ssh/sshd_config are configured
+- name: 5.2.1 | Ensure sudo is installed
   when:
     - rhel9cis_rule_5_2_1_enabled
   become: true
-  block:
-    - name: 5.2.1 | Ensure permissions on /etc/ssh/sshd_config are configured | /etc/ssh/sshd_config
-      ansible.builtin.file:
-        path: /etc/ssh/sshd_config
-        owner: root
-        group: root
-        mode: '0600'
-    
-    - name: 5.2.1 | Ensure permissions on /etc/ssh/sshd_config are configured | Get /etc/ssh/sshd_config.d/*
-      ansible.builtin.find:
-        paths: /etc/ssh/sshd_config.d
-        patterns: '*.conf'
-        file_type: file
-      register: _rhel9cis_sshd_config_d_files
+  ansible.builtin.dnf:
+    name:
+      - sudo
+    state: present
 
-    - name: 5.2.1 | Ensure permissions on /etc/ssh/sshd_config are configured | /etc/ssh/sshd_config.d/*
-      loop: "{{ _rhel9cis_sshd_config_d_files.files }}"
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        owner: root
-        group: root
-        mode: '0600'
-      loop_control:
-        label: "{{ item.path }}"
+- name: 5.2.x | Get /etc/sudoers.d/ files
+  become: true
+  ansible.builtin.find:
+    paths:
+      - /etc/sudoers.d
+    file_type: file
+    recurse: true
+  register: _rhel9cis_sudoers_d_files
 
-- name: 5.2.2 | Ensure permissions on SSH private host key files are configured
+- name: 5.2.2 | Ensure sudo commands use pty
   when:
     - rhel9cis_rule_5_2_2_enabled
   become: true
-  block:
-    - name: 5.2.2 | Ensure permissions on SSH private host key files are configured | Get /etc/ssh/ssh_host_*_key
-      ansible.builtin.find:
-        paths: 
-          - /etc/ssh
-        patterns:
-          - 'ssh_host_*_key'
-        recurse: true
-        file_type: file
-      register: _rhel9cis_ssh_host_private_keys
-    
-    - name: 5.2.2 | Ensure permissions on SSH private host key files are configured | /etc/ssh/ssh_host_*_key
-      loop: "{{ _rhel9cis_ssh_host_private_keys.files }}"
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        owner: root
-        group: ssh_keys
-        mode: 'u=rw,g-wx,o-rwx'
-      loop_control:
-        label: "{{ item.path }}"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    line: 'Defaults use_pty'
+    insertbefore: '^#includedir /etc/sudoers.d'
 
-- name: 5.2.3 | Ensure permissions on SSH public host key files are configured
+- name: 5.2.3 | Ensure sudo log file exists
   when:
     - rhel9cis_rule_5_2_3_enabled
   become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: '^Defaults\s+logfile='
+    line: 'Defaults logfile={{ rhel9cis_sudo_log_file }}'
+    insertbefore: '^#includedir /etc/sudoers.d'
+
+- name: 5.2.4 | Ensure users must provide password for escalation
+  when:
+    - rhel9cis_rule_5_2_4_enabled
+    - rhel9cis_rule_5_2_4_force or _rhel9cis_level2
+  become: true
   block:
-    - name: 5.2.3 | Ensure permissions on SSH public host key files are configured | Get /etc/ssh/ssh_host_*_key.pub
-      ansible.builtin.find:
-        paths: 
-          - /etc/ssh
-        patterns:
-          - 'ssh_host_*_key.pub'
-        recurse: true
-        file_type: file
-      register: _rhel9cis_ssh_host_public_keys
-    
-    - name: 5.2.3 | Ensure permissions on SSH public host key files are configured | /etc/ssh/ssh_host_*_key.pub
-      loop: "{{ _rhel9cis_ssh_host_public_keys.files }}"
-      ansible.builtin.file:
+    - name: 5.2.4 | Ensure users must provide password for escalation | /etc/sudoers
+      ansible.builtin.replace:
+        path: /etc/sudoers
+        regexp: '^([^#|].*)NOPASSWD(.*)'
+        replace: '\1PASSWD\2'
+
+    - name: 5.2.4 | Ensure users must provide password for escalation | /etc/sudoers.d/*
+      loop: "{{ _rhel9cis_sudoers_d_files.files }}"
+      ansible.builtin.replace:
         path: "{{ item.path }}"
-        owner: root
-        group: root
-        mode: 'u=rw,g-wx,o-wx'
+        regexp: '^([^#|].*)NOPASSWD(.*)'
+        replace: '\1PASSWD\2'
       loop_control:
         label: "{{ item.path }}"
 
-- name: 5.2.4 | Ensure SSH access is limited
-  when:
-    - rhel9cis_rule_5_2_4_enabled
-  become: true
-  block:
-    - name: 5.2.4 | Ensure SSH access is limited | No AllowUsers
-      when:
-        - rhel9cis_sshd_allow_users | length == 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?AllowUsers'
-        line: '#AllowUsers'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | AllowUsers
-      when:
-        - rhel9cis_sshd_allow_users | length > 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?AllowUsers'
-        line: 'AllowUsers {{ rhel9cis_sshd_allow_users | join(" ") }}'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | No AllowGroups
-      when:
-        - rhel9cis_sshd_allow_groups | length == 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?AllowGroups'
-        line: '#AllowGroups'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | AllowGroups
-      when:
-        - rhel9cis_sshd_allow_groups | length > 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?AllowGroups'
-        line: 'AllowGroups {{ rhel9cis_sshd_allow_groups | join(" ") }}'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | No DenyUsers
-      when:
-        - rhel9cis_sshd_deny_users | length == 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?DenyUsers'
-        line: '#DenyUsers'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | DenyUsers
-      when:
-        - rhel9cis_sshd_deny_users | length > 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?DenyUsers'
-        line: 'DenyUsers {{ rhel9cis_sshd_deny_users | join(" ") }}'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | No DenyGroups
-      when:
-        - rhel9cis_sshd_deny_groups | length == 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?DenyGroups'
-        line: '#DenyGroups'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.4 | Ensure SSH access is limited | DenyGroups
-      when:
-        - rhel9cis_sshd_deny_groups | length > 0
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?DenyGroups'
-        line: 'DenyGroups {{ rhel9cis_sshd_deny_groups | join(" ") }}'
-      notify:
-        - _rhel9cis_restart_sshd
-
-- name: 5.2.5 | Ensure SSH LogLevel is configured
+- name: 5.2.5 | Ensure re-authentication for privilege escalation is not disabled globally
   when:
     - rhel9cis_rule_5_2_5_enabled
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?LogLevel'
-    line: 'LogLevel {{ rhel9cis_sshd_log_level }}'
-  notify:
-    - _rhel9cis_restart_sshd
+  block:
+    - name: 5.2.5 | Ensure re-authentication for privilege escalation is not disabled globally | /etc/sudoers
+      ansible.builtin.replace:
+        path: /etc/sudoers
+        regexp: '^([^#].*)!authenticate(.*)'
+        replace: '\1authenticate\2'
 
-- name: 5.2.6 | Ensure SSH PAM is enabled
+    - name: 5.2.5 | Ensure re-authentication for privilege escalation is not disabled globally | /etc/sudoers.d/*
+      loop: "{{ _rhel9cis_sudoers_d_files.files }}"
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^([^#].*)!authenticate(.*)'
+        replace: '\1authenticate\2'
+      loop_control:
+        label: "{{ item.path }}"
+
+- name: 5.2.6 | Ensure sudo authentication timeout is configured correctly
   when:
     - rhel9cis_rule_5_2_6_enabled
   become: true
   ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?UsePAM'
-    line: 'UsePAM yes'
-  notify:
-    - _rhel9cis_restart_sshd
+    path: /etc/sudoers
+    regexp: '^#?Defaults\s+timestamp_timeout='
+    line: 'Defaults timestamp_timeout={{ rhel9cis_sudo_authentication_timeout }}'
+    insertbefore: '^#includedir /etc/sudoers.d'
 
-- name: 5.2.7 | Ensure SSH root login is disabled
+- name: 5.2.7 | Ensure access to the su command is restricted
   when:
     - rhel9cis_rule_5_2_7_enabled
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?PermitRootLogin'
-    line: 'PermitRootLogin no'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.8 | Ensure SSH HostbasedAuthentication is disabled
-  when:
-    - rhel9cis_rule_5_2_8_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?HostbasedAuthentication'
-    line: 'HostbasedAuthentication no'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.9 | Ensure SSH PermitEmptyPasswords is disabled
-  when:
-    - rhel9cis_rule_5_2_9_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?PermitEmptyPasswords'
-    line: 'PermitEmptyPasswords no'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.10 | Ensure SSH PermitUserEnvironment is disabled
-  when:
-    - rhel9cis_rule_5_2_10_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?PermitUserEnvironment'
-    line: 'PermitUserEnvironment no'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.11 | Ensure SSH IgnoreRhosts is enabled
-  when:
-    - rhel9cis_rule_5_2_11_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?IgnoreRhosts'
-    line: 'IgnoreRhosts yes'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.12 | Ensure SSH X11 forwarding is disabled
-  when:
-    - rhel9cis_rule_5_2_12_enabled
-    - _rhel9cis_workstation or
-      _rhel9cis_server_level2 or
-      rhel9cis_rule_5_2_12_force
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?X11Forwarding'
-    line: 'X11Forwarding no'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.13 | Ensure SSH AllowTcpForwarding is disabled
-  when:
-    - rhel9cis_rule_5_2_13_enabled
-    - _rhel9cis_level2 or
-      rhel9cis_rule_5_2_13_force
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?AllowTcpForwarding'
-    line: 'AllowTcpForwarding no'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.14 | Ensure system-wide crypto policy is not over-ridden
-  when:
-    - rhel9cis_rule_5_2_14_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/sysconfig/sshd
-    regexp: '^#?CRYPTO_POLICY'
-    state: absent
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.15 | Ensure SSH warning banner is configured
-  when:
-    - rhel9cis_rule_5_2_15_enabled
-  become: true
   block:
-    - name: 5.2.15 | Ensure SSH warning banner is configured | No Banner
-      when:
-        - not rhel9cis_use_issue_net
+    - name: 5.2.7 | Ensure access to the su command is restricted | Create group
+      ansible.builtin.group:
+        name: "{{ rhel9cis_su_group_name }}"
+        system: true
+        state: present
+
+    - name: 5.2.7 | Ensure access to the su command is restricted | Set group membership
       ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?Banner'
-        line: '#Banner'
-      notify:
-        - _rhel9cis_restart_sshd
+        path: /etc/group
+        regexp: '^{{ rhel9cis_su_group_name }}(:.:.*:).*$'
+        line: '{{ rhel9cis_su_group_name }}\1{{ rhel9cis_su_group_members | join(",") }}'
+        backrefs: true
+        insertbefore: '^#includedir /etc/sudoers.d'
 
-    - name: 5.2.15 | Ensure SSH warning banner is configured | Banner
-      when:
-        - rhel9cis_use_issue_net
+    - name: 5.2.7 | Ensure access to the su command is restricted | /etc/pam.d/su
       ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?Banner'
-        line: 'Banner /etc/issue.net'
-      notify:
-        - _rhel9cis_restart_sshd
-
-- name: 5.2.16 | Ensure SSH MaxAuthTries is set to 4 or less
-  when:
-    - rhel9cis_rule_5_2_16_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?MaxAuthTries'
-    line: 'MaxAuthTries {{ rhel9cis_sshd_max_auth_tries }}'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.17 | Ensure SSH MaxStartups is configured
-  when:
-    - rhel9cis_rule_5_2_17_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?MaxStartups'
-    line: 'MaxStartups {{ rhel9cis_sshd_max_startups_before_dropping }}:{{ rhel9cis_sshd_max_startups_drop_percentage }}:{{ rhel9cis_sshd_max_startups_absolute_maximum }}'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.18 | Ensure SSH MaxSessions is set to 10 or less
-  when:
-    - rhel9cis_rule_5_2_18_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?MaxSessions'
-    line: 'MaxSessions {{ rhel9cis_sshd_max_sessions }}'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.19 | Ensure sshd LoginGraceTime is set to one minute or less
-  when:
-    - rhel9cis_rule_5_2_19_enabled
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?LoginGraceTime'
-    line: 'LoginGraceTime {{ rhel9cis_sshd_login_grace_time }}'
-  notify:
-    - _rhel9cis_restart_sshd
-
-- name: 5.2.20 | Ensure SSH Idle Timeout Interval is configured
-  when:
-    - rhel9cis_rule_5_2_20_enabled
-  block:
-    - name: 5.2.20 | Ensure SSH Idle Timeout Interval is configured | ClientAliveInterval
-      become: true
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?ClientAliveInterval'
-        line: 'ClientAliveInterval {{ rhel9cis_sshd_client_alive_interval }}'
-      notify:
-        - _rhel9cis_restart_sshd
-
-    - name: 5.2.20 | Ensure SSH Idle Timeout Interval is configured | ClientAliveCountMax
-      become: true
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^#?ClientAliveCountMax'
-        line: 'ClientAliveCountMax {{ rhel9cis_sshd_client_alive_count_max }}'
-      notify:
-        - _rhel9cis_restart_sshd
+        path: /etc/pam.d/su
+        regexp: '^(#)?auth\s+required\s+pam_wheel\.so'
+        line: "auth required pam_wheel.so use_uid group={{ rhel9cis_su_group_name }}"
+        insertbefore: '^#includedir /etc/sudoers.d'

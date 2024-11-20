@@ -8,20 +8,5 @@
 - name: Execute the 2.3.x tasks
   ansible.builtin.import_tasks: 2.3.x.yml
 
-- name: 2.4 | Ensure nonessential services listening on the system are removed or masked
-  when:
-    - rhel9cis_rule_2_4_enabled
-  block:
-    - name: 2.4 | Ensure nonessential services listening on the system are removed or masked | ss
-      ansible.builtin.command: ss -plntu
-      changed_when: false
-      register: _rhel9cis_listening_services
-
-    - name: 2.4 | Ensure nonessential services listening on the system are removed or masked | Add warning
-      ansible.builtin.include_tasks: ../add-warning.yml
-      vars:
-        _rhel9cis_warning_rule: '2.4'
-        _rhel9cis_warning_description: | 
-          Remediation cannot be automated. Please review the output below for listening services on network interfaces.
-          
-          {{ _rhel9cis_listening_services.stdout_lines | join("\n") }}
+- name: Execute the 2.4.x tasks
+  ansible.builtin.import_tasks: 2.4.x.yml

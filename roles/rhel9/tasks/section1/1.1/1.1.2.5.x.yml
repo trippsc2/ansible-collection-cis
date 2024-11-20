@@ -1,80 +1,80 @@
 ---
-- name: 1.1.4.x | Configure /var/tmp
+- name: 1.1.2.5.x | Configure /var/tmp
   when:
     - '"/var/tmp" not in _rhel9cis_mount_names'
   block:
-    - name: 1.1.4.1 | Ensure /var/tmp is a separate partition
+    - name: 1.1.2.5.1 | Ensure /var/tmp is a separate partition
       when:
-        - rhel9cis_rule_1_1_4_1_enabled
-        - _rhel9cis_level2 or rhel9cis_rule_1_1_4_1_force
+        - rhel9cis_rule_1_1_2_5_1_enabled
+        - _rhel9cis_level2 or rhel9cis_rule_1_1_2_5_1_force
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.4.1'
+        _rhel9cis_warning_rule: '1.1.2.5.1'
         _rhel9cis_warning_description: /var/tmp is not a separate partition.
 
-    - name: 1.1.4.2 | Ensure nodev option set on /var/tmp partition
+    - name: 1.1.2.5.2 | Ensure nodev option set on /var/tmp partition
       when:
-        - rhel9cis_rule_1_1_4_2_enabled
+        - rhel9cis_rule_1_1_2_5_2_enabled
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.4.2'
+        _rhel9cis_warning_rule: '1.1.2.5.2'
         _rhel9cis_warning_description: /var/tmp is not a separate partition.
     
-    - name: 1.1.4.3 | Ensure noexec option set on /var/tmp partition
+    - name: 1.1.2.5.3 | Ensure noexec option set on /var/tmp partition
       when:
-        - rhel9cis_rule_1_1_4_3_enabled
+        - rhel9cis_rule_1_1_2_5_3_enabled
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.4.3'
+        _rhel9cis_warning_rule: '1.1.2.5.3'
         _rhel9cis_warning_description: /var/tmp is not a separate partition.
     
-    - name: 1.1.4.4 | Ensure nosuid option set on /var/tmp partition
+    - name: 1.1.2.5.4 | Ensure nosuid option set on /var/tmp partition
       when:
-        - rhel9cis_rule_1_1_4_4_enabled
+        - rhel9cis_rule_1_1_2_5_4_enabled
       ansible.builtin.include_tasks: ../../add-warning.yml
       vars:
-        _rhel9cis_warning_rule: '1.1.4.4'
+        _rhel9cis_warning_rule: '1.1.2.5.4'
         _rhel9cis_warning_description: /var/tmp is not a separate partition.
 
-- name: 1.1.4.x | Configure /var/tmp
+- name: 1.1.2.5.x | Configure /var/tmp
   when:
     - '"/var/tmp" in _rhel9cis_mount_names'
-    - rhel9cis_rule_1_1_4_1_enabled or
-      rhel9cis_rule_1_1_4_2_enabled or
-      rhel9cis_rule_1_1_4_3_enabled or
-      rhel9cis_rule_1_1_4_4_enabled
+    - rhel9cis_rule_1_1_2_5_1_enabled or
+      rhel9cis_rule_1_1_2_5_2_enabled or
+      rhel9cis_rule_1_1_2_5_3_enabled or
+      rhel9cis_rule_1_1_2_5_4_enabled
   block:
     
-    - name: 1.1.4.x | Set existing /var/tmp mount configuration fact
+    - name: 1.1.2.5.x | Set existing /var/tmp mount configuration fact
       ansible.builtin.set_fact:
         _rhel9cis_existing_var_tmp_mount: >-
           {{ ansible_mounts | selectattr('mount', 'equalto', '/var/tmp') | list | first }}
 
-    - name: 1.1.4.x | Get UUID of /var/tmp partition
+    - name: 1.1.2.5.x | Get UUID of /var/tmp partition
       when:
-        - rhel9cis_mount_with_uuid
+        - rhel9cis_var_tmp_mount_with_uuid
       block:
-        - name: 1.1.4.x | Get UUID of /var/tmp partition
+        - name: 1.1.2.5.x | Get UUID of /var/tmp partition
           become: true
           ansible.builtin.command: "lsblk -no UUID {{ _rhel9cis_existing_var_tmp_mount.device }}"
           changed_when: false
           register: _rhel9cis_var_tmp_uuid
 
-        - name: 1.1.4.x | Set /var/tmp UUID to source variable
+        - name: 1.1.2.5.x | Set /var/tmp UUID to source variable
           ansible.builtin.set_fact:
             _rhel9cis_var_tmp_source: "UUID={{ _rhel9cis_var_tmp_uuid.stdout }}"
 
-    - name: 1.1.4.x | Set /var/tmp device path to source variable
+    - name: 1.1.2.5.x | Set /var/tmp device path to source variable
       when:
-        - not rhel9cis_mount_with_uuid
+        - not rhel9cis_var_tmp_mount_with_uuid
       ansible.builtin.set_fact:
         _rhel9cis_var_tmp_source: "{{ _rhel9cis_existing_var_tmp_mount.device }}"
 
     - name: |
-        1.1.4.1 | Ensure /var/tmp is a separate partition
-        1.1.4.2 | Ensure nodev option set on /var/tmp partition
-        1.1.4.3 | Ensure noexec option set on /var/tmp partition
-        1.1.4.4 | Ensure nosuid option set on /var/tmp partition
+        1.1.2.5.1 | Ensure /var/tmp is a separate partition
+        1.1.2.5.2 | Ensure nodev option set on /var/tmp partition
+        1.1.2.5.3 | Ensure noexec option set on /var/tmp partition
+        1.1.2.5.4 | Ensure nosuid option set on /var/tmp partition
       become: true
       ansible.posix.mount:
         src: "{{ _rhel9cis_var_tmp_source }}"

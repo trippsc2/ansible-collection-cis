@@ -27,7 +27,7 @@
     - rhel8cis_rule_1_5_1_3_enabled or
       rhel8cis_rule_1_5_1_4_enabled or
       (rhel8cis_rule_1_5_1_5_enabled and
-      (_rhel8cis_level2 or rhel8cis_rule_1_5_1_5_force))
+      (rhel8cis_rule_1_5_1_5_force or _rhel8cis_level2))
   become: true
   ansible.posix.selinux:
     conf: /etc/selinux/config
@@ -38,15 +38,12 @@
   when:
     - rhel8cis_rule_1_5_1_6_enabled
   block:
-    - name: 1.5.1.6 | Ensure no unconfined services exist | Get list of unconfined services
+    - name: 1.5.1.6 | Ensure no unconfined services exist | Get list of unconfined services # noqa risky-shell-pipe
       become: true
       ansible.builtin.shell: |
         ps -eZ | grep unconfined_service_t | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
       changed_when: false
       register: _rhel8cis_unconfined_services
-      tags:
-        - always
-        - skip_ansible_lint
 
     - name: 1.5.1.6 | Ensure no unconfined services exist | Generate warning
       when:

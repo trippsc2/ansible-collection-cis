@@ -4,7 +4,7 @@
     - rhel8cis_rule_4_1_1_1_enabled
   become: true
   ansible.builtin.systemd_service:
-    name: crond
+    name: crond.service
     enabled: true
     state: started
     masked: false
@@ -87,6 +87,7 @@
         owner: root
         group: root
         mode: '0640'
+        state: file
 
     - name: 4.1.1.8 | Ensure crontab is restricted to authorized users | stat /etc/cron.deny
       ansible.builtin.stat:
@@ -101,14 +102,12 @@
         owner: root
         group: root
         mode: '0640'
-
-- name: Get package facts
-  ansible.builtin.package_facts:
+        state: file
 
 - name: 4.1.2.1 | Ensure at is restricted to authorized users
   when:
     - rhel8cis_rule_4_1_2_1_enabled
-    - '"at" in ansible_facts.packages'
+    - ("at" in ansible_facts.packages)
   become: true
   block:
     - name: 4.1.2.1 | Ensure at is restricted to authorized users | stat /etc/at.allow

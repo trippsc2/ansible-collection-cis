@@ -57,6 +57,16 @@ provisioner:
         rhel9cis_bootloader_password: password
         rhel9cis_skip_reboot: false
         rhel9cis_remote_log_server: loghost.test.loc
+        rhel9cis_afs_needed: false
+        rhel9cis_ceph_needed: false
+        rhel9cis_cifs_needed: false
+        rhel9cis_exfat_needed: false
+        rhel9cis_ext_needed: false
+        rhel9cis_fscache_needed: false
+        rhel9cis_gfs2_needed: false
+        rhel9cis_nfs_common_needed: false
+        rhel9cis_nfsd_needed: false
+        rhel9cis_smbfs_common_needed: false
       level1:
         rhel9cis_level: 1
       level2:

@@ -72,6 +72,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.1.6.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_1_6_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.1.6.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_1_7_enabled:
         type: bool
         required: false
@@ -79,6 +86,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.1.7.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_1_7_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.1.7.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_1_8_enabled:
         type: bool
         required: false
@@ -86,6 +100,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.1.8.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_1_8_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.1.8.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_2_1_1_enabled:
         type: bool
         required: false
@@ -114,6 +135,17 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.1.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_tmp_mount_opts:
+        type: list
+        required: false
+        default:
+          - defaults
+          - nodev
+          - nosuid
+          - noexec
+        elements: str
+        description:
+          - The mount options for the /tmp partition.
       rhel8cis_rule_1_1_2_2_1_enabled:
         type: bool
         required: false
@@ -142,6 +174,18 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.2.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_dev_shm_mount_opts:
+        type: list
+        required: false
+        default:
+          - mode=1777
+          - strictatime
+          - nodev
+          - nosuid
+          - noexec
+        elements: str
+        description:
+          - The mount options for the /dev/shm partition.
       rhel8cis_rule_1_1_2_3_1_enabled:
         type: bool
         required: false
@@ -149,6 +193,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.3.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_2_3_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.2.3.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_2_3_2_enabled:
         type: bool
         required: false
@@ -163,6 +214,22 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.3.3.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_home_mount_with_uuid:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use UUIDs instead device path for /home in /etc/fstab.
+      rhel8cis_home_mount_opts:
+        type: list
+        required: false
+        default:
+          - defaults
+          - nodev
+          - nosuid
+        elements: str
+        description:
+          - The mount options for the /home partition.
       rhel8cis_rule_1_1_2_4_1_enabled:
         type: bool
         required: false
@@ -170,6 +237,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.4.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_2_4_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.2.4.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_2_4_2_enabled:
         type: bool
         required: false
@@ -184,6 +258,22 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.4.3.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_var_mount_with_uuid:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use UUIDs instead device path for /var in /etc/fstab.
+      rhel8cis_var_mount_opts:
+        type: list
+        required: false
+        default:
+          - defaults
+          - nodev
+          - nosuid
+        elements: str
+        description:
+          - The mount options for the /var partition.
       rhel8cis_rule_1_1_2_5_1_enabled:
         type: bool
         required: false
@@ -191,6 +281,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.5.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_2_5_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.2.5.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_2_5_2_enabled:
         type: bool
         required: false
@@ -212,6 +309,23 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.5.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_var_tmp_mount_with_uuid:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use UUIDs instead device path for /var/tmp in /etc/fstab.
+      rhel8cis_var_tmp_mount_opts:
+        type: list
+        required: false
+        default:
+          - defaults
+          - nodev
+          - nosuid
+          - noexec
+        elements: str
+        description:
+          - The mount options for the /var/tmp partition.
       rhel8cis_rule_1_1_2_6_1_enabled:
         type: bool
         required: false
@@ -219,6 +333,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.6.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_2_6_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.2.6.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_2_6_2_enabled:
         type: bool
         required: false
@@ -240,6 +361,23 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.6.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_var_log_mount_with_uuid:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use UUIDs instead device path for /var/log in /etc/fstab.
+      rhel8cis_var_log_mount_opts:
+        type: list
+        required: false
+        default:
+          - defaults
+          - nodev
+          - nosuid
+          - noexec
+        elements: str
+        description:
+          - The mount options for the /var/log partition.
       rhel8cis_rule_1_1_2_7_1_enabled:
         type: bool
         required: false
@@ -247,6 +385,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.7.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_1_2_7_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.1.2.7.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_1_2_7_2_enabled:
         type: bool
         required: false
@@ -268,6 +413,23 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.1.2.7.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_var_log_audit_mount_with_uuid:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use UUIDs instead device path for /var/log/audit in /etc/fstab.
+      rhel8cis_var_log_audit_mount_opts:
+        type: list
+        required: false
+        default:
+          - defaults
+          - nodev
+          - nosuid
+          - noexec
+        elements: str
+        description:
+          - The mount options for the /var/log/audit partition.
       rhel8cis_rule_1_2_1_enabled:
         type: bool
         required: false
@@ -289,6 +451,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.2.3.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_2_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.2.3.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_2_4_enabled:
         type: bool
         required: false
@@ -317,6 +486,21 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.3.2.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_force_reset_bootloader_password:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to force a reset of the bootloader password, even if one is set.
+          - If set to `true`, the bootloader password will be reset to the value of *rhel8cis_bootloader_password* always, making the role not idempotent.
+          - If set to `false`, the bootloader password will only be set if it is not already set.
+      rhel8cis_bootloader_password:
+        type: str
+        required: false
+        no_log: true
+        description:
+          - The bootloader password to set.
+          - If the rule requiring a bootloader password is enabled, this is required.
       rhel8cis_rule_1_4_1_enabled:
         type: bool
         required: false
@@ -380,6 +564,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.5.1.5.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_5_1_5_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.5.1.5.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_5_1_6_enabled:
         type: bool
         required: false
@@ -401,6 +592,24 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.5.1.8.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_selinux_policy:
+        type: str
+        required: false
+        default: targeted
+        choices:
+          - targeted
+          - mls
+        description:
+          - The SELinux policy to use.
+      rhel8cis_selinux_mode:
+        type: str
+        required: false
+        default: enforcing
+        choices:
+          - enforcing
+          - permissive
+        description:
+          - The SELinux mode to use.
       rhel8cis_rule_1_6_1_enabled:
         type: bool
         required: false
@@ -429,6 +638,27 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.6.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_crypto_policy:
+        type: str
+        required: false
+        default: DEFAULT
+        choices:
+          - DEFAULT
+          - FUTURE
+          - FIPS
+          - LEGACY
+        description:
+          - The crypto policy to configure.
+          - Setting this to `LEGACY` will cause the role to fail validation if the rule forbidding it is enabled.
+          - Setting this to `FIPS` will **not** cause the server to be converted to FIPS mode.
+      rhel8cis_additional_crypto_subpolicies:
+        type: list
+        required: false
+        default: []
+        elements: str
+        description:
+          - The additional crypto subpolicies to configure.
+          - This should not include the subpolicies needed to comply with benchmark rules.
       rhel8cis_rule_1_7_1_enabled:
         type: bool
         required: false
@@ -471,6 +701,51 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.7.6.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_use_motd:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to use the Message of the Day (MOTD) banner.
+          - This banner appears for all local and remote logins.
+          - If this is set to `false`, the banner contents will be removed.
+      rhel8cis_motd_banner:
+        type: str
+        required: false
+        default: "Authorized users only.\\n\\nAll activity may be monitored and reported.\\n\\n"
+        description:
+          - The banner contents to use for the Message of the Day (MOTD).
+          - If *rhel8cis_use_motd* is set to `false`, this will be ignored and the MOTD banner contents will be removed.
+      rhel8cis_use_issue:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to use the local login warning banner.
+          - This banner appears only for local logins, in additional to the Message of the Day (MOTD) banner.
+          - If this is set to `false`, the banner contents will be removed.
+      rhel8cis_issue_banner:
+        type: str
+        required: false
+        default: "Authorized users only.\\n\\nAll activity may be monitored and reported.\\n\\n"
+        description:
+          - The banner contents to use for the local login warning banner.
+          - If *rhel8cis_use_issue* is set to `false`, this will be ignored and the local login warning banner contents will be removed.
+      rhel8cis_use_issue_net:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to use the remote login warning banner.
+          - This banner appears only for remote logins, in additional to the Message of the Day (MOTD) banner.
+          - If this is set to `false`, the banner contents will be removed.
+      rhel8cis_issue_net_banner:
+        type: str
+        required: false
+        default: "Authorized users only.\\n\\nAll activity may be monitored and reported.\\n\\n"
+        description:
+          - The banner contents to use for the remote login warning banner.
+          - If *rhel8cis_use_issue_net* is set to `false`, this will be ignored and the remote login warning banner contents will be removed.
       rhel8cis_rule_1_8_1_enabled:
         type: bool
         required: false
@@ -478,6 +753,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.8.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_8_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.8.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_8_2_enabled:
         type: bool
         required: false
@@ -513,6 +795,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.8.6.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_8_6_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.8.6.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_8_7_enabled:
         type: bool
         required: false
@@ -520,6 +809,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 1.8.7.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_1_8_7_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 1.8.7.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_1_8_8_enabled:
         type: bool
         required: false
@@ -562,6 +858,37 @@ argument_specs:
         description:
           - Whether to apply CIS rule 2.1.3.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_chrony_servers:
+        type: list
+        required: false
+        default:
+          - name: 0.pool.ntp.org
+            options:
+              - minpoll 8
+          - name: 1.pool.ntp.org
+            options:
+              - minpoll 8
+          - name: 2.pool.ntp.org
+            options:
+              - minpoll 8
+          - name: 3.pool.ntp.org
+            options:
+              - minpoll 8
+        elements: dict
+        description:
+          - The NTP server configuration to use with chrony.
+        options:
+          name:
+            type: str
+            required: true
+            description:
+              - The NTP server name.
+          options:
+            type: list
+            elements: str
+            required: false
+            description:
+              - The NTP server options.
       rhel8cis_rule_2_2_1_enabled:
         type: bool
         required: false
@@ -569,6 +896,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 2.2.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_2_2_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 2.2.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_2_2_2_enabled:
         type: bool
         required: false
@@ -576,6 +910,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 2.2.2.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_2_2_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 2.2.2.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_2_2_3_enabled:
         type: bool
         required: false
@@ -702,6 +1043,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 2.2.20.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_2_2_20_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 2.2.20.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_2_2_21_enabled:
         type: bool
         required: false
@@ -716,6 +1064,160 @@ argument_specs:
         description:
           - Whether to apply CIS rule 2.2.22.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_autofs_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `autofs` package is needed.
+          - If set to `true`, the `autofs` package will be remain installed and the services will be disabled instead.
+      rhel8cis_avahi_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `avahi` package is needed.
+          - If set to `true`, the `avahi` package will be remain installed and the services will be disabled instead.
+      rhel8cis_dhcp_server_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `dhcp-server` package is needed.
+          - If set to `true`, the `dhcp-server` package will be remain installed and the services will be disabled instead.
+      rhel8cis_bind_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `bind` package is needed.
+          - If set to `true`, the `bind` package will be remain installed and the services will be disabled instead.
+      rhel8cis_dnsmasq_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `dnsmasq` package is needed.
+          - If set to `true`, the `dnsmasq` package will be remain installed and the services will be disabled instead.
+      rhel8cis_samba_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `samba` package is needed.
+          - If set to `true`, the `samba` package will be remain installed and the services will be disabled instead.
+      rhel8cis_vsftpd_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `vsftpd` package is needed.
+          - If set to `true`, the `vsftpd` package will be remain installed and the services will be disabled instead.
+      rhel8cis_dovecot_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `dovecot` package is needed.
+          - If set to `true`, the `dovecot` package will be remain installed and the services will be disabled instead.
+      rhel8cis_cyrus_imapd_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `cyrus-imapd` package is needed.
+          - If set to `true`, the `cyrus-imapd` package will be remain installed and the services will be disabled instead.
+      rhel8cis_nfs_utils_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `nfs-utils` package is needed.
+          - If set to `true`, the `nfs-utils` package will be remain installed and the services will be disabled instead.
+      rhel8cis_ypserv_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `ypserv` package is needed.
+          - If set to `true`, the `ypserv` package will be remain installed and the services will be disabled instead.
+      rhel8cis_cups_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `cups` package is needed.
+          - If set to `true`, the `cups` package will be remain installed and the services will be disabled instead.
+      rhel8cis_rpcbind_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `rpcbind` package is needed.
+          - If set to `true`, the `rpcbind` package will be remain installed and the services will be disabled instead.
+      rhel8cis_rsync_daemon_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `rsync-daemon` package is needed.
+          - If set to `true`, the `rsync-daemon` package will be remain installed and the services will be disabled instead.
+      rhel8cis_net_snmp_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `net-snmp` package is needed.
+          - If set to `true`, the `net-snmp` package will be remain installed and the services will be disabled instead.
+      rhel8cis_telnet_server_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `telnet-server` package is needed.
+          - If set to `true`, the `telnet-server` package will be remain installed and the services will be disabled instead.
+      rhel8cis_tftp_server_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `tftp-server` package is needed.
+          - If set to `true`, the `tftp-server` package will be remain installed and the services will be disabled instead.
+      rhel8cis_squid_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `squid` package is needed.
+          - If set to `true`, the `squid` package will be remain installed and the services will be disabled instead.
+      rhel8cis_httpd_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `httpd` package is needed.
+          - If set to `true`, the `httpd` package will be remain installed and the services will be disabled instead.
+      rhel8cis_nginx_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `nginx` package is needed.
+          - If set to `true`, the `nginx` package will be remain installed and the services will be disabled instead.
+      rhel8cis_xinetd_package_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `xinetd` package is needed.
+          - If set to `true`, the `xinetd` package will be remain installed and the services will be disabled instead.
+      rhel8cis_xorg_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether the `xorg` package is needed.
+          - If set to `true`, the `xorg` package will be remain installed and the services will be disabled instead.
       rhel8cis_rule_2_3_1_enabled:
         type: bool
         required: false
@@ -730,6 +1232,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 2.3.2.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_2_3_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 2.3.2.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_2_3_3_enabled:
         type: bool
         required: false
@@ -772,6 +1281,26 @@ argument_specs:
         description:
           - Whether to apply CIS rule 3.1.3.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_3_1_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 3.1.3.
+          - This applies when the machine type is appropriate.
+      rhel8cis_ipv6_needed:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether IPv6 is needed.
+      rhel8cis_bluez_package_needed:
+        type: bool
+        required: false
+        description:
+          - Whether the `bluez` package is needed.
+          - If set to `true`, the `bluez` package will be remain installed and the services will be disabled instead.
+          - If *rhel8cis_machine_type* is set to `workstation` or *rhel8cis_xorg_needed* is set to `true`, this will default to `true`.  Otherwise, it will default to `false`.
       rhel8cis_rule_3_2_1_enabled:
         type: bool
         required: false
@@ -779,6 +1308,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 3.2.1.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_3_2_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 3.2.1.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_3_2_2_enabled:
         type: bool
         required: false
@@ -786,6 +1322,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 3.2.2.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_3_2_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 3.2.2.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_3_2_3_enabled:
         type: bool
         required: false
@@ -793,6 +1336,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 3.2.3.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_3_2_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 3.2.3.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_3_2_4_enabled:
         type: bool
         required: false
@@ -800,6 +1350,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 3.2.4.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_3_2_4_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 3.2.4.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_3_3_1_enabled:
         type: bool
         required: false
@@ -891,6 +1448,14 @@ argument_specs:
         description:
           - Whether to apply CIS rule 3.4.1.2.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_firewall:
+        type: str
+        required: false
+        default: firewalld
+        choices:
+          - firewalld
+        description:
+          - The firewall to use.
       rhel8cis_rule_3_4_2_1_enabled:
         type: bool
         required: false
@@ -1045,6 +1610,13 @@ argument_specs:
         description:
           - Whether to apply CIS rule 4.2.8.
           - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_2_8_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 4.2.8.
+          - This applies when the machine type is appropriate.
       rhel8cis_rule_4_2_9_enabled:
         type: bool
         required: false
@@ -1143,1744 +1715,6 @@ argument_specs:
         description:
           - Whether to apply CIS rule 4.2.22.
           - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_3_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.3.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_2_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.2.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_2_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.2.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_2_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.2.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_2_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.2.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_2_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.2.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_2_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.2.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_3_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.3.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_3_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.3.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_3_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.3.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_4_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.4.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_4_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.4.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_4_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.4.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_4_3_4_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.4.3.4.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_1_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.1.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_1_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.1.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_2_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.2.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_2_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.2.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_2_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.2.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_2_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.2.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_3_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.3.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_3_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.3.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_4_5_3_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 4.5.3.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_1_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.1.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_1_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.1.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_2_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.2.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_1_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.1.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_1_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.1.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_2_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.2.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_2_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.2.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_2_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.2.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_2_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.2.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_8_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.8.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_9_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.9.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_10_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.10.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_11_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.11.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_12_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.12.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_13_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.13.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_14_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.14.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_15_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.15.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_16_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.16.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_17_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.17.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_18_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.18.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_19_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.19.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_20_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.20.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_3_21_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.3.21.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_8_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.8.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_9_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.9.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_2_4_10_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.2.4.10.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_3_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.3.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_3_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.3.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_5_3_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 5.3.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_8_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.8.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_9_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.9.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_10_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.10.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_11_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.11.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_12_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.12.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_13_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.13.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_1_14_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.1.14.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_1_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.1.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_2_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.2.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_3_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.3.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_4_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.4.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_5_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.5.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_6_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.6.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_7_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.7.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_8_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.8.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_9_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.9.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_10_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.10.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_6_2_11_enabled:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to apply CIS rule 6.2.11.
-          - This applies when the level and machine type are appropriate.
-      rhel8cis_rule_1_1_1_6_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.1.6.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_1_7_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.1.7.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_1_8_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.1.8.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_2_3_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.2.3.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_2_4_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.2.4.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_2_5_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.2.5.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_2_6_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.2.6.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_1_2_7_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.1.2.7.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_2_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.2.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_5_1_5_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.5.1.5.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_8_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.8.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_8_6_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.8.6.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_1_8_7_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 1.8.7.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_2_2_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 2.2.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_2_2_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 2.2.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_2_2_20_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 2.2.20.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_2_3_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 2.3.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_3_1_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 3.1.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_3_2_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 3.2.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_3_2_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 3.2.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_3_2_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 3.2.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_3_2_4_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 3.2.4.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_4_2_8_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 4.2.8.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_4_3_4_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 4.3.4.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_4_4_3_1_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 4.4.3.1.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_4_5_3_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 4.5.3.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_1_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.1.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_1_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.1.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_1_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.1.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_1_4_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.1.4.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_2_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.2.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_2_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.2.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_2_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.2.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_2_4_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.2.4.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_4_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.4.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_5_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.5.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_6_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.6.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_7_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.7.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_8_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.8.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_9_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.9.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_10_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.10.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_11_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.11.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_12_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.12.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_13_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.13.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_14_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.14.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_15_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.15.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_16_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.16.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_17_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.17.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_18_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.18.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_19_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.19.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_20_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.20.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_3_21_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.3.21.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_1_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.1.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_2_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.2.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.3.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_4_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.4.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_5_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.5.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_6_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.6.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_7_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.7.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_8_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.8.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_9_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.9.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_5_2_4_10_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 5.2.4.10.
-          - This applies when the machine type is appropriate.
-      rhel8cis_rule_6_1_14_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 6.1.14.
-          - This applies when the machine type is appropriate.
-      rhel8cis_mount_with_uuid:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to use UUIDs instead device paths in /etc/fstab.
-      rhel8cis_tmp_mount_opts:
-        type: list
-        required: false
-        default:
-          - defaults
-          - nodev
-          - nosuid
-          - noexec
-        elements: str
-        description:
-          - The mount options for the /tmp partition.
-      rhel8cis_dev_shm_mount_opts:
-        type: list
-        required: false
-        default:
-          - mode=1777
-          - strictatime
-          - nodev
-          - nosuid
-          - noexec
-        elements: str
-        description:
-          - The mount options for the /dev/shm partition.
-      rhel8cis_home_mount_opts:
-        type: list
-        required: false
-        default:
-          - defaults
-          - nodev
-          - nosuid
-        elements: str
-        description:
-          - The mount options for the /home partition.
-      rhel8cis_var_mount_opts:
-        type: list
-        required: false
-        default:
-          - defaults
-          - nodev
-          - nosuid
-        elements: str
-        description:
-          - The mount options for the /var partition.
-      rhel8cis_var_tmp_mount_opts:
-        type: list
-        required: false
-        default:
-          - defaults
-          - nodev
-          - nosuid
-          - noexec
-        elements: str
-        description:
-          - The mount options for the /var/tmp partition.
-      rhel8cis_var_log_mount_opts:
-        type: list
-        required: false
-        default:
-          - defaults
-          - nodev
-          - nosuid
-          - noexec
-        elements: str
-        description:
-          - The mount options for the /var/log partition.
-      rhel8cis_var_log_audit_mount_opts:
-        type: list
-        required: false
-        default:
-          - defaults
-          - nodev
-          - nosuid
-          - noexec
-        elements: str
-        description:
-          - The mount options for the /var/log/audit partition.
-      rhel8cis_force_reset_bootloader_password:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to force a reset of the bootloader password, even if one is set.
-          - Setting this to `true` will make the role not idempotent.
-      rhel8cis_bootloader_password:
-        type: str
-        required: false
-        no_log: true
-        description:
-          - The bootloader password to set.
-          - If *rhel8cis_force_reset_bootloader_password* and *rhel8cis_rule_1_3_1_enabled* are `true`, this is required. Otherwise, it is ignored.
-      rhel8cis_selinux_policy:
-        type: str
-        required: false
-        default: targeted
-        description:
-          - The SELinux policy to use.
-      rhel8cis_selinux_mode:
-        type: str
-        required: false
-        default: enforcing
-        description:
-          - The SELinux mode to use.
-      rhel8cis_crypto_policy:
-        type: str
-        required: false
-        default: DEFAULT
-        description:
-          - The crypto policy to use.
-      rhel8cis_crypto_subpolicies:
-        type: list
-        required: false
-        default:
-          - NO-SHA1
-          - NO-SSHCBC
-          - NO-WEAKMAC
-        elements: str
-        description:
-          - The crypto subpolicies to use.
-      rhel8cis_use_motd:
-        type: bool
-        required: false
-        default: true
-        description:
-          - Whether to use the Message of the Day (MOTD).
-      rhel8cis_motd_banner:
-        type: str
-        required: false
-        default: "Authorized users only.\\n\\nAll activity may be monitored and reported.\\n\\n"
-        description:
-          - The banner to use for the Message of the Day (MOTD).
-      rhel8cis_use_issue:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to use the issue file.
-      rhel8cis_issue_banner:
-        type: str
-        required: false
-        default: "Authorized users only.\\n\\nAll activity may be monitored and reported.\\n\\n"
-        description:
-          - The banner to use for the issue file.
-      rhel8cis_use_issue_net:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to use the issue.net file.
-      rhel8cis_issue_net_banner:
-        type: str
-        required: false
-        default: "Authorized users only.\\n\\nAll activity may be monitored and reported.\\n\\n"
-        description:
-          - The banner to use for the issue.net file.
-      rhel8cis_gdm_banner_text:
-        type: str
-        required: false
-        default: Authorized users only. All activity may be monitored and reported.
-        description:
-          - The banner text to use for the GDM login screen.
-      rhel8cis_chrony_servers:
-        type: list
-        required: false
-        default:
-          - name: 0.pool.ntp.org
-            options:
-              - minpoll 8
-          - name: 1.pool.ntp.org
-            options:
-              - minpoll 8
-          - name: 2.pool.ntp.org
-            options:
-              - minpoll 8
-          - name: 3.pool.ntp.org
-            options:
-              - minpoll 8
-        elements: dict
-        description:
-          - The NTP server configuration to use with chrony.
-        options:
-          name:
-            type: str
-            required: true
-            description:
-              - The NTP server name.
-          options:
-            type: list
-            elements: str
-            required: false
-            description:
-              - The NTP server options.
-      rhel8cis_autofs_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `autofs` package is needed.
-          - If set to `true`, the `autofs` package will be remain installed and the services will be disabled instead.
-      rhel8cis_avahi_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `avahi` package is needed.
-          - If set to `true`, the `avahi` package will be remain installed and the services will be disabled instead.
-      rhel8cis_dhcp_server_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `dhcp-server` package is needed.
-          - If set to `true`, the `dhcp-server` package will be remain installed and the services will be disabled instead.
-      rhel8cis_bind_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `bind` package is needed.
-          - If set to `true`, the `bind` package will be remain installed and the services will be disabled instead.
-      rhel8cis_dnsmasq_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `dnsmasq` package is needed.
-          - If set to `true`, the `dnsmasq` package will be remain installed and the services will be disabled instead.
-      rhel8cis_samba_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `samba` package is needed.
-          - If set to `true`, the `samba` package will be remain installed and the services will be disabled instead.
-      rhel8cis_vsftpd_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `vsftpd` package is needed.
-          - If set to `true`, the `vsftpd` package will be remain installed and the services will be disabled instead.
-      rhel8cis_dovecot_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `dovecot` package is needed.
-          - If set to `true`, the `dovecot` package will be remain installed and the services will be disabled instead.
-      rhel8cis_cyrus_imapd_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `cyrus-imapd` package is needed.
-          - If set to `true`, the `cyrus-imapd` package will be remain installed and the services will be disabled instead.
-      rhel8cis_nfs_utils_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `nfs-utils` package is needed.
-          - If set to `true`, the `nfs-utils` package will be remain installed and the services will be disabled instead.
-      rhel8cis_ypserv_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `ypserv` package is needed.
-          - If set to `true`, the `ypserv` package will be remain installed and the services will be disabled instead.
-      rhel8cis_cups_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `cups` package is needed.
-          - If set to `true`, the `cups` package will be remain installed and the services will be disabled instead.
-      rhel8cis_rpcbind_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `rpcbind` package is needed.
-          - If set to `true`, the `rpcbind` package will be remain installed and the services will be disabled instead.
-      rhel8cis_rsync_daemon_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `rsync-daemon` package is needed.
-          - If set to `true`, the `rsync-daemon` package will be remain installed and the services will be disabled instead.
-      rhel8cis_net_snmp_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `net-snmp` package is needed.
-          - If set to `true`, the `net-snmp` package will be remain installed and the services will be disabled instead.
-      rhel8cis_telnet_server_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `telnet-server` package is needed.
-          - If set to `true`, the `telnet-server` package will be remain installed and the services will be disabled instead.
-      rhel8cis_tftp_server_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `tftp-server` package is needed.
-          - If set to `true`, the `tftp-server` package will be remain installed and the services will be disabled instead.
-      rhel8cis_squid_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `squid` package is needed.
-          - If set to `true`, the `squid` package will be remain installed and the services will be disabled instead.
-      rhel8cis_httpd_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `httpd` package is needed.
-          - If set to `true`, the `httpd` package will be remain installed and the services will be disabled instead.
-      rhel8cis_nginx_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `nginx` package is needed.
-          - If set to `true`, the `nginx` package will be remain installed and the services will be disabled instead.
-      rhel8cis_xinetd_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `xinetd` package is needed.
-          - If set to `true`, the `xinetd` package will be remain installed and the services will be disabled instead.
-      rhel8cis_xorg_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `xorg` package is needed.
-          - If set to `true`, the `xorg` package will be remain installed and the services will be disabled instead.
-      rhel8cis_postfix_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `postfix` package is needed.
-          - If set to `true`, the `postfix` package will be remain installed and the services will be disabled instead.
-      rhel8cis_ipv6_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether IPv6 is needed.
-      rhel8cis_bluez_needed:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether the `bluez` package is needed.
-          - If set to `true`, the `bluez` package will be remain installed and the services will be disabled instead.
-          - For workstations, this will default to `true`.
-      rhel8cis_firewall:
-        type: str
-        required: false
-        default: firewalld
-        choices:
-          - firewalld
-        description:
-          - The firewall to use.
       rhel8cis_sshd_allow_users:
         type: list
         required: false
@@ -3006,6 +1840,62 @@ argument_specs:
           - VERBOSE
         description:
           - The log level for SSH.
+      rhel8cis_rule_4_3_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_3_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_3_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_3_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_3_4_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 4.3.4.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_4_3_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_3_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_3_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.3.7.
+          - This applies when the level and machine type are appropriate.
       rhel8cis_sudo_log_file:
         type: path
         required: false
@@ -3032,6 +1922,83 @@ argument_specs:
         elements: str
         description:
           - The group members for the su command.
+      rhel8cis_rule_4_4_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_2_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.2.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_2_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.2.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_2_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.2.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_2_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.2.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_2_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.2.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_1_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 4.4.3.1.3.
+          - This applies when the machine type is appropriate.
       rhel8cis_lockout_failed_attempts:
         type: int
         required: false
@@ -3050,6 +2017,55 @@ argument_specs:
         default: 900
         description:
           - The time in seconds to unlock the root account.
+      rhel8cis_rule_4_4_3_2_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_2_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_2_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_2_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_2_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_2_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_2_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.2.7.
+          - This applies when the level and machine type are appropriate.
       rhel8cis_password_min_changed_characters:
         type: int
         required: false
@@ -3074,12 +2090,105 @@ argument_specs:
         default: 3
         description:
           - The maximum number of sequential characters for a new password.
+      rhel8cis_rule_4_4_3_3_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.3.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_3_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.3.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_3_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.3.3.
+          - This applies when the level and machine type are appropriate.
       rhel8cis_passwords_remembered:
         type: int
         required: false
         default: 24
         description:
           - The number of passwords remembered.
+      rhel8cis_rule_4_4_3_4_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.4.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_4_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.4.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_4_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.4.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_4_3_4_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.4.3.4.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_1_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.1.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_1_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.1.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_password_encryption_algorithm:
+        type: str
+        required: false
+        default: SHA512
+        choices:
+          - SHA512
+          - yescrypt
+        description:
+          - The encryption algorithm used to encrypt passwords.
       rhel8cis_password_expiration_days:
         type: int
         required: false
@@ -3098,6 +2207,111 @@ argument_specs:
         default: 30
         description:
           - The number of days before inactive password lock.
+      rhel8cis_rule_4_5_2_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.2.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_2_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.2.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_2_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.2.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_2_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.2.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_3_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.3.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_3_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 4.5.3.1.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_4_5_3_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.3.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_4_5_3_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 4.5.3.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_1_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.1.7.
+          - This applies when the level and machine type are appropriate.
       rhel8cis_syslog:
         type: str
         required: false
@@ -3112,6 +2326,83 @@ argument_specs:
         required: false
         description:
           - The remote log server to use.
+      rhel8cis_rule_5_1_2_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_1_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.1.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_2_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.2.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_1_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.1.4.
+          - This applies when the level and machine type are appropriate.
       rhel8cis_journal_server_key_file:
         type: path
         required: false
@@ -3170,12 +2461,124 @@ argument_specs:
           - monthly
         description:
           - The logrotate frequency.
+      rhel8cis_rule_5_2_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_1_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.1.1.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_1_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.1.2.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_1_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.1.3.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_1_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.1.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_1_4_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.1.4.
+          - This applies when the machine type is appropriate.
       rhel8cis_audit_backlog_limit:
         type: int
         required: false
         default: 8192
         description:
           - The audit backlog limit.
+      rhel8cis_rule_5_2_2_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.2.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_2_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.2.1.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_2_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.2.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_2_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.2.2.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_2_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.2.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_2_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.2.3.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_2_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.2.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_2_4_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.2.4.
+          - This applies when the machine type is appropriate.
       rhel8cis_auditd_max_log_file:
         type: int
         required: false
@@ -3201,6 +2604,461 @@ argument_specs:
           - syslog
         description:
           - The action to take when the auditd disk has an error.
+      rhel8cis_rule_5_2_3_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.1.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.2.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.3.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_4_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.4.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_5_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.5.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_6_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.6.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.7.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_7_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.7.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_8_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.8.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_8_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.8.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_9_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.9.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_9_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.9.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_10_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.10.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_10_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.10.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_11_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.11.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_11_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.11.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_12_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.12.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_12_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.12.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_13_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.13.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_13_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.13.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_14_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.14.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_14_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.14.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_15_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.15.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_15_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.15.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_16_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.16.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_16_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.16.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_17_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.17.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_17_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.17.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_18_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.18.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_18_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.18.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_19_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.19.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_19_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.19.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_20_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.20.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_20_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.20.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_3_21_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.3.21.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_3_21_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.3.21.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_1_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.1.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.2.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_3_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.3.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_4_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.4.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_5_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.5.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_6_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.6.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.7.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_7_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.7.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_8_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.8.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_8_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.8.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_9_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.9.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_9_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.9.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_2_4_10_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.2.4.10.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_2_4_10_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 5.2.4.10.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_5_3_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.3.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_3_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.3.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_5_3_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 5.3.3.
+          - This applies when the level and machine type are appropriate.
       rhel8cis_aide_cron_file:
         type: path
         required: false
@@ -3219,3 +3077,185 @@ argument_specs:
         default: 0
         description:
           - The minute to run the AIDE cron job.
+      rhel8cis_rule_6_1_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.7.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_8_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.8.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_9_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.9.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_10_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.10.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_11_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.11.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_12_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.12.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_13_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.13.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_14_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.1.14.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_1_14_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 6.1.14.
+          - This applies when the machine type is appropriate.
+      rhel8cis_rule_6_2_1_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.1.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_2_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.2.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_3_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.3.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_4_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.4.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.5.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.6.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_7_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.7.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_8_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.8.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_9_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.9.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_10_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.10.
+          - This applies when the level and machine type are appropriate.
+      rhel8cis_rule_6_2_11_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to apply CIS rule 6.2.11.
+          - This applies when the level and machine type are appropriate.
