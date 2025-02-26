@@ -4,7 +4,7 @@ name: cis
 version: 1.2.1
 readme: README.md
 authors:
-  - Jim Tarpley
+  - Jim Tarpley (@trippsc2)
 description: This collection contains roles for applying CIS Benchmarks to various systems.
 
 license_file: 'LICENSE'

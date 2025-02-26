@@ -5,7 +5,7 @@ argument_specs:
     description:
       - This role applies the CIS Benchmark hardening steps on Windows Server 2019 machines. It is based on the CIS Benchmark for Windows Server 2019, v3.0.1.
     author:
-      - Jim Tarpley
+      - Jim Tarpley (@trippsc2)
     options:
       w2019cis_skip_reboot:
         type: bool
