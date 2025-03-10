@@ -1,24 +1,24 @@
 ---
 - name: Execute the 1.1.1.x tasks
-  ansible.builtin.import_tasks: 1.1.1.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.1.x.yml
 
 - name: Execute the 1.1.2.1.x tasks
-  ansible.builtin.import_tasks: 1.1.2.1.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.1.x.yml
 
 - name: Execute the 1.1.2.2.x tasks
-  ansible.builtin.import_tasks: 1.1.2.2.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.2.x.yml
 
 - name: Execute the 1.1.2.3.x tasks
-  ansible.builtin.import_tasks: 1.1.2.3.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.3.x.yml
 
 - name: Execute the 1.1.2.4.x tasks
-  ansible.builtin.import_tasks: 1.1.2.4.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.4.x.yml
 
 - name: Execute the 1.1.2.5.x tasks
-  ansible.builtin.import_tasks: 1.1.2.5.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.5.x.yml
 
 - name: Execute the 1.1.2.6.x tasks
-  ansible.builtin.import_tasks: 1.1.2.6.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.6.x.yml
 
 - name: Execute the 1.1.2.7.x tasks
-  ansible.builtin.import_tasks: 1.1.2.7.x.yml
+  ansible.builtin.import_tasks: section1/1.1/1.1.2.7.x.yml

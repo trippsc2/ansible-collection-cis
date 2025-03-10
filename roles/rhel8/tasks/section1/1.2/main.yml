@@ -13,7 +13,7 @@
   loop: "{{ _rhel8cis_yum_repos.files }}"
   when:
     - rhel8cis_rule_1_2_1_enabled
-  ansible.builtin.include_tasks: check-file-gpgkey.yml
+  ansible.builtin.include_tasks: section1/1.2/check-file-gpgkey.yml
   vars:
     _rhel8cis_gpgkey_file: "{{ item.path }}"
   loop_control:

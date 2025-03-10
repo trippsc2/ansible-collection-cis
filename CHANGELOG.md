@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2025-03-10
+
+### Role - rhel8
+
+- Fixed include/import tasks paths.
+
+### Role - rhel9
+
+- Fixed include/import tasks paths.
+
+### Role - windows2019
+
+- Fixed include/import tasks paths.
+
+### Role - windows2022
+
+- Fixed include/import tasks paths.
+
 ## [1.2.1] - 2025-01-08
 
 ### Collection

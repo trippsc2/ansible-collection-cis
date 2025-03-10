@@ -1,9 +1,9 @@
 ---
 - name: Execute the 4.1.x tasks
-  ansible.builtin.import_tasks: 4.1.x.yml
+  ansible.builtin.import_tasks: section4/4.1.x.yml
 
 - name: Execute the 4.2.x tasks
-  ansible.builtin.import_tasks: 4.2.x.yml
+  ansible.builtin.import_tasks: section4/4.2.x.yml
 
 # - name: Execute the 4.3.x tasks
 #   ansible.builtin.import_tasks: 4.3.x.yml

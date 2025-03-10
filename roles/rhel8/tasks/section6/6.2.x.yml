@@ -226,6 +226,6 @@
     - user.uid <= 60000
     - user.dir is defined
     - user.dir != ''
-  ansible.builtin.include_tasks: manage-dotfiles.yml
+  ansible.builtin.include_tasks: section6/manage-dotfiles.yml
   loop_control:
     loop_var: user

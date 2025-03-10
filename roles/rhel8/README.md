@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.rhel8
-Version: 1.2.1
+Version: 1.2.2
 
 This role applies the CIS Benchmark hardening steps on RHEL8-based machines.  It is based on the CIS Benchmark for RHEL 8, v2.0.0.
 
@@ -489,5 +489,5 @@ This role applies the CIS Benchmark hardening steps on RHEL8-based machines.  It
 MIT
 
 ## Author and Project Information
-Jim Tarpley
+Jim Tarpley (@trippsc2)
 <!-- END_ANSIBLE_DOCS -->
