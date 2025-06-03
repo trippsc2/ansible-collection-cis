@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2025-06-XX
+
+### Collection
+
+- Added *windows2025* role.
+
+### Role - windows2022
+
+- Updated role to be based on CIS Benchmarks v4.0.0. See the CIS Benchmark document for details.
+
 ## [1.2.2] - 2025-03-10
 
 ### Role - rhel8

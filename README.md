@@ -10,3 +10,4 @@ This collection contains roles for applying CIS Benchmarks to various systems.
 - [rhel9](roles/rhel9/README.md) - This role applies the CIS Benchmark hardening steps on RHEL9-based machines.
 - [windows2019](roles/windows2019/README.md) - This role applies the CIS Benchmark hardening steps on Windows Server 2019 machines.
 - [windows2022](roles/windows2022/README.md) - This role applies the CIS Benchmark hardening steps on Windows Server 2022 machines.
+- [windows2025](roles/windows2025/README.md) - This role applies the CIS Benchmark hardening steps on Windows Server 2025 machines.

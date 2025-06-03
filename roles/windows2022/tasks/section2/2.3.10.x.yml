@@ -46,7 +46,7 @@
     data: 0
     type: dword
 
-- name: "2.3.10.6 | L1 | Configure 'Network access: Named Pipes that can be accessed anonymously' (DC only)"
+- name: "2.3.10.6 | L1 | Ensure 'Network access: Named Pipes that can be accessed anonymously' is configured (DC only)"
   when:
     - w2022cis_rule_2_3_10_6_enabled
     - _w2022cis_domain_controller
@@ -61,7 +61,7 @@
       - TermServLicensing
     type: multistring
 
-- name: "2.3.10.7 | L1 | Configure 'Network access: Named Pipes that can be accessed anonymously' (MS only)"
+- name: "2.3.10.7 | L1 | Ensure 'Network access: Named Pipes that can be accessed anonymously' is configured (MS only)"
   when:
     - w2022cis_rule_2_3_10_7_enabled
     - _w2022cis_standalone_or_member_server
@@ -71,7 +71,7 @@
     data: "{{ w2022cis_null_session_pipes }}"
     type: multistring
 
-- name: "2.3.10.8 | L1 | Configure 'Network access: Remotely accessible registry paths' is configured"
+- name: "2.3.10.8 | L1 | Ensure 'Network access: Remotely accessible registry paths' is configured"
   when:
     - w2022cis_rule_2_3_10_8_enabled
   ansible.windows.win_regedit:
@@ -83,7 +83,7 @@
       - 'Software\Microsoft\Windows NT\CurrentVersion'
     type: multistring
 
-- name: "2.3.10.9 | L1 | Configure 'Network access: Remotely accessible registry paths and sub-paths' is configured"
+- name: "2.3.10.9 | L1 | Ensure 'Network access: Remotely accessible registry paths and sub-paths' is configured"
   when:
     - w2022cis_rule_2_3_10_9_enabled
   ansible.windows.win_regedit:
