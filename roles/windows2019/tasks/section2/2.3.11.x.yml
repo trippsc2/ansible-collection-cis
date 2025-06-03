@@ -114,5 +114,5 @@
   ansible.windows.win_regedit:
     path: HKLM:\System\CurrentControlSet\Control\Lsa\MSV1_0
     name: RestrictSendingNTLMTraffic
-    data: "{{ _w2019cis_outgoing_ntlm_traffice_requirement_value }}"
+    data: "{{ _w2019cis_outgoing_ntlm_traffic_requirement_value }}"
     type: dword

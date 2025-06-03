@@ -71,31 +71,88 @@ _w2019cis_replace_a_process_level_token_users: >-
 
 _w2019cis_increase_scheduling_priority_users: '{{ ["Administrators"] if _windows_installation_type == "Server Core" else ["Administrators", "Window Manager\Window Manager Group"] }}'
 
+_w2019cis_smart_card_removal_behavior_map:
+  lock: 1
+  logoff: 2
+  disconnect: 3
+
+_w2019cis_smb_spn_target_name_validation_level_map:
+  accept: 1
+  required: 2
+
+_w2019cis_ldap_client_signing_requirements_map:
+  require: 2
+  negotiate: 1
+
+_w2019cis_outgoing_ntlm_traffic_requirement_map:
+  audit_all: 1
+  deny_all: 2
+
+_w2019cis_admin_uac_elevation_behavior_map:
+  prompt_for_credentials: 1
+  prompt_for_consent: 2
+
+_w2019cis_laps_directory_map:
+  azure_ad: 1
+  ad: 2
+
+_w2019cis_laps_post_authentication_actions_map:
+  reset_password_and_logoff: 3
+  reset_password_and_reboot: 5
+
+_w2019cis_netbios_dns_resolution_behavior_map:
+  disabled: 0
+  disabled_on_public_networks: 2
+
+_w2019cis_rpc_listener_authentication_protocol_map:
+  negotiate: 0
+  kerberos: 1
+
+_w2019cis_vbs_platform_security_level_map:
+  secure_boot: 1
+  secure_boot_and_dma_protection: 3
+
+_w2019cis_whfb_roca_mitigation_map:
+  audit: 1
+  block: 2
+
+_w2019cis_windows_connect_pin_requirement_map:
+  first_time: 1
+  always: 2
+
+_w2019cis_allow_telemetry_map:
+  'off': 0
+  required: 1
+
+_w2019cis_windows_ink_workspace_access_map:
+  disabled: 0
+  disallow_above_lock: 1
+
 _w2019cis_smart_card_removal_behavior_value: >-
-  {% if w2019cis_smart_card_removal_behavior == 'lock' %}1{% elif w2019cis_smart_card_removal_behavior == 'logoff' %}2{% elif w2019cis_smart_card_removal_behavior == 'disconnect' %}3{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_smart_card_removal_behavior_map[w2019cis_smart_card_removal_behavior] }}
 _w2019cis_smb_spn_target_name_validation_level_value: >-
-  {% if w2019cis_smb_spn_target_name_validation_level == 'accept' %}1{% elif w2019cis_smb_spn_target_name_validation_level == 'required' %}2{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_smb_spn_target_name_validation_level_map[w2019cis_smb_spn_target_name_validation_level] }}
 _w2019cis_ldap_client_signing_requirements_value: >-
-  {% if w2019cis_ldap_client_signing_requirements == 'require' %}2{% elif w2019cis_ldap_client_signing_requirements == 'negotiate' %}1{% else %}{{ omit }}{% endif %}
-_w2019cis_outgoing_ntlm_traffice_requirement_value: >-
-  {% if w2019cis_outgoing_ntlm_traffice_requirement == 'audit_all' %}1{% elif w2019cis_outgoing_ntlm_traffice_requirement == 'deny_all' %}2{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_ldap_client_signing_requirements_map[w2019cis_ldap_client_signing_requirements] }}
+_w2019cis_outgoing_ntlm_traffic_requirement_value: >-
+  {{ _w2019cis_outgoing_ntlm_traffic_requirement_map[w2019cis_outgoing_ntlm_traffic_requirement] }}
 _w2019cis_admin_uac_elevation_behavior_value: >-
-  {% if w2019cis_admin_uac_elevation_behavior == 'prompt_for_credentials' %}1{% elif w2019cis_admin_uac_elevation_behavior == 'prompt_for_consent' %}2{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_admin_uac_elevation_behavior_map[w2019cis_admin_uac_elevation_behavior] }}
 _w2019cis_laps_directory_value: >-
-  {% if w2019cis_laps_directory == 'azure_ad' %}1{% elif w2019cis_laps_directory == 'ad' %}2{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_laps_directory_map[w2019cis_laps_directory] }}
 _w2019cis_laps_post_authentication_actions_value: >-
-  {% if w2019cis_laps_post_authentication_actions == 'reset_password_and_logoff' %}3{% elif w2019cis_laps_post_authentication_actions == 'reset_password_and_reboot' %}5{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_laps_post_authentication_actions_map[w2019cis_laps_post_authentication_actions] }}
 _w2019cis_netbios_dns_resolution_behavior_value: >-
-  {% if w2019cis_netbios_dns_resolution_behavior == 'disabled_on_public_networks' %}2{% elif w2019cis_netbios_dns_resolution_behavior == 'disabled' %}0{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_netbios_dns_resolution_behavior_map[w2019cis_netbios_dns_resolution_behavior] }}
 _w2019cis_rpc_listener_authentication_protocol_value: >-
-  {% if w2019cis_rpc_listener_authentication_protocol == 'negotiate' %}0{% elif w2019cis_rpc_listener_authentication_protocol == 'kerberos' %}1{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_rpc_listener_authentication_protocol_map[w2019cis_rpc_listener_authentication_protocol] }}
 _w2019cis_vbs_platform_security_level_value: >-
-  {% if w2019cis_vbs_platform_security_level == 'secure_boot_and_dma_protection' %}3{% elif w2019cis_vbs_platform_security_level == 'secure_boot' %}1{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_vbs_platform_security_level_map[w2019cis_vbs_platform_security_level] }}
 _w2019cis_whfb_roca_mitigation_value: >-
-  {% if w2019cis_whfb_roca_mitigation == 'block' %}2{% elif w2019cis_whfb_roca_mitigation == 'audit' %}1{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_whfb_roca_mitigation_map[w2019cis_whfb_roca_mitigation] }}
 _w2019cis_windows_connect_pin_requirement_value: >-
-  {% if w2019cis_windows_connect_pin_requirement == 'always' %}2{% elif w2019cis_windows_connect_pin_requirement == 'first_time' %}1{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_windows_connect_pin_requirement_map[w2019cis_windows_connect_pin_requirement] }}
 _w2019cis_allow_telemetry_value: >-
-  {% if w2019cis_allow_telemetry == 'required' %}1{% elif w2019cis_allow_telemetry == 'off' %}0{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_allow_telemetry_map[w2019cis_allow_telemetry] }}
 _w2019cis_windows_ink_workspace_access_value: >-
-  {% if w2019cis_windows_ink_workspace_access == 'disallow_above_lock' %}1{% elif w2019cis_windows_ink_workspace_access == 'disabled' %}0{% else %}{{ omit }}{% endif %}
+  {{ _w2019cis_windows_ink_workspace_access_map[w2019cis_windows_ink_workspace_access] }}

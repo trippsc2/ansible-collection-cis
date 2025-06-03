@@ -224,7 +224,7 @@ w2019cis_rule_2_3_11_12_enabled: true
 w2019cis_rule_2_3_11_13_enabled: true
 
 w2019cis_ldap_client_signing_requirements: negotiate
-w2019cis_outgoing_ntlm_traffice_requirement: audit_all
+w2019cis_outgoing_ntlm_traffic_requirement: audit_all
 
 # 2.3.13 - Shutdown
 

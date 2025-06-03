@@ -127,7 +127,7 @@ _w2022cis_windows_connect_pin_requirement_map:
 
 _w2022cis_telemetry_level_map:
   required: 1
-  off: 0
+  'off': 0
 
 _w2022cis_brute_force_protection_aggressiveness_map:
   medium: 1
@@ -145,21 +145,39 @@ _w2022cis_windows_ink_workspace_access_map:
   disallow_above_lock: 1
   disabled: 0
 
-_w2022cis_smart_card_removal_behavior_value: "{{ _w2022cis_smart_card_removal_behavior_map[w2022cis_smart_card_removal_behavior] }}"
-_w2022cis_smb_spn_target_name_validation_level_value: "{{ _w2022cis_smb_spn_target_name_validation_level_map[w2022cis_smb_spn_target_name_validation_level] }}"
-_w2022cis_ldap_client_signing_requirements_value: "{{ _w2022cis_ldap_client_signing_requirements_map[w2022cis_ldap_client_signing_requirements] }}"
-_w2022cis_outgoing_ntlm_traffic_requirement_value: "{{ _w2022cis_outgoing_ntlm_traffic_requirement_map[w2022cis_outgoing_ntlm_traffic_requirement] }}"
-_w2022cis_admin_uac_elevation_behavior_value: "{{ _w2022cis_admin_uac_elevation_behavior_map[w2022cis_admin_uac_elevation_behavior] }}"
-_w2022cis_laps_directory_value: "{{ _w2022cis_laps_directory_map[w2022cis_laps_directory] }}"
-_w2022cis_laps_post_authentication_actions_value: "{{ _w2022cis_laps_post_authentication_actions_map[w2022cis_laps_post_authentication_actions] }}"
-_w2022cis_doh_policy_value: "{{ _w2022cis_doh_policy_map[w2022cis_doh_policy] }}"
-_w2022cis_netbios_dns_resolution_behavior_value: "{{ _w2022cis_netbios_dns_resolution_behavior_map[w2022cis_netbios_dns_resolution_behavior] }}"
-_w2022cis_rpc_listener_authentication_protocol_value: "{{ _w2022cis_rpc_listener_authentication_protocol_map[w2022cis_rpc_listener_authentication_protocol] }}"
-_w2022cis_vbs_platform_security_level_value: "{{ _w2022cis_vbs_platform_security_level_map[w2022cis_vbs_platform_security_level] }}"
-_w2022cis_whfb_roca_mitigation_value: "{{ _w2022cis_whfb_roca_mitigation_map[w2022cis_whfb_roca_mitigation] }}"
-_w2022cis_windows_connect_pin_requirement_value: "{{ _w2022cis_windows_connect_pin_requirement_map[w2022cis_windows_connect_pin_requirement] }}"
-_w2022cis_telemetry_level_value: "{{ _w2022cis_telemetry_level_map[w2022cis_telemetry_level] }}"
-_w2022cis_brute_force_protection_aggressiveness_value: "{{ _w2022cis_brute_force_protection_aggressiveness_map[w2022cis_brute_force_protection_aggressiveness] }}"
-_w2022cis_brute_force_protection_configured_state_value: "{{ _w2022cis_brute_force_protection_configured_state_map[w2022cis_brute_force_protection_configured_state] }}"
-_w2022cis_remote_encryption_protection_aggressiveness_value: "{{ _w2022cis_remote_encryption_protection_aggressiveness_map[w2022cis_remote_encryption_protection_aggressiveness] }}"
-_w2022cis_windows_ink_workspace_access_value: "{{ _w2022cis_windows_ink_workspace_access_map[w2022cis_windows_ink_workspace_access] }}"
+_w2022cis_smart_card_removal_behavior_value: >-
+  {{ _w2022cis_smart_card_removal_behavior_map[w2022cis_smart_card_removal_behavior] }}
+_w2022cis_smb_spn_target_name_validation_level_value: >-
+  {{ _w2022cis_smb_spn_target_name_validation_level_map[w2022cis_smb_spn_target_name_validation_level] }}
+_w2022cis_ldap_client_signing_requirements_value: >-
+  {{ _w2022cis_ldap_client_signing_requirements_map[w2022cis_ldap_client_signing_requirements] }}
+_w2022cis_outgoing_ntlm_traffic_requirement_value: >-
+  {{ _w2022cis_outgoing_ntlm_traffic_requirement_map[w2022cis_outgoing_ntlm_traffic_requirement] }}
+_w2022cis_admin_uac_elevation_behavior_value: >-
+  {{ _w2022cis_admin_uac_elevation_behavior_map[w2022cis_admin_uac_elevation_behavior] }}
+_w2022cis_laps_directory_value: >-
+  {{ _w2022cis_laps_directory_map[w2022cis_laps_directory] }}
+_w2022cis_laps_post_authentication_actions_value: >-
+  {{ _w2022cis_laps_post_authentication_actions_map[w2022cis_laps_post_authentication_actions] }}
+_w2022cis_doh_policy_value: >-
+  {{ _w2022cis_doh_policy_map[w2022cis_doh_policy] }}
+_w2022cis_netbios_dns_resolution_behavior_value: >-
+  {{ _w2022cis_netbios_dns_resolution_behavior_map[w2022cis_netbios_dns_resolution_behavior] }}
+_w2022cis_rpc_listener_authentication_protocol_value: >-
+  {{ _w2022cis_rpc_listener_authentication_protocol_map[w2022cis_rpc_listener_authentication_protocol] }}
+_w2022cis_vbs_platform_security_level_value: >-
+  {{ _w2022cis_vbs_platform_security_level_map[w2022cis_vbs_platform_security_level] }}
+_w2022cis_whfb_roca_mitigation_value: >-
+  {{ _w2022cis_whfb_roca_mitigation_map[w2022cis_whfb_roca_mitigation] }}
+_w2022cis_windows_connect_pin_requirement_value: >-
+  {{ _w2022cis_windows_connect_pin_requirement_map[w2022cis_windows_connect_pin_requirement] }}
+_w2022cis_telemetry_level_value: >-
+  {{ _w2022cis_telemetry_level_map[w2022cis_telemetry_level] }}
+_w2022cis_brute_force_protection_aggressiveness_value: >-
+  {{ _w2022cis_brute_force_protection_aggressiveness_map[w2022cis_brute_force_protection_aggressiveness] }}
+_w2022cis_brute_force_protection_configured_state_value: >-
+  {{ _w2022cis_brute_force_protection_configured_state_map[w2022cis_brute_force_protection_configured_state] }}
+_w2022cis_remote_encryption_protection_aggressiveness_value: >-
+  {{ _w2022cis_remote_encryption_protection_aggressiveness_map[w2022cis_remote_encryption_protection_aggressiveness] }}
+_w2022cis_windows_ink_workspace_access_value: >-
+  {{ _w2022cis_windows_ink_workspace_access_map[w2022cis_windows_ink_workspace_access] }}

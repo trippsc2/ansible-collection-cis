@@ -1097,7 +1097,7 @@ argument_specs:
           - negotiate
         description:
           - The LDAP client signing requirements.
-      w2019cis_outgoing_ntlm_traffice_requirement:
+      w2019cis_outgoing_ntlm_traffic_requirement:
         type: str
         required: false
         default: audit_all
