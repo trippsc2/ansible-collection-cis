@@ -1,9 +1,10 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.windows2019
-Version: 1.2.2
+Version: 1.3.0
 
 This role applies the CIS Benchmark hardening steps on Windows Server 2019 machines. It is based on the CIS Benchmark for Windows Server 2019, v3.0.1.
+
 
 ## Requirements
 
@@ -179,7 +180,7 @@ This role applies the CIS Benchmark hardening steps on Windows Server 2019 machi
 | w2019cis_rule_2_3_11_12_enabled | <p>Whether to enable rule 2.3.11.12.</p><p>This applies when the level and machine type are appropriate.</p> | bool | no |  | True |
 | w2019cis_rule_2_3_11_13_enabled | <p>Whether to enable rule 2.3.11.13.</p><p>This applies when the level and machine type are appropriate.</p> | bool | no |  | True |
 | w2019cis_ldap_client_signing_requirements | <p>The LDAP client signing requirements.</p> | str | no | <ul><li>require</li><li>negotiate</li></ul> | require |
-| w2019cis_outgoing_ntlm_traffice_requirement | <p>The outgoing NTLM traffic requirement.</p> | str | no | <ul><li>audit_all</li><li>deny_all</li></ul> | audit_all |
+| w2019cis_outgoing_ntlm_traffic_requirement | <p>The outgoing NTLM traffic requirement.</p> | str | no | <ul><li>audit_all</li><li>deny_all</li></ul> | audit_all |
 | w2019cis_rule_2_3_13_1_enabled | <p>Whether to enable rule 2.3.13.1.</p><p>This applies when the level and machine type are appropriate.</p> | bool | no |  | True |
 | w2019cis_rule_2_3_15_1_enabled | <p>Whether to enable rule 2.3.15.1.</p><p>This applies when the level and machine type are appropriate.</p> | bool | no |  | True |
 | w2019cis_rule_2_3_15_2_enabled | <p>Whether to enable rule 2.3.15.2.</p><p>This applies when the level and machine type are appropriate.</p> | bool | no |  | True |
