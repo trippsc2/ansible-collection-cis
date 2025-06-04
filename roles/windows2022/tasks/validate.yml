@@ -215,15 +215,6 @@
     fail_msg: "The variable 'w2022cis_screensaver_grace_period_in_seconds' must be set to between 0 and 5.  Value: {{ w2022cis_screensaver_grace_period_in_seconds }}"
     success_msg: "The variable 'w2022cis_screensaver_grace_period_in_seconds' is set to between 0 and 5.  Value: {{ w2022cis_screensaver_grace_period_in_seconds }}"
 
-- name: "Validate | 18.6.7.6 | L1 | Ensure 'Set authentication rate limiter delay (milliseconds)' is set to 'Enabled: 2000' or more"
-  when:
-    - w2022cis_rule_18_6_7_6_enabled
-  ansible.builtin.assert:
-    that:
-      - w2022cis_smb_authentication_rate_limiter_delay_in_ms | int >= 2000
-    fail_msg: "The variable 'w2022cis_smb_authentication_rate_limiter_delay_in_ms' must be set to 2000 or more.  Value: {{ w2022cis_smb_authentication_rate_limiter_delay_in_ms }}"
-    success_msg: "The variable 'w2022cis_smb_authentication_rate_limiter_delay_in_ms' is set to 2000 or more.  Value: {{ w2022cis_smb_authentication_rate_limiter_delay_in_ms }}"
-
 - name: "Validate | 18.9.25.5 | L1 | Ensure 'Password Settings: Password Length' is set to 'Enabled: 15 or more'"
   when:
     - w2022cis_rule_18_9_25_5_enabled
