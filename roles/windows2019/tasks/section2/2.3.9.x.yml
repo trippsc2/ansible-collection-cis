@@ -35,7 +35,7 @@
     data: 1
     type: dword
 
-- name: "2.3.9.5 | L1 | Ensure 'Microsoft network server: Server SPN target name validation level' is set to 'Accept if provided by client' or higher (MS only)"
+- name: "2.3.9.5 | L1 | Ensure 'Microsoft network server: Server SPN target name validation level' is set to 'Accept if provided by client' or higher | MS only"
   when:
     - w2019cis_rule_2_3_9_5_enabled
     - _w2019cis_standalone_or_member_server

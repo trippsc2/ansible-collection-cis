@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  author: Jim Tarpley (@trippsc2)
+  namespace: trippsc2
+  role_name: windows2025
+  description: |
+    This role applies the CIS Benchmark hardening steps on Windows Server 2025 machines. It is based on the CIS Benchmark for Windows Server 2025, v1.0.0.
+
+  license: MIT
+
+  min_ansible_version: '2.16'
+
+  platforms:
+    - name: Windows
+      versions:
+        - '2025'
+
+collections:
+  - ansible.windows
+  - chocolatey.chocolatey
+  - community.windows
+
+dependencies: []

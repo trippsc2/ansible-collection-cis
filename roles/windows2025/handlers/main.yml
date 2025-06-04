@@ -1,0 +1,7 @@
+---
+- name: Reboot
+  listen: _w2025cis_reboot_windows
+  when:
+    - not w2025cis_skip_reboot
+  ansible.windows.win_reboot:
+    reboot_timeout: 3600

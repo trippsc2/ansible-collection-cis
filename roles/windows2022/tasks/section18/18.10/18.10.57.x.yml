@@ -18,39 +18,59 @@
     data: 1
     type: dword
 
-- name: "18.10.57.3.3.1 | L2 | Ensure 'Do not allow COM port redirection' is set to 'Enabled'"
+- name: "18.10.57.3.3.1 | L2 | Ensure 'Allow UI Automation redirection' is set to 'Disabled'"
   when:
     - w2022cis_rule_18_10_57_3_3_1_enabled
     - w2022cis_rule_18_10_57_3_3_1_force or _w2022cis_level2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services
+    name: EnableUiaRedirection
+    data: 0
+    type: dword
+
+- name: "18.10.57.3.3.2 | L2 | Ensure 'Do not allow COM port redirection' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_10_57_3_3_2_enabled
+    - w2022cis_rule_18_10_57_3_3_2_force or _w2022cis_level2
   ansible.windows.win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
     name: fDisableCcm
     data: 1
     type: dword
 
-- name: "18.10.57.3.3.2 | L1 | Ensure 'Do not allow drive redirection' is set to 'Enabled'"
+- name: "18.10.57.3.3.3 | L1 | Ensure 'Do not allow drive redirection' is set to 'Enabled'"
   when:
-    - w2022cis_rule_18_10_57_3_3_2_enabled
+    - w2022cis_rule_18_10_57_3_3_3_enabled
   ansible.windows.win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
     name: fDisableCdm
     data: 1
     type: dword
 
-- name: "18.10.57.3.3.3 | L2 | Ensure 'Do not allow LPT port redirection' is set to 'Enabled'"
+- name: "18.10.57.3.3.4 | L2 | Ensure 'Do not allow location redirection' is set to 'Enabled'"
   when:
-    - w2022cis_rule_18_10_57_3_3_3_enabled
-    - w2022cis_rule_18_10_57_3_3_3_force or _w2022cis_level2
+    - w2022cis_rule_18_10_57_3_3_4_enabled
+    - w2022cis_rule_18_10_57_3_3_4_force or _w2022cis_level2
+  ansible.windows.win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
+    name: fDisableLocationRedir
+    data: 1
+    type: dword
+
+- name: "18.10.57.3.3.5 | L2 | Ensure 'Do not allow LPT port redirection' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_10_57_3_3_5_enabled
+    - w2022cis_rule_18_10_57_3_3_5_force or _w2022cis_level2
   ansible.windows.win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
     name: fDisableLPT
     data: 1
     type: dword
 
-- name: "18.10.57.3.3.4 | L2 | Ensure 'Do not allow supported Plug and Play device redirection' is set to 'Enabled'"
+- name: "18.10.57.3.3.6 | L2 | Ensure 'Do not allow supported Plug and Play device redirection' is set to 'Enabled'"
   when:
-    - w2022cis_rule_18_10_57_3_3_4_enabled
-    - w2022cis_rule_18_10_57_3_3_4_force or _w2022cis_level2
+    - w2022cis_rule_18_10_57_3_3_6_enabled
+    - w2022cis_rule_18_10_57_3_3_6_force or _w2022cis_level2
   ansible.windows.win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Nt\Terminal Services
     name: fDisablePNPRedir

@@ -44,7 +44,7 @@
     data: "{{ w2019cis_login_message_title }}"
     type: string
 
-- name: "2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only)"
+- name: "2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' | MS only"
   when:
     - w2019cis_rule_2_3_7_6_enabled
     - _w2019cis_member_server
@@ -64,7 +64,7 @@
     data: "{{ w2019cis_password_expiry_warning_in_days }}"
     type: dword
 
-- name: "2.3.7.8 | L1 | Ensure 'Interactive logon: Require Domain Controller Authentication to unlock workstation' is set to 'Enabled' (MS only)"
+- name: "2.3.7.8 | L1 | Ensure 'Interactive logon: Require Domain Controller Authentication to unlock workstation' is set to 'Enabled' | MS only"
   when:
     - w2019cis_rule_2_3_7_8_enabled
     - _w2019cis_member_server

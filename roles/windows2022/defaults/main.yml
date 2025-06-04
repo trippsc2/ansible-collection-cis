@@ -854,6 +854,12 @@ w2022cis_rule_18_10_43_7_1_enabled: true
 
 w2022cis_rule_18_10_43_7_1_force: false
 
+# 18.10.43.8 - Network Inspection System
+
+w2022cis_rule_18_10_43_8_1_enabled: true
+
+w2022cis_rule_18_10_43_8_1_force: false
+
 # 18.10.43.10 - Real-time Protection
 
 w2022cis_rule_18_10_43_10_1_enabled: true
@@ -900,7 +906,7 @@ w2022cis_rule_18_10_43_13_5_enabled: true
 
 w2022cis_rule_18_10_43_16_enabled: true
 
-w2922cis_rule_18_10_43_17_enabled: true
+w2022cis_rule_18_10_43_17_enabled: true
 
 # 18.10.51 - OneDrive (formerly SkyDrive)
 
@@ -934,10 +940,14 @@ w2022cis_rule_18_10_57_3_3_1_enabled: true
 w2022cis_rule_18_10_57_3_3_2_enabled: true
 w2022cis_rule_18_10_57_3_3_3_enabled: true
 w2022cis_rule_18_10_57_3_3_4_enabled: true
+w2022cis_rule_18_10_57_3_3_5_enabled: true
+w2022cis_rule_18_10_57_3_3_6_enabled: true
 
 w2022cis_rule_18_10_57_3_3_1_force: false
-w2022cis_rule_18_10_57_3_3_3_force: false
+w2022cis_rule_18_10_57_3_3_2_force: false
 w2022cis_rule_18_10_57_3_3_4_force: false
+w2022cis_rule_18_10_57_3_3_5_force: false
+w2022cis_rule_18_10_57_3_3_6_force: false
 
 # 18.10.57.3.9 - Security
 

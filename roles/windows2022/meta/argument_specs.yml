@@ -862,7 +862,7 @@ argument_specs:
         description:
           - Whether to enable rule 2.3.9.5.
           - This applies when the level and machine type are appropriate.
-      w2022_idle_smb_timeout_in_minutes:
+      w2022cis_idle_smb_timeout_in_minutes:
         type: int
         required: false
         default: 15
@@ -3597,6 +3597,13 @@ argument_specs:
         description:
           - Whether to enable rule 18.10.57.3.3.2.
           - This applies when the level and machine type are appropriate.
+      w2022cis_rule_18_10_57_3_3_2_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 18.10.57.3.3.2.
+          - This applies when the machine type is appropriate.
       w2022cis_rule_18_10_57_3_3_3_enabled:
         type: bool
         required: false
@@ -3604,13 +3611,6 @@ argument_specs:
         description:
           - Whether to enable rule 18.10.57.3.3.3.
           - This applies when the level and machine type are appropriate.
-      w2022cis_rule_18_10_57_3_3_3_force:
-        type: bool
-        required: false
-        default: false
-        description:
-          - Whether to override the level requirement for CIS rule 18.10.57.3.3.3.
-          - This applies when the machine type is appropriate.
       w2022cis_rule_18_10_57_3_3_4_enabled:
         type: bool
         required: false
@@ -3624,6 +3624,34 @@ argument_specs:
         default: false
         description:
           - Whether to override the level requirement for CIS rule 18.10.57.3.3.4.
+          - This applies when the machine type is appropriate.
+      w2022cis_rule_18_10_57_3_3_5_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to enable rule 18.10.57.3.3.5.
+          - This applies when the level and machine type are appropriate.
+      w2022cis_rule_18_10_57_3_3_5_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 18.10.57.3.3.5.
+          - This applies when the machine type is appropriate.
+      w2022cis_rule_18_10_57_3_3_6_enabled:
+        type: bool
+        required: false
+        default: true
+        description:
+          - Whether to enable rule 18.10.57.3.3.6.
+          - This applies when the level and machine type are appropriate.
+      w2022cis_rule_18_10_57_3_3_6_force:
+        type: bool
+        required: false
+        default: false
+        description:
+          - Whether to override the level requirement for CIS rule 18.10.57.3.3.6.
           - This applies when the machine type is appropriate.
       w2022cis_rule_18_10_57_3_9_1_enabled:
         type: bool

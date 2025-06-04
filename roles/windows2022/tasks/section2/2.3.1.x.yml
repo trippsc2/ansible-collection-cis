@@ -1,5 +1,5 @@
 ---
-- name: "2.3.1.1 | L1 | Ensure 'Accounts: Guest account status' is set to 'Disabled' (MS only)"
+- name: "2.3.1.1 | L1 | Ensure 'Accounts: Guest account status' is set to 'Disabled' | MS only"
   when:
     - w2022cis_rule_2_3_1_1_enabled
     - _w2022cis_standalone_or_member_server

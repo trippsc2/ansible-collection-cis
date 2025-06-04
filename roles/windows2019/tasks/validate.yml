@@ -154,7 +154,7 @@
     fail_msg: "The variable 'w2019cis_login_message_title' must be defined."
     success_msg: The variable 'w2019cis_login_message_title' is defined.
 
-- name: "Validate | 2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only)"
+- name: "Validate | 2.3.7.6 | L2 | Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' | MS only"
   when:
     - w2019cis_rule_2_3_7_6_enabled
     - _w2019cis_member_server

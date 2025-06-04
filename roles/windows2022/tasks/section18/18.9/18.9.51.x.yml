@@ -8,7 +8,7 @@
     data: 1
     type: dword
 
-- name: "18.9.51.1.2 | L1 | Ensure 'Enable Windows NTP Server' is set to 'Disabled' (MS only)"
+- name: "18.9.51.1.2 | L1 | Ensure 'Enable Windows NTP Server' is set to 'Disabled' | MS only"
   when:
     - w2022cis_rule_18_9_51_1_2_enabled
     - _w2022cis_standalone_or_member_server

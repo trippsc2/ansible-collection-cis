@@ -7,7 +7,7 @@
     key: LSAAnonymousNameLookup
     value: 0
 
-- name: "2.3.10.2 | L1 | Ensure 'Network access: Do not allow anonymous enumeration of SAM accounts' is set to 'Enabled' (MS only)"
+- name: "2.3.10.2 | L1 | Ensure 'Network access: Do not allow anonymous enumeration of SAM accounts' is set to 'Enabled' | MS only"
   when:
     - w2022cis_rule_2_3_10_2_enabled
     - _w2022cis_member_server
@@ -17,7 +17,7 @@
     data: 1
     type: dword
 
-- name: "2.3.10.3 | L1 | Ensure 'Network access: Do not allow anonymous enumeration of SAM accounts and shares' is set to 'Enabled' (MS only)"
+- name: "2.3.10.3 | L1 | Ensure 'Network access: Do not allow anonymous enumeration of SAM accounts and shares' is set to 'Enabled' | MS only"
   when:
     - w2022cis_rule_2_3_10_3_enabled
     - _w2022cis_member_server
@@ -46,7 +46,7 @@
     data: 0
     type: dword
 
-- name: "2.3.10.6 | L1 | Ensure 'Network access: Named Pipes that can be accessed anonymously' is configured (DC only)"
+- name: "2.3.10.6 | L1 | Ensure 'Network access: Named Pipes that can be accessed anonymously' is configured | DC only"
   when:
     - w2022cis_rule_2_3_10_6_enabled
     - _w2022cis_domain_controller
@@ -61,7 +61,7 @@
       - TermServLicensing
     type: multistring
 
-- name: "2.3.10.7 | L1 | Ensure 'Network access: Named Pipes that can be accessed anonymously' is configured (MS only)"
+- name: "2.3.10.7 | L1 | Ensure 'Network access: Named Pipes that can be accessed anonymously' is configured | MS only"
   when:
     - w2022cis_rule_2_3_10_7_enabled
     - _w2022cis_standalone_or_member_server
@@ -101,7 +101,7 @@
     data: 1
     type: dword
 
-- name: "2.3.10.11 | L1 | Ensure 'Network access: Restrict clients allowed to make remote calls to SAM' is set to 'Administrators: Remote Access: Allow' (MS only)"
+- name: "2.3.10.11 | L1 | Ensure 'Network access: Restrict clients allowed to make remote calls to SAM' is set to 'Administrators: Remote Access: Allow' | MS only"
   when:
     - w2022cis_rule_2_3_10_11_enabled
     - _w2022cis_standalone_or_member_server

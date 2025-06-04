@@ -7,7 +7,7 @@
     users: []
     action: set
 
-- name: "2.2.2 | L1 | Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users, ENTERPRISE DOMAIN CONTROLLERS' (DC only)"
+- name: "2.2.2 | L1 | Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users, ENTERPRISE DOMAIN CONTROLLERS' | DC only"
   when:
     - w2019cis_rule_2_2_2_enabled
     - _w2019cis_domain_controller
@@ -19,7 +19,7 @@
       - ENTERPRISE DOMAIN CONTROLLERS
     action: set
 
-- name: "2.2.3 | L1 | Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users' (MS only)"
+- name: "2.2.3 | L1 | Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users' | MS only"
   when:
     - w2019cis_rule_2_2_3_enabled
     - _w2019cis_standalone_or_member_server
@@ -38,7 +38,7 @@
     users: []
     action: set
 
-- name: "2.2.5 | L1 | Ensure 'Add workstations to domain' is set to 'Administrators' (DC only)"
+- name: "2.2.5 | L1 | Ensure 'Add workstations to domain' is set to 'Administrators' | DC only"
   when:
     - w2019cis_rule_2_2_5_enabled
     - _w2019cis_domain_controller
@@ -56,7 +56,7 @@
     users: "{{ _w2019cis_adjust_memory_quotas_for_a_process_users | reject('equalto', omit) | list }}"
     action: set
 
-- name: "2.2.7 | L1 | Ensure 'Allow log on locally' is set to 'Administrators, ENTERPRISE DOMAIN CONTROLLERS' (DC only)"
+- name: "2.2.7 | L1 | Ensure 'Allow log on locally' is set to 'Administrators, ENTERPRISE DOMAIN CONTROLLERS' | DC only"
   when:
     - w2019cis_rule_2_2_7_enabled
     - _w2019cis_domain_controller
@@ -67,7 +67,7 @@
       - ENTERPRISE DOMAIN CONTROLLERS
     action: set
 
-- name: "2.2.8 | L1 | Ensure 'Allow log on locally' is set to 'Administrators' (MS only)"
+- name: "2.2.8 | L1 | Ensure 'Allow log on locally' is set to 'Administrators' | MS only"
   when:
     - w2019cis_rule_2_2_8_enabled
     - _w2019cis_standalone_or_member_server
@@ -77,7 +77,7 @@
       - Administrators
     action: set
 
-- name: "2.2.9 | L1 | Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators' (DC only)"
+- name: "2.2.9 | L1 | Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators' | DC only"
   when:
     - w2019cis_rule_2_2_9_enabled
     - _w2019cis_domain_controller
@@ -87,7 +87,7 @@
       - Administrators
     action: set
 
-- name: "2.2.10 | L1 | Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators, Remote Desktop Users' (MS only)"
+- name: "2.2.10 | L1 | Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators, Remote Desktop Users' | MS only"
   when:
     - w2019cis_rule_2_2_10_enabled
     - _w2019cis_standalone_or_member_server
@@ -160,7 +160,7 @@
     users: []
     action: set
 
-- name: "2.2.18 | L1 | Ensure 'Create symbolic links' is set to 'Administrators' (DC only)"
+- name: "2.2.18 | L1 | Ensure 'Create symbolic links' is set to 'Administrators' | DC only"
   when:
     - w2019cis_rule_2_2_18_enabled
     - _w2019cis_domain_controller
@@ -170,12 +170,12 @@
       - Administrators
     action: set
 
-- name: "2.2.19 | L1 | Ensure 'Create symbolic links' is set to 'Administrators, NT VIRTUAL MACHINE\\Virtual Machines' (MS only)"
+- name: "2.2.19 | L1 | Ensure 'Create symbolic links' is set to 'Administrators, NT VIRTUAL MACHINE\\Virtual Machines' | MS only"
   when:
     - w2019cis_rule_2_2_19_enabled
     - _w2019cis_standalone_or_member_server
   block:
-    - name: "2.2.19 | L1 | Ensure 'Create symbolic links' is set to 'Administrators, NT VIRTUAL MACHINE\\Virtual Machines' (MS only) | No Hyper-v"
+    - name: "2.2.19 | L1 | Ensure 'Create symbolic links' is set to 'Administrators, NT VIRTUAL MACHINE\\Virtual Machines' | MS only | No Hyper-v"
       when:
         - not _w2019cis_hyperv
       ansible.windows.win_user_right:
@@ -184,7 +184,7 @@
           - Administrators
         action: set
 
-    - name: "2.2.19 | L1 | Ensure 'Create symbolic links' is set to 'Administrators, NT VIRTUAL MACHINE\\Virtual Machines' (MS only) | With Hyper-v"
+    - name: "2.2.19 | L1 | Ensure 'Create symbolic links' is set to 'Administrators, NT VIRTUAL MACHINE\\Virtual Machines' | MS only | With Hyper-v"
       when:
         - _w2019cis_hyperv
       ansible.windows.win_user_right:
@@ -202,7 +202,7 @@
     users: "{{ _w2019cis_debug_programs_users | reject('equalto', omit) | list }}"
     action: set
 
-- name: "2.2.21 | L1 | Ensure 'Deny access to this computer from the network' to include 'Guests' (DC only)"
+- name: "2.2.21 | L1 | Ensure 'Deny access to this computer from the network' to include 'Guests' | DC only"
   when:
     - w2019cis_rule_2_2_21_enabled
     - _w2019cis_domain_controller
@@ -212,7 +212,7 @@
       - Guests
     action: set
 
-- name: "2.2.22 | L1 | Ensure 'Deny access to this computer from the network' to include 'Guests, Local account and member of Administrators group' (MS only) | Domain MS"
+- name: "2.2.22 | L1 | Ensure 'Deny access to this computer from the network' to include 'Guests, Local account and member of Administrators group' | MS only | Domain MS"
   when:
     - w2019cis_rule_2_2_22_enabled
     - _w2019cis_member_server
@@ -223,7 +223,7 @@
       - Local account and member of Administrators group
     action: set
 
-- name: "2.2.22 | L1 | Ensure 'Deny access to this computer from the network' to include 'Guests, Local account and member of Administrators group' (MS only) | Standalone"
+- name: "2.2.22 | L1 | Ensure 'Deny access to this computer from the network' to include 'Guests, Local account and member of Administrators group' | MS only | Standalone"
   when:
     - w2019cis_rule_2_2_22_enabled
     - _w2019cis_standalone
@@ -260,7 +260,7 @@
       - Guests
     action: set
 
-- name: "2.2.26 | L1 | Ensure 'Deny log on through Remote Desktop Services' to include 'Guests' (DC only)"
+- name: "2.2.26 | L1 | Ensure 'Deny log on through Remote Desktop Services' to include 'Guests' | DC only"
   when:
     - w2019cis_rule_2_2_26_enabled
     - _w2019cis_domain_controller
@@ -270,7 +270,7 @@
       - Guests
     action: set
 
-- name: "2.2.27 | L1 | Ensure 'Deny log on through Remote Desktop Services' is set to 'Guests, Local account' (MS only) | Domain MS"
+- name: "2.2.27 | L1 | Ensure 'Deny log on through Remote Desktop Services' is set to 'Guests, Local account' | MS only | Domain MS"
   when:
     - w2019cis_rule_2_2_27_enabled
     - _w2019cis_member_server
@@ -281,7 +281,7 @@
       - Local Account
     action: set
 
-- name: "2.2.27 | L1 | Ensure 'Deny log on through Remote Desktop Services' is set to 'Guests, Local account' (MS only) | Standalone"
+- name: "2.2.27 | L1 | Ensure 'Deny log on through Remote Desktop Services' is set to 'Guests, Local account' | MS only | Standalone"
   when:
     - w2019cis_rule_2_2_27_enabled
     - _w2019cis_standalone
@@ -291,7 +291,7 @@
       - Guests
     action: set
 
-- name: "2.2.28 | L1 | Ensure 'Enable computer and user accounts to be trusted for delegation' is set to 'Administrators' (DC only)"
+- name: "2.2.28 | L1 | Ensure 'Enable computer and user accounts to be trusted for delegation' is set to 'Administrators' | DC only"
   when:
     - w2019cis_rule_2_2_28_enabled
     - _w2019cis_domain_controller
@@ -301,7 +301,7 @@
       - Administrators
     action: set
 
-- name: "2.2.29 | L1 | Ensure 'Enable computer and user accounts to be trusted for delegation' is set to 'No One' (MS only)"
+- name: "2.2.29 | L1 | Ensure 'Enable computer and user accounts to be trusted for delegation' is set to 'No One' | MS only"
   when:
     - w2019cis_rule_2_2_29_enabled
     - _w2019cis_member_server
@@ -327,7 +327,7 @@
     users: "{{ _w2019cis_generate_security_audits_users | reject('equalto', omit) | list }}"
     action: set
 
-- name: "2.2.32 | L1 | Ensure 'Impersonate a client after authentication' is set to 'Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE' (DC only)"
+- name: "2.2.32 | L1 | Ensure 'Impersonate a client after authentication' is set to 'Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE' | DC only"
   when:
     - w2019cis_rule_2_2_32_enabled
     - _w2019cis_domain_controller
@@ -342,7 +342,7 @@
 
 - name: >
     2.2.33 | L1 | Ensure 'Impersonate a client after authentication' is set to 'Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE'
-    and (when the Web Server (IIS) Role with Web Services Role Service is installed) 'IIS_IUSRS' (MS only)
+    and (when the Web Server (IIS) Role with Web Services Role Service is installed) 'IIS_IUSRS' | MS only
   when:
     - w2019cis_rule_2_2_33_enabled
     - _w2019cis_standalone_or_member_server
@@ -376,7 +376,7 @@
     users: []
     action: set
 
-- name: "2.2.37 | L2 | Ensure 'Log on as a batch job' is set to 'Administrators' (DC Only)"
+- name: "2.2.37 | L2 | Ensure 'Log on as a batch job' is set to 'Administrators' | DC only"
   when:
     - w2019cis_rule_2_2_37_enabled
     - _w2019cis_domain_controller
@@ -386,7 +386,7 @@
     users: Administrators
     action: set
 
-- name: "2.2.38 | L1 | Ensure 'Manage auditing and security log' is set to 'Administrators' and (when Exchange is running in the environment) 'Exchange Servers' (DC only)"
+- name: "2.2.38 | L1 | Ensure 'Manage auditing and security log' is set to 'Administrators' and (when Exchange is running in the environment) 'Exchange Servers' | DC only"
   when:
     - w2019cis_rule_2_2_38_enabled
     - _w2019cis_domain_controller
@@ -395,7 +395,7 @@
     users: "{{ _w2019cis_manage_auditing_and_security_log_users | reject('equalto', omit) | list }}"
     action: set
 
-- name: "2.2.39 | L1 | Ensure 'Manage auditing and security log' is set to 'Administrators' (MS only)"
+- name: "2.2.39 | L1 | Ensure 'Manage auditing and security log' is set to 'Administrators' | MS only"
   when:
     - w2019cis_rule_2_2_39_enabled
     - _w2019cis_standalone_or_member_server
@@ -475,7 +475,7 @@
       - Administrators
     action: set
 
-- name: "2.2.48 | L1 | Ensure 'Synchronize directory service data' is set to 'No One' (DC only)"
+- name: "2.2.48 | L1 | Ensure 'Synchronize directory service data' is set to 'No One' | DC only"
   when:
     - w2019cis_rule_2_2_48_enabled
     - _w2019cis_domain_controller

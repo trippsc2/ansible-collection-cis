@@ -39,7 +39,7 @@
     data: 1
     type: dword
 
-- name: "18.9.5.5 | NG | Ensure 'Turn On Virtualization Based Security: Credential Guard Configuration' is set to 'Enabled with UEFI lock' (MS only)"
+- name: "18.9.5.5 | NG | Ensure 'Turn On Virtualization Based Security: Credential Guard Configuration' is set to 'Enabled with UEFI lock' | MS only"
   when:
     - w2019cis_rule_18_9_5_5_enabled
     - _w2019cis_standalone_or_member_server
@@ -50,7 +50,7 @@
     data: 1
     type: dword
 
-- name: "18.9.5.6 | NG | Ensure 'Turn On Virtualization Based Security: Credential Guard Configuration' is set to 'Disabled' (DC only)"
+- name: "18.9.5.6 | NG | Ensure 'Turn On Virtualization Based Security: Credential Guard Configuration' is set to 'Disabled' | DC only"
   when:
     - w2019cis_rule_18_9_5_6_enabled
     - _w2019cis_domain_controller

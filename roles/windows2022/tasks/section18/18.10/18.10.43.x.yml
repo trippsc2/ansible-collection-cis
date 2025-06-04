@@ -77,6 +77,25 @@
     data: 1
     type: dword
 
+- name: "18.10.43.8.1 | L2 | Ensure 'Convert warn verdict to block' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_10_43_8_1_enabled
+    - w2022cis_rule_18_10_43_8_1_force or _w2022cis_level2
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\NIS
+    name: EnableConvertWarnToBlock
+    data: 1
+    type: dword
+
+- name: "18.10.43.10.1 | L1 | Ensure 'Configure real-time protection and Security Intelligence Updates during OOBE' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_10_43_10_1_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection
+    name: OobeEnableRtpAndSigUpdate
+    data: 1
+    type: dword
+
 - name: "18.10.43.10.2 | L1 | Ensure 'Scan all downloaded files and attachments' is set to 'Enabled'"
   when:
     - w2022cis_rule_18_10_43_10_2_enabled
@@ -203,5 +222,14 @@
   ansible.windows.win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows Defender
     name: PUAProtection
+    data: 1
+    type: dword
+
+- name: "18.10.43.17 | L1 | Ensure 'Control whether exclusions are visible to local users' is set to 'Enabled'"
+  when:
+    - w2022cis_rule_18_10_43_17_enabled
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender
+    name: HideExclusionsFromLocalUsers
     data: 1
     type: dword

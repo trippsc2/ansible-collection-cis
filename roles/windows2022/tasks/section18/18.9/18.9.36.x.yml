@@ -1,5 +1,5 @@
 ---
-- name: "18.9.36.1 | L1 | Ensure 'Enable RPC Endpoint Mapper Client Authentication' is set to 'Enabled' (MS only)"
+- name: "18.9.36.1 | L1 | Ensure 'Enable RPC Endpoint Mapper Client Authentication' is set to 'Enabled' | MS only"
   when:
     - w2022cis_rule_18_9_36_1_enabled
     - _w2022cis_standalone_or_member_server
@@ -11,7 +11,7 @@
   notify:
     - _w2022cis_reboot_windows
 
-- name: "18.9.36.2 | L2 | Ensure 'Restrict Unauthenticated RPC clients' is set to 'Enabled: Authenticated' (MS only)"
+- name: "18.9.36.2 | L2 | Ensure 'Restrict Unauthenticated RPC clients' is set to 'Enabled: Authenticated' | MS only"
   when:
     - w2022cis_rule_18_9_36_2_enabled
     - _w2022cis_standalone_or_member_server

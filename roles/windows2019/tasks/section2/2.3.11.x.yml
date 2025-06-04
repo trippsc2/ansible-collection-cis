@@ -98,7 +98,7 @@
     data: 2
     type: dword
 
-- name: "2.3.11.12 | L1 | Ensure 'Network security: Restrict NTLM: Audit NTLM authentication in this domain' is set to 'Enable all' (DC only)"
+- name: "2.3.11.12 | L1 | Ensure 'Network security: Restrict NTLM: Audit NTLM authentication in this domain' is set to 'Enable all' | DC only"
   when:
     - w2019cis_rule_2_3_11_12_enabled
     - _w2019cis_domain_controller

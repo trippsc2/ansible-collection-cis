@@ -26,7 +26,7 @@
     data: 1
     type: dword
 
-- name: "18.9.28.4 | L1 | Ensure 'Enumerate local users on domain-joined computers' is set to 'Disabled' (MS only)"
+- name: "18.9.28.4 | L1 | Ensure 'Enumerate local users on domain-joined computers' is set to 'Disabled' | MS only"
   when:
     - w2019cis_rule_18_9_28_4_enabled
     - _w2019cis_member_server
