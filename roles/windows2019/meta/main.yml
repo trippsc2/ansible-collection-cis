@@ -17,7 +17,6 @@ galaxy_info:
 
 collections:
   - ansible.windows
-  - chocolatey.chocolatey
   - community.windows
 
 dependencies: []

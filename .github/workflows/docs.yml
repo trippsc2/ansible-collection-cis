@@ -1,0 +1,62 @@
+---
+name: Generate Role Docs
+'on':
+  workflow_dispatch: {}
+  pull_request:
+    branches:
+      - main
+    paths:
+      - galaxy.yml
+  push:
+    branches:
+      - main
+    paths:
+      - galaxy.yml
+defaults:
+  run:
+    working-directory: 'trippsc2.cis'
+jobs:
+  docs_rhel9:
+    name: Generate rhel9 role documentation
+    permissions:
+      contents: write
+    uses: trippsoft/github-actions/.github/workflows/role-docs.yml@main
+    with:
+      working_directory: 'trippsc2.cis'
+      role_name: 'rhel9'
+  docs_rhel8:
+    name: Generate rhel8 role documentation
+    permissions:
+      contents: write
+    needs: docs_rhel9
+    uses: trippsoft/github-actions/.github/workflows/role-docs.yml@main
+    with:
+      working_directory: 'trippsc2.cis'
+      role_name: 'rhel8'
+  docs_windows2025:
+    name: Generate windows2025 role documentation
+    permissions:
+      contents: write
+    needs: docs_rhel8
+    uses: trippsoft/github-actions/.github/workflows/role-docs.yml@main
+    with:
+      working_directory: 'trippsc2.cis'
+      role_name: 'windows2025'
+  docs_windows2022:
+    name: Generate windows2022 role documentation
+    permissions:
+      contents: write
+    needs: docs_windows2025
+    uses: trippsoft/github-actions/.github/workflows/role-docs.yml@main
+    with:
+      working_directory: 'trippsc2.cis'
+      role_name: 'windows2022'
+  docs_windows2019:
+    name: Generate windows2019 role documentation
+    permissions:
+      contents: write
+    needs: docs_windows2022
+    uses: trippsoft/github-actions/.github/workflows/role-docs.yml@main
+    with:
+      working_directory: 'trippsc2.cis'
+      role_name: 'windows2019'
