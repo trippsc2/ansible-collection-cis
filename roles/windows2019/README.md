@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.cis.windows2019
-Version: 1.3.1
+Version: 1.3.2
 
 This role applies the CIS Benchmark hardening steps on Windows Server 2019 machines. It is based on the CIS Benchmark for Windows Server 2019, v3.0.1.
 
@@ -17,7 +17,6 @@ This role applies the CIS Benchmark hardening steps on Windows Server 2019 machi
 | Collection |
 | ---------- |
 | ansible.windows |
-| chocolatey.chocolatey |
 | community.windows |
 
 ## Role Arguments
