@@ -2,14 +2,6 @@
 name: Generate Role Docs - windows2019 role
 'on':
   workflow_dispatch: {}
-  pull_request:
-    branches:
-      - main
-    paths:
-      - .github/workflows/docs-windows2019.yml
-      - roles/windows2019/.aar_doc.yml
-      - roles/windows2019/meta/argument_specs.yml
-      - roles/windows2019/meta/main.yml
   push:
     branches:
       - main
