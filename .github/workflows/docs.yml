@@ -7,6 +7,26 @@ name: Generate Role Docs
       - main
     paths:
       - galaxy.yml
+      - roles/rhel9/.aar_doc.yml
+      - roles/rhel9/README.md
+      - roles/rhel9/meta/argument_specs.yml
+      - roles/rhel9/meta/main.yml
+      - roles/rhel8/.aar_doc.yml
+      - roles/rhel8/README.md
+      - roles/rhel8/meta/argument_specs.yml
+      - roles/rhel8/meta/main.yml
+      - roles/windows2025/.aar_doc.yml
+      - roles/windows2025/README.md
+      - roles/windows2025/meta/argument_specs.yml
+      - roles/windows2025/meta/main.yml
+      - roles/windows2022/.aar_doc.yml
+      - roles/windows2022/README.md
+      - roles/windows2022/meta/argument_specs.yml
+      - roles/windows2022/meta/main.yml
+      - roles/windows2019/.aar_doc.yml
+      - roles/windows2019/README.md
+      - roles/windows2019/meta/argument_specs.yml
+      - roles/windows2019/meta/main.yml
 defaults:
   run:
     working-directory: 'trippsc2.cis'
