@@ -45,8 +45,8 @@
 - name: Check CIS level
   ansible.builtin.assert:
     that:
-      - w2019cis_level > 0
-      - w2019cis_level < 4
+      - w2019cis_level | int > 0
+      - w2019cis_level | int < 4
     fail_msg: "The CIS level should be 1, 2, or 3 (NG).  Value: {{ w2019cis_level }}"
     success_msg: "The CIS level is {{ w2019cis_level }}."
 
@@ -55,7 +55,7 @@
     - w2019cis_rule_1_1_1_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_password_history_size >= 24
+      - w2019cis_password_history_size | int >= 24
     fail_msg: "The variable 'w2019cis_password_history_size' must be set to than 24.  Value: {{ w2019cis_password_history_size }}"
     success_msg: "The variable 'w2019cis_password_history_size' is set to 24 or more.  Value: {{ w2019cis_password_history_size }}"
 
@@ -64,8 +64,8 @@
     - w2019cis_rule_1_1_2_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_maximum_password_age <= 365
-      - w2019cis_maximum_password_age > 0
+      - w2019cis_maximum_password_age | int <= 365
+      - w2019cis_maximum_password_age | int > 0
     fail_msg: "The variable 'w2019cis_maximum_password_age' must be set to between 1 and 365.  Value: {{ w2019cis_maximum_password_age }}"
     success_msg: "The variable 'w2019cis_maximum_password_age' is set to between 1 and 365.  Value: {{ w2019cis_maximum_password_age }}"
 
@@ -74,7 +74,7 @@
     - w2019cis_rule_1_1_3_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_minimum_password_age >= 1
+      - w2019cis_minimum_password_age | int >= 1
     fail_msg: "The variable 'w2019cis_minimum_password_age' must be set to 1 or more.  Value: {{ w2019cis_minimum_password_age }}"
     success_msg: "The variable 'w2019cis_minimum_password_age' is set to 1 or more.  Value: {{ w2019cis_minimum_password_age }}"
 
@@ -83,7 +83,7 @@
     - w2019cis_rule_1_1_4_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_minimum_password_length >= 14
+      - w2019cis_minimum_password_length | int >= 14
     fail_msg: "The variable 'w2019cis_minimum_password_length' must be set to 14 or more.  Value: {{ w2019cis_minimum_password_length }}"
     success_msg: "The variable 'w2019cis_minimum_password_length' is set to 14 or more.  Value: {{ w2019cis_minimum_password_length }}"
 
@@ -92,7 +92,7 @@
     - w2019cis_rule_1_2_1_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_lockout_duration_in_minutes >= 15
+      - w2019cis_lockout_duration_in_minutes | int >= 15
     fail_msg: "The variable 'w2019cis_lockout_duration_in_minutes' must be set to 15 or more.  Value: {{ w2019cis_lockout_duration_in_minutes }}"
     success_msg: "The variable 'w2019cis_lockout_duration_in_minutes' is set to 15 or more.  Value: {{ w2019cis_lockout_duration_in_minutes }}"
 
@@ -101,8 +101,8 @@
     - w2019cis_rule_1_2_2_enabled
   ansible.builtin.assert:
     that: 
-      - w2019cis_lockout_bad_logon_count <= 5
-      - w2019cis_lockout_bad_logon_count > 0
+      - w2019cis_lockout_bad_logon_count | int <= 5
+      - w2019cis_lockout_bad_logon_count | int > 0
     fail_msg: "The variable 'w2019cis_minimum_password_length' must be set to between 1 and 5.  Value: {{ w2019cis_lockout_bad_logon_count }}"
     success_msg: "The variable 'w2019cis_minimum_password_length' is set to between 1 and 5.  Value: {{ w2019cis_lockout_bad_logon_count }}"
 
@@ -111,7 +111,7 @@
     - w2019cis_rule_1_2_4_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_lockout_reset_time_in_minutes >= 15
+      - w2019cis_lockout_reset_time_in_minutes | int >= 15
     fail_msg: "The variable 'w2019cis_lockout_reset_time_in_minutes' must be set to 15 or more.  Value: {{ w2019cis_lockout_reset_time_in_minutes }}"
     success_msg: "The variable 'w2019cis_lockout_reset_time_in_minutes' is set to 15 or more.  Value: {{ w2019cis_lockout_reset_time_in_minutes }}"
 
@@ -121,8 +121,8 @@
     - _w2019cis_domain_controller_or_member_server
   ansible.builtin.assert:
     that: 
-      - w2019cis_maximum_machine_account_password_age_in_days <= 30
-      - w2019cis_maximum_machine_account_password_age_in_days > 0
+      - w2019cis_maximum_machine_account_password_age_in_days | int <= 30
+      - w2019cis_maximum_machine_account_password_age_in_days | int > 0
     fail_msg: "The variable 'w2019cis_maximum_machine_account_password_age_in_days' must be set to between 1 and 30.  Value: {{ w2019cis_maximum_machine_account_password_age_in_days }}"
     success_msg: "The variable 'w2019cis_maximum_machine_account_password_age_in_days' is set to between 1 and 30.  Value: {{ w2019cis_maximum_machine_account_password_age_in_days }}"
 
@@ -131,8 +131,8 @@
     - w2019cis_rule_2_3_7_3_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_inactivity_timeout_in_seconds <= 900
-      - w2019cis_inactivity_timeout_in_seconds > 0
+      - w2019cis_inactivity_timeout_in_seconds | int <= 900
+      - w2019cis_inactivity_timeout_in_seconds | int > 0
     fail_msg: "The variable 'w2019cis_inactivity_timeout_in_seconds' must be set to between 1 and 900.  Value: {{ w2019cis_inactivity_timeout_in_seconds }}"
     success_msg: "The variable 'w2019cis_inactivity_timeout_in_seconds' is set to between 1 and 900.  Value: {{ w2019cis_inactivity_timeout_in_seconds }}"
 
@@ -161,8 +161,8 @@
     - w2019cis_rule_2_3_7_6_force or _w2019cis_level2_member_server
   ansible.builtin.assert:
     that:
-      - w2019cis_cached_logons_count <= 4
-      - w2019cis_cached_logons_count >= 0
+      - w2019cis_cached_logons_count | int <= 4
+      - w2019cis_cached_logons_count | int >= 0
     fail_msg: "The variable 'w2019cis_cached_logons_count' must be set to between 1 and 4.  Value: {{ w2019cis_cached_logons_count }}"
     success_msg: "The variable 'w2019cis_cached_logons_count' is set to between 1 and 4.  Value: {{ w2019cis_cached_logons_count }}"
 
@@ -171,8 +171,8 @@
     - w2019cis_rule_2_3_7_7_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_password_expiry_warning_in_days <= 14
-      - w2019cis_password_expiry_warning_in_days >= 5
+      - w2019cis_password_expiry_warning_in_days | int <= 14
+      - w2019cis_password_expiry_warning_in_days | int >= 5
     fail_msg: "The variable 'w2019cis_password_expiry_warning_in_days' must be set to between 5 than 14.  Value: {{ w2019cis_password_expiry_warning_in_days }}"
     success_msg: "The variable 'w2019cis_password_expiry_warning_in_days' is set to between 5 and 14.  Value: {{ w2019cis_password_expiry_warning_in_days }}"
 
@@ -181,8 +181,8 @@
     - w2019cis_rule_2_3_9_1_enabled
   ansible.builtin.assert:
     that:
-      - w2019_idle_smb_timeout_in_minutes <= 15
-      - w2019_idle_smb_timeout_in_minutes >= 0
+      - w2019_idle_smb_timeout_in_minutes | int <= 15
+      - w2019_idle_smb_timeout_in_minutes | int >= 0
     fail_msg: "The variable 'w2019_idle_smb_timeout_in_minutes' must be set to between 0 and 15.  Value: {{ w2019_idle_smb_timeout_in_minutes }}"
     success_msg: "The variable 'w2019_idle_smb_timeout_in_minutes' is set to between 0 and 15.  Value: {{ w2019_idle_smb_timeout_in_minutes }}"
 
@@ -191,7 +191,7 @@
     - w2019cis_rule_9_1_6_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_domain_firewall_log_size_in_kb >= 16384
+      - w2019cis_domain_firewall_log_size_in_kb | int >= 16384
     fail_msg: "The variable 'w2019cis_domain_firewall_log_size_in_kb' must be set to 16384 or more.  Value: {{ w2019cis_domain_firewall_log_size_in_kb }}"
     success_msg: "The variable 'w2019cis_domain_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2019cis_domain_firewall_log_size_in_kb }}"
 
@@ -200,7 +200,7 @@
     - w2019cis_rule_9_2_6_enabled
   ansible.builtin.assert:
     that: 
-      - w2019cis_private_firewall_log_size_in_kb >= 16384
+      - w2019cis_private_firewall_log_size_in_kb | int >= 16384
     fail_msg: "The variable 'w2019cis_private_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2019cis_private_firewall_log_size_in_kb }}"
     success_msg: "The variable 'w2019cis_private_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2019cis_private_firewall_log_size_in_kb }}"
 
@@ -209,7 +209,7 @@
     - w2019cis_rule_9_3_8_enabled
   ansible.builtin.assert:
     that: 
-      - w2019cis_public_firewall_log_size_in_kb >= 16384
+      - w2019cis_public_firewall_log_size_in_kb | int >= 16384
     fail_msg: "The variable 'w2019cis_public_firewall_log_size_in_kb' must be set to 16384 or more.  Value: {{ w2019cis_public_firewall_log_size_in_kb }}"
     success_msg: "The variable 'w2019cis_public_firewall_log_size_in_kb' is set to 16384 or more.  Value: {{ w2019cis_public_firewall_log_size_in_kb }}"
 
@@ -218,8 +218,8 @@
     - w2019cis_rule_18_5_9_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_screensaver_grace_period_in_seconds <= 5
-      - w2019cis_screensaver_grace_period_in_seconds >= 0
+      - w2019cis_screensaver_grace_period_in_seconds | int <= 5
+      - w2019cis_screensaver_grace_period_in_seconds | int >= 0
     fail_msg: "The variable 'w2019cis_screensaver_grace_period_in_seconds' must be set to between 0 and 5.  Value: {{ w2019cis_screensaver_grace_period_in_seconds }}"
     success_msg: "The variable 'w2019cis_screensaver_grace_period_in_seconds' is set to between 0 and 5.  Value: {{ w2019cis_screensaver_grace_period_in_seconds }}"
 
@@ -229,7 +229,7 @@
     - _w2019cis_member_server
   ansible.builtin.assert:
     that:
-      - w2019cis_laps_password_length >= 15
+      - w2019cis_laps_password_length | int >= 15
     fail_msg: "The variable 'w2019cis_laps_password_length' must be set to 15 or more.  Value: {{ w2019cis_laps_password_length }}"
     success_msg: "The variable 'w2019cis_laps_password_length' is set to 15 or more.  Value: {{ w2019cis_laps_password_length }}"
 
@@ -239,8 +239,8 @@
     - _w2019cis_member_server
   ansible.builtin.assert:
     that:
-      - w2019cis_laps_password_age_in_days <= 30
-      - w2019cis_laps_password_age_in_days >= 0
+      - w2019cis_laps_password_age_in_days | int <= 30
+      - w2019cis_laps_password_age_in_days | int >= 0
     fail_msg: "The variable 'w2019cis_laps_password_age_in_days' must be set to between 0 and 30.  Value: {{ w2019cis_laps_password_age_in_days }}"
     success_msg: "The variable 'w2019cis_laps_password_age_in_days' is set to between 0 and 30.  Value: {{ w2019cis_laps_password_age_in_days }}"
 
@@ -250,8 +250,8 @@
     - _w2019cis_member_server
   ansible.builtin.assert:
     that:
-      - w2019cis_laps_post_authentication_grace_period_in_hours <= 8
-      - w2019cis_laps_post_authentication_grace_period_in_hours >= 0
+      - w2019cis_laps_post_authentication_grace_period_in_hours | int <= 8
+      - w2019cis_laps_post_authentication_grace_period_in_hours | int >= 0
     fail_msg: "The variable 'w2019cis_laps_post_authentication_grace_period_in_hours' must be set to between 0 and 8.  Value: {{ w2019cis_laps_post_authentication_grace_period_in_hours }}"
     success_msg: "The variable 'w2019cis_laps_post_authentication_grace_period_in_hours' is set to between 0 and 8.  Value: {{ w2019cis_laps_post_authentication_grace_period_in_hours }}"
 
@@ -260,7 +260,7 @@
     - w2019cis_rule_18_10_25_1_2_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_application_log_max_size_in_kb >= 32768
+      - w2019cis_application_log_max_size_in_kb | int >= 32768
     fail_msg: "The variable 'w2019cis_application_log_max_size_in_kb' must be set to 32768 or more.  Value: {{ w2019cis_application_log_max_size_in_kb }}"
     success_msg: "The variable 'w2019cis_application_log_max_size_in_kb' is set to 32768 or more.  Value: {{ w2019cis_application_log_max_size_in_kb }}"
 
@@ -269,7 +269,7 @@
     - w2019cis_rule_18_10_25_2_2_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_security_log_max_size_in_kb >= 196608
+      - w2019cis_security_log_max_size_in_kb | int >= 196608
     fail_msg: "The variable 'w2019cis_security_log_max_size_in_kb' must be set to 196608 or more.  Value: {{ w2019cis_security_log_max_size_in_kb }}"
     success_msg: "The variable 'w2019cis_security_log_max_size_in_kb' is set to 196608 or more.  Value: {{ w2019cis_security_log_max_size_in_kb }}"
 
@@ -278,7 +278,7 @@
     - w2019cis_rule_18_10_25_3_2_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_setup_log_max_size_in_kb >= 32768
+      - w2019cis_setup_log_max_size_in_kb | int >= 32768
     fail_msg: "The variable 'w2019cis_setup_log_max_size_in_kb' must be set to 32768 or more.  Value: {{ w2019cis_setup_log_max_size_in_kb }}"
     success_msg: "The variable 'w2019cis_setup_log_max_size_in_kb' is set to 32768 or more.  Value: {{ w2019cis_setup_log_max_size_in_kb }}"
 
@@ -287,6 +287,6 @@
     - w2019cis_rule_18_10_25_4_2_enabled
   ansible.builtin.assert:
     that:
-      - w2019cis_system_log_max_size_in_kb >= 32768
+      - w2019cis_system_log_max_size_in_kb | int >= 32768
     fail_msg: "The variable 'w2019cis_system_log_max_size_in_kb' set to 32768 or more.  Value: {{ w2019cis_system_log_max_size_in_kb }}"
     success_msg: "The variable 'w2019cis_system_log_max_size_in_kb' set to 32768 or more.  Value: {{ w2019cis_system_log_max_size_in_kb }}"

@@ -1,7 +1,7 @@
 ---
 namespace: trippsc2
 name: cis
-version: 1.3.2
+version: 1.3.3
 readme: README.md
 authors:
   - Jim Tarpley (@trippsc2)
@@ -14,10 +14,10 @@ tags:
   - security
 
 dependencies:
-  ansible.posix: ">=1.0.0"
-  ansible.windows: ">=1.0.0"
+  ansible.posix: ">=1.0.1"
+  ansible.windows: ">=1.5.0"
   community.general: ">=1.0.0"
-  community.windows: ">=1.0.0"
+  community.windows: ">=1.5.0"
 
 repository: https://github.com/trippsoft/ansible-collection-cis.git
 

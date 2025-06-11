@@ -26,8 +26,8 @@
 - name: Validate CIS level
   ansible.builtin.assert:
     that:
-      - rhel8cis_level > 0
-      - rhel8cis_level < 3
+      - rhel8cis_level | int > 0
+      - rhel8cis_level | int < 3
     fail_msg: The 'rhel8cis_level' must be 1 or 2.
     success_msg: The 'rhel8cis_level' is set to {{ rhel8cis_level }}.
 
@@ -246,14 +246,14 @@
     - name: Validate | 4.2.7 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | ClientAliveInterval
       ansible.builtin.assert:
         that:
-          - rhel8cis_sshd_client_alive_interval > 0
+          - rhel8cis_sshd_client_alive_interval | int > 0
         fail_msg: "The 'rhel8cis_sshd_client_alive_interval' variable must be greater than 0."
         success_msg: "The 'rhel8cis_sshd_client_alive_interval' variable is set to {{ rhel8cis_sshd_client_alive_interval }}."
 
     - name: Validate | 4.2.7 | Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured | ClientAliveCountMax
       ansible.builtin.assert:
         that:
-          - rhel8cis_sshd_client_alive_count_max > 0
+          - rhel8cis_sshd_client_alive_count_max | int > 0
         fail_msg: "The 'rhel8cis_sshd_client_alive_count_max' variable must be greater than 0."
         success_msg: "The 'rhel8cis_sshd_client_alive_count_max' variable is set to {{ rhel8cis_sshd_client_alive_count_max }}."
 
@@ -262,8 +262,8 @@
     - rhel8cis_rule_4_2_12_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_sshd_login_grace_time > 0
-      - rhel8cis_sshd_login_grace_time <= 60
+      - rhel8cis_sshd_login_grace_time | int > 0
+      - rhel8cis_sshd_login_grace_time | int <= 60
     fail_msg: "The 'rhel8cis_sshd_login_grace_time' variable must be greater than 0 and less than or equal to 60."
     success_msg: "The 'rhel8cis_sshd_login_grace_time' variable is set to {{ rhel8cis_sshd_login_grace_time }}."
 
@@ -272,8 +272,8 @@
     - rhel8cis_rule_4_2_15_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_sshd_max_auth_tries > 0
-      - rhel8cis_sshd_max_auth_tries <= 4
+      - rhel8cis_sshd_max_auth_tries | int > 0
+      - rhel8cis_sshd_max_auth_tries | int <= 4
     fail_msg: "The 'rhel8cis_sshd_max_auth_tries' variable must be greater than 0 and less than or equal to 4."
     success_msg: "The 'rhel8cis_sshd_max_auth_tries' variable is set to {{ rhel8cis_sshd_max_auth_tries }}."
 
@@ -282,8 +282,8 @@
     - rhel8cis_rule_4_2_16_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_sshd_max_sessions > 0
-      - rhel8cis_sshd_max_sessions <= 10
+      - rhel8cis_sshd_max_sessions | int > 0
+      - rhel8cis_sshd_max_sessions | int <= 10
     fail_msg: "The 'rhel8cis_sshd_max_sessions' variable must be greater than 0 and less than or equal to 10."
     success_msg: "The 'rhel8cis_sshd_max_sessions' variable is set to {{ rhel8cis_sshd_max_sessions }}."
 
@@ -294,24 +294,24 @@
     - name: Validate | 4.2.17 | Ensure sshd MaxStartups is configured | Validate startups before dropping
       ansible.builtin.assert:
         that:
-          - rhel8cis_sshd_max_startups_before_dropping > 0
-          - rhel8cis_sshd_max_startups_before_dropping <= 10
+          - rhel8cis_sshd_max_startups_before_dropping | int > 0
+          - rhel8cis_sshd_max_startups_before_dropping | int <= 10
         fail_msg: "The 'rhel8cis_sshd_max_startups_before_dropping' variable must be greater than 0 and less than or equal to 10."
         success_msg: "The 'rhel8cis_sshd_max_startups_before_dropping' variable is set to {{ rhel8cis_sshd_max_startups_before_dropping }}."
 
     - name: Validate | 4.2.17 | Ensure sshd MaxStartups is configured | Validate startup drop percentage
       ansible.builtin.assert:
         that:
-          - rhel8cis_sshd_max_startups_drop_percentage <= 30
-          - rhel8cis_sshd_max_startups_drop_percentage >= 0
+          - rhel8cis_sshd_max_startups_drop_percentage | int <= 30
+          - rhel8cis_sshd_max_startups_drop_percentage | int >= 0
         fail_msg: "The 'rhel8cis_sshd_max_startups_drop_percentage' variable must be a percentage less than or equal to 30."
         success_msg: "The 'rhel8cis_sshd_max_startups_drop_percentage' variable is set to {{ rhel8cis_sshd_max_startups_drop_percentage }}."
 
     - name: Validate | 4.2.17 | Ensure sshd MaxStartups is configured | Validate startup absolute maximum
       ansible.builtin.assert:
         that:
-          - rhel8cis_sshd_max_startups_absolute_maximum >= rhel8cis_sshd_max_startups_before_dropping
-          - rhel8cis_sshd_max_startups_absolute_maximum <= 60
+          - rhel8cis_sshd_max_startups_absolute_maximum | int >= rhel8cis_sshd_max_startups_before_dropping | int
+          - rhel8cis_sshd_max_startups_absolute_maximum | int <= 60
         fail_msg: "The 'rhel8cis_sshd_max_startups_absolute_maximum' variable must be greater than or equal to the 'rhel8cis_sshd_max_startups_before_dropping' variable and less than or equal to 60."
         success_msg: "The 'rhel8cis_sshd_max_startups_absolute_maximum' variable is set to {{ rhel8cis_sshd_max_startups_absolute_maximum }}."
 
@@ -320,8 +320,8 @@
     - rhel8cis_rule_4_3_6_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_sudo_authentication_timeout >= 0
-      - rhel8cis_sudo_authentication_timeout <= 15
+      - rhel8cis_sudo_authentication_timeout | int >= 0
+      - rhel8cis_sudo_authentication_timeout | int <= 15
     fail_msg: "The 'rhel8cis_sudo_authentication_timeout' must be greater than or equal to 0 and be less than or equal to 15."
     success_msg: "The 'rhel8cis_sudo_authentication_timeout' is set to {{ rhel8cis_sudo_authentication_timeout }}."
 
@@ -330,8 +330,8 @@
     - rhel8cis_rule_4_4_3_1_1_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_lockout_failed_attempts > 0
-      - rhel8cis_lockout_failed_attempts <= 5
+      - rhel8cis_lockout_failed_attempts | int > 0
+      - rhel8cis_lockout_failed_attempts | int <= 5
     fail_msg: "The 'rhel8cis_lockout_failed_attempts' variable must be greater than 0 and less than or equal to 5."
     success_msg: "The 'rhel8cis_lockout_failed_attempts' variable is set to {{ rhel8cis_lockout_failed_attempts }}."
 
@@ -340,7 +340,7 @@
     - rhel8cis_rule_4_4_3_1_2_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_lockout_unlock_time >= 900
+      - rhel8cis_lockout_unlock_time | int >= 900
     fail_msg: "The 'rhel8cis_lockout_unlock_time' variable must be greater than or equal to 900."
     success_msg: "The 'rhel8cis_lockout_unlock_time' variable is set to {{ rhel8cis_lockout_unlock_time }}."
 
@@ -349,7 +349,7 @@
     - rhel8cis_rule_4_4_3_2_1_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_password_min_changed_characters >= 2
+      - rhel8cis_password_min_changed_characters | int >= 2
     fail_msg: "The 'rhel8cis_password_min_changed_characters' variable must be greater than or equal to 2."
     success_msg: "The 'rhel8cis_password_min_changed_characters' variable is set to {{ rhel8cis_password_min_changed_characters }}."
 
@@ -358,7 +358,7 @@
     - rhel8cis_rule_4_4_3_2_2_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_password_min_length >= 14
+      - rhel8cis_password_min_length | int >= 14
     fail_msg: "The 'rhel8cis_password_min_length' variable must be greater than or equal to 14."
     success_msg: "The 'rhel8cis_password_min_length' variable is set to {{ rhel8cis_password_min_length }}."
 
@@ -367,8 +367,8 @@
     - rhel8cis_rule_4_4_3_2_4_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_password_max_repeat_characters <= 3
-      - rhel8cis_password_max_repeat_characters > 0
+      - rhel8cis_password_max_repeat_characters | int <= 3
+      - rhel8cis_password_max_repeat_characters | int > 0
     fail_msg: "The 'rhel8cis_password_max_repeat_characters' variable must be less than or equal to 3 but not 0."
     success_msg: "The 'rhel8cis_password_max_repeat_characters' variable is set to {{ rhel8cis_password_max_repeat_characters }}."
 
@@ -377,8 +377,8 @@
     - rhel8cis_rule_4_4_3_2_5_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_password_max_sequential_characters <= 3
-      - rhel8cis_password_max_sequential_characters > 0
+      - rhel8cis_password_max_sequential_characters | int <= 3
+      - rhel8cis_password_max_sequential_characters | int > 0
     fail_msg: "The 'rhel8cis_password_max_sequential_characters' variable must be less than or equal to 3 but not 0."
     success_msg: "The 'rhel8cis_password_max_sequential_characters' variable is set to {{ rhel8cis_password_max_sequential_characters }}."
 
@@ -387,7 +387,7 @@
     - rhel8cis_rule_4_4_3_3_1_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_passwords_remembered >= 24
+      - rhel8cis_passwords_remembered | int >= 24
     fail_msg: "The 'rhel8cis_passwords_remembered' variable must be greater than or equal to 24."
     success_msg: "The 'rhel8cis_passwords_remembered' variable is set to {{ rhel8cis_passwords_remembered }}."
 
@@ -396,8 +396,8 @@
     - rhel8cis_rule_4_5_1_2_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_password_expiration_days <= 365
-      - rhel8cis_password_expiration_days > 0
+      - rhel8cis_password_expiration_days | int <= 365
+      - rhel8cis_password_expiration_days | int > 0
     fail_msg: "The 'rhel8cis_password_expiration_days' variable must be less than or equal to 365 but not 0."
     success_msg: "The 'rhel8cis_password_expiration_days' is set to {{ rhel8cis_password_expiration_days }}."
 
@@ -406,7 +406,7 @@
     - rhel8cis_rule_4_5_1_3_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_password_expiration_warning_days >= 7
+      - rhel8cis_password_expiration_warning_days | int >= 7
     fail_msg: "The 'rhel8cis_password_expiration_warning_days' variable must be greater than or equal to 7."
     success_msg: "The 'rhel8cis_password_expiration_warning_days' is set to {{ rhel8cis_password_expiration_warning_days }}."
 
@@ -415,8 +415,8 @@
     - rhel8cis_rule_4_5_1_4_enabled
   ansible.builtin.assert:
     that:
-      - rhel8cis_inactive_password_lock_days <= 30
-      - rhel8cis_inactive_password_lock_days > 0
+      - rhel8cis_inactive_password_lock_days | int <= 30
+      - rhel8cis_inactive_password_lock_days | int > 0
     fail_msg: "The 'rhel8cis_inactive_password_lock_days' variable must be less than or equal to 30 but not 0."
     success_msg: "The 'rhel8cis_inactive_password_lock_days' is set to {{ rhel8cis_inactive_password_lock_days }}."
 
@@ -426,6 +426,6 @@
     - rhel8cis_rule_5_2_1_3_force or _rhel8cis_level2
   ansible.builtin.assert:
     that:
-      - rhel8cis_audit_backlog_limit >= 8192
+      - rhel8cis_audit_backlog_limit | int >= 8192
     fail_msg: "The 'rhel8cis_audit_backlog_limit' must be set to a minimum of 8192."
     success_msg: "The 'rhel8cis_audit_backlog_limit' is set to {{ rhel8cis_audit_backlog_limit }}."
